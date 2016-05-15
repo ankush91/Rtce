@@ -114,32 +114,27 @@ public class RTCEClient {
             
             //Prepare to send packet and receive response from server
             int attempts = 0;
-            socket.setSoTimeout(1000);     //Give the server 1 second to respond
-            socket.setLoopbackMode(true);  //Don't want to hear our own outbound msgs
+            socket.setSoTimeout(1000);     //Give the server 1 second to respond            
             byte[] responseBuf = new byte[2];
             DatagramPacket responsePacket;
             responsePacket = new DatagramPacket(
             		responseBuf,
             		responseBuf.length,
             		m_group,DISCOVERY_PORT);
-            
-            //Make 5 attempts to listen for a server
-            while (attempts < 5)
+                        
+            //Attempt discovery
+            while (attempts < 10)
             {  socket.send(outboundPacket);
-               try {
+               try {            	 
                  socket.receive(responsePacket);
                  if (responseBuf[0] == 'H' & responseBuf[1] == 'I')
                  { System.out.println("Found Server: " + responsePacket.getAddress());
                    socket.close();
                    return responsePacket.getAddress().getHostAddress();
                  }
-                 else
-                 { System.out.println("Got a response, but not from a RTCE Server");
-                   attempts++;
-                 }
                } catch (java.net.SocketTimeoutException e)
-               { attempts++; /*No response try again.*/
-                 System.out.println("No server response: Attempt " + attempts + " of 5");
+               { attempts++;
+                 System.out.print(".");
                }                   
             }
             

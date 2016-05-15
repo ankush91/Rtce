@@ -10,6 +10,8 @@ package rtce;
 import java.net.*;
 import java.io.*;
 
+
+
 public class RTCEServer implements Runnable
 {
     Socket sock;
@@ -97,6 +99,12 @@ public class RTCEServer implements Runnable
   {
       final int port = 25351; //Provide Server Port
       ServerSocket listenSock = new ServerSocket(port);
+      
+      //Create and start the Discovery Thread
+      RTCEDiscoveryServer discServer = new RTCEDiscoveryServer();
+      Thread discThread = new Thread(discServer);
+      discThread.start();
+      
       while(true)
       {
           RTCEServer server = new RTCEServer(listenSock.accept());
