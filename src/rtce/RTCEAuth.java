@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 public class RTCEAuth {
 
@@ -24,25 +25,13 @@ public class RTCEAuth {
 	}
 	
 	
-	public boolean performAuth() throws IOException{
+	public boolean performAuth(){
 		if(validAuth()){
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(RTCEServerConfig.getAuthFile()), RTCEServerConfig.getEncoding()));
-			String line = reader.readLine();
-			while(line != null){
-				if(line.trim().equals("Username: " + message.getUsername())){
-					line = reader.readLine();
-					while(line != null && !line.trim().equals("")){
-						if(line.trim().equals("Password: " + message.getPassword())){
-							return true;
-						}else if(line.trim().startsWith("Password: ")){
-							return false;
-						}else{
-							line = reader.readLine();
-						}
-					}
-				}
+			if(RTCEServerConfig.getAuthMap().containsKey(message.getUsername()) && RTCEServerConfig.getAuthMap().get(message.getUsername()).equals(message.getPassword())){
+				return true;
+			}else{
+				return false;
 			}
-			return false;
 		}else{
 			return false;
 		}
