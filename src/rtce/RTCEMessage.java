@@ -1,5 +1,7 @@
 package rtce;
 
+import java.nio.charset.StandardCharsets;
+
 public class RTCEMessage {
 
 	private RTCEMessageType request;
@@ -48,4 +50,13 @@ public class RTCEMessage {
 		this.genericOpts = genericOpts;
 	}
 	
+	public void setRequest(byte[] requestChars){
+		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
+		request = RTCEMessageType.valueOf(requestName);
+	}
+	
+	public byte[] getRequestChars(){
+		byte[] requestName = request.toString().getBytes(RTCEConstants.getRtcecharset());
+		return requestName;
+	}
 }

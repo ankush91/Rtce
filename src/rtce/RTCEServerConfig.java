@@ -15,7 +15,6 @@ public class RTCEServerConfig {
 	private static File configFile;
 	private static File authFile;
 	private static HashMap<String, String> authMap;
-	private static String encoding;
 	private static String hostKey;
 	private static File encryptFile;
 	private static File optionFile;
@@ -29,17 +28,13 @@ public class RTCEServerConfig {
 	public static File getAuthFile() {
 		return authFile;
 	}
-	
-	public static String getEncoding(){
-		return encoding;
-	}
 
 	public static HashMap<String, String> getAuthMap() {
 		return authMap;
 	}
 	
 	public static void readInAuths() throws IOException{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(authFile), encoding));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(authFile), RTCEConstants.getRtcecharset()));
 		String line = reader.readLine();
 		String uname, password;
 		while(line != null){
