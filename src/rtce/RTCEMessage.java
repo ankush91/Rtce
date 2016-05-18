@@ -9,6 +9,11 @@ public class RTCEMessage {
 	private String password;
 	private String encryptOpts[];
 	private String genericOpts[];
+	private long sessionId;
+	private int checksum;
+	private int headerReserved1;
+	private int headerReserved2;
+	private int headerReserved3;
 
 	public RTCEMessageType getRequest() {
 		return request;
@@ -56,7 +61,60 @@ public class RTCEMessage {
 	}
 	
 	public byte[] getRequestChars(){
-		byte[] requestName = request.toString().getBytes(RTCEConstants.getRtcecharset());
+		byte[] requestName = new byte[RTCEConstants.getRequestlength()];
+		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
+		if(requestBytes.length == RTCEConstants.getRequestlength()){
+			requestName = requestBytes;
+		}else{
+			for(int i = 0; i < requestBytes.length; i++){
+				requestName[i] = requestBytes[0];
+			}
+			for(int i = requestBytes.length; i < requestName.length; i++){
+				requestName[i] = 0;
+			}
+		}
 		return requestName;
 	}
+
+	public long getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(long sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public int getChecksum() {
+		return checksum;
+	}
+
+	public void setChecksum(int checksum) {
+		this.checksum = checksum;
+	}
+
+	public int getHeaderReserved1() {
+		return headerReserved1;
+	}
+
+	public void setHeaderReserved1(int headerReserved1) {
+		this.headerReserved1 = headerReserved1;
+	}
+
+	public int getHeaderReserved2() {
+		return headerReserved2;
+	}
+
+	public void setHeaderReserved2(int headerReserved2) {
+		this.headerReserved2 = headerReserved2;
+	}
+
+	public int getHeaderReserved3() {
+		return headerReserved3;
+	}
+
+	public void setHeaderReserved3(int headerReserved3) {
+		this.headerReserved3 = headerReserved3;
+	}
+
+	
 }
