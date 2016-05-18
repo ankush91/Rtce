@@ -6,17 +6,36 @@ import java.nio.charset.StandardCharsets;
 
 public class RTCEMessage {
 
+	//The request type
 	private RTCEMessageType request;
+	
+	//The username, for appropriate messages
 	private String username;
+	
+	//The password, for appropriate messages
 	private String password;
+	
+	//The encryption options, for appropriate messages
 	private String encryptOpts[];
+	
+	//The other option list, for appropriate messages
 	private String genericOpts[];
+	
+	//The session ID for all headers
 	private long sessionId;
+	
+	//The checksum, for all headers
 	private int checksum;
+	
+	//The reserved fields, for all headers
 	private int headerReserved1;
 	private int headerReserved2;
 	private int headerReserved3;
 
+	/**
+	 * Get the message type
+	 * @return The message type
+	 */
 	public RTCEMessageType getRequest() {
 		return request;
 	}
