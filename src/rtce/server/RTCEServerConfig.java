@@ -43,12 +43,40 @@ public class RTCEServerConfig {
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
+	 * @throws IOException - if the configuration file cannot be read
 	 */
-	public static void init(String configPath){
+	public static void init(String configPath) throws IOException{
 		configFile = new File(configPath);
 		authMap = new HashMap<String, String>();
 		validEncrypts = new ArrayList<String>();
 		validOpts = new ArrayList<String>();
+		readConfigFile();
+	}
+	
+	/**
+	 * Read the configuration file and extract values
+	 * @throws IOException - if the configuration file cannot be read
+	 */
+	private static void readConfigFile() throws IOException{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), RTCEConstants.getRtcecharset()));
+		String line = reader.readLine();
+		while(line != null){
+			line = line.trim();
+			if(!line.startsWith("#")){
+				if(line.startsWith("server-host-key:")){
+					hostKey = line.split("server-host-key:")[1].trim();
+				}else if(line.startsWith("auth-file:")){
+					authFile = new File(line.split("auth-file:")[1].trim());
+					readInAuths();
+				}else if(line.startsWith("encrypt-file:")){
+					encryptFile = new File(line.split("encrypt-file:")[1].trim());
+				}else if(line.startsWith("opt-file:")){
+					optionFile = new File(line.split("opt-file:")[1].trim());
+				}
+			}
+			line = reader.readLine();
+		}
+		reader.close();
 	}
 	
 	/**
@@ -84,10 +112,11 @@ public class RTCEServerConfig {
 		String line = reader.readLine();
 		String uname, password;
 		while(line != null){
-			if(line.startsWith("Username: ")){
-				uname = line.split("Username: ")[1];
+			line = line.trim();
+			if(line.startsWith("Username:")){
+				uname = line.split("Username:")[1].trim();
 				line = reader.readLine();
-				password = line.split("Password: ")[1];
+				password = line.split("Password:")[1].trim();
 				authMap.put(uname, password);
 			}
 			line = reader.readLine();
