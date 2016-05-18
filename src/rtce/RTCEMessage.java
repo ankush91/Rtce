@@ -2,7 +2,6 @@ package rtce;
 
 import java.io.IOException;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 
 public class RTCEMessage {
 
@@ -40,47 +39,91 @@ public class RTCEMessage {
 		return request;
 	}
 
+	/**
+	 * Get the username as a string, if applicable
+	 * @return The username as a string
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Get the password as a string, if applicable
+	 * @return The password as a string
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Set the request type
+	 * @param request - the request type
+	 */
 	public void setRequest(RTCEMessageType request) {
 		this.request = request;
 	}
 
+	/**
+	 * Set the username
+	 * @param username as a string
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Set the password
+	 * @param password as a string
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Get the encryption options
+	 * @return the array of encryption options as strings
+	 */
 	public String[] getEncryptOpts() {
 		return encryptOpts;
 	}
 
+	/**
+	 * Set the encryption options
+	 * @param encryptOpts as an array of strings
+	 */
 	public void setEncryptOpts(String[] encryptOpts) {
 		this.encryptOpts = encryptOpts;
 	}
 
+	/**
+	 * Get the generic options
+	 * @return the array of generic options as strings
+	 */
 	public String[] getGenericOpts() {
 		return genericOpts;
 	}
 
+	/**
+	 * Set the generic options
+	 * @param genericOpts as an array of strings
+	 */
 	public void setGenericOpts(String[] genericOpts) {
 		this.genericOpts = genericOpts;
 	}
 	
+	/**
+	 * Set the request as a byte array
+	 * @param requestChars as a byte array
+	 */
 	public void setRequest(byte[] requestChars){
 		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
 		request = RTCEMessageType.valueOf(requestName);
 	}
 	
+	/**
+	 * Get the request as a byte array
+	 * @return byte array representing the request
+	 */
 	public byte[] getRequestChars(){
 		byte[] requestName = new byte[RTCEConstants.getRequestlength()];
 		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
@@ -97,42 +140,82 @@ public class RTCEMessage {
 		return requestName;
 	}
 
+	/**
+	 * Get the session id
+	 * @return the session id as a long
+	 */
 	public long getSessionId() {
 		return sessionId;
 	}
 
+	/**
+	 * Set the session id
+	 * @param sessionId as a long
+	 */
 	public void setSessionId(long sessionId) {
 		this.sessionId = sessionId;
 	}
 
+	/**
+	 * Get the checksum
+	 * @return checksum as an integer
+	 */
 	public int getChecksum() {
 		return checksum;
 	}
 
+	/**
+	 * Set the checksum
+	 * @param checksum an in integer
+	 */
 	public void setChecksum(int checksum) {
 		this.checksum = checksum;
 	}
 
+	/**
+	 * Get the header reserved field 1
+	 * @return header reserved field 1 as an integer
+	 */
 	public int getHeaderReserved1() {
 		return headerReserved1;
 	}
 
+	/**
+	 * Set the header reserved field 1
+	 * @param headerReserved1 as an integer
+	 */
 	public void setHeaderReserved1(int headerReserved1) {
 		this.headerReserved1 = headerReserved1;
 	}
 
+	/**
+	 * Get the header reserved field 2
+	 * @return header reserved field 2 as an integer
+	 */
 	public int getHeaderReserved2() {
 		return headerReserved2;
 	}
 
+	/**
+	 * Set the header reserved field 2
+	 * @param headerReserved2 as an integer
+	 */
 	public void setHeaderReserved2(int headerReserved2) {
 		this.headerReserved2 = headerReserved2;
 	}
 
+	/**
+	 * Get the header reserved field 3
+	 * @return header reserved field 3 as an integer
+	 */
 	public int getHeaderReserved3() {
 		return headerReserved3;
 	}
 
+	/**
+	 * Set the header reserved field 3
+	 * @param headerReserved3 as an integer
+	 */
 	public void setHeaderReserved3(int headerReserved3) {
 		this.headerReserved3 = headerReserved3;
 	}
