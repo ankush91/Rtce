@@ -70,11 +70,45 @@ public class RTCEServerConfig {
 					readInAuths();
 				}else if(line.startsWith("encrypt-file:")){
 					encryptFile = new File(line.split("encrypt-file:")[1].trim());
+					readInEncrypts();
 				}else if(line.startsWith("opt-file:")){
 					optionFile = new File(line.split("opt-file:")[1].trim());
+					readInOpts();
 				}
 			}
 			line = reader.readLine();
+		}
+		reader.close();
+	}
+	
+	/**
+	 * Read the encryption file and extract values
+	 * @throws IOException - if the encryption file cannot be read
+	 */
+	private static void readInEncrypts() throws IOException{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(encryptFile), RTCEConstants.getRtcecharset()));
+		String line = reader.readLine();
+		while(line != null){
+			line = line.trim();
+			if(!line.startsWith("#") && line.length() >= 1){
+				validEncrypts.add(line);
+			}
+		}
+		reader.close();
+	}
+	
+	/**
+	 * Read the option file and extract values
+	 * @throws IOException - if the option file cannot be read
+	 */
+	private static void readInOpts() throws IOException{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(optionFile), RTCEConstants.getRtcecharset()));
+		String line = reader.readLine();
+		while(line != null){
+			line = line.trim();
+			if(!line.startsWith("#") && line.length() >= 1){
+				validOpts.add(line);
+			}
 		}
 		reader.close();
 	}

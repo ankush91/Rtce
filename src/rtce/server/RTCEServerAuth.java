@@ -82,6 +82,9 @@ public class RTCEServerAuth {
 	public String chooseEncrypt(){
 		String encryptOpts[] = clientMessage.getEncryptOpts();
 		List<String> validEncrypts = RTCEServerConfig.getValidEncrypts();
+		if(validEncrypts.size() == 0){
+			return "NONE";
+		}
 		for(int i = 0; i < encryptOpts.length; i++){
 			if(validEncrypts.contains(encryptOpts[i])){
 				return encryptOpts[i];
@@ -90,5 +93,28 @@ public class RTCEServerAuth {
 		return "NONE";
 	}
 	
-	
+	/**
+	 * Select options for the session
+	 * @return the chosen options as an array of strings
+	 */
+	public String[] chooseOpts(){
+		String opts[] = clientMessage.getGenericOpts();
+		List<String> validOpts = RTCEServerConfig.getValidOpts();
+		ArrayList<String> resultOpts = new ArrayList<String>();
+		if(validOpts.size() == 0){
+			return null;
+		}
+		for(int i = 0; i < opts.length; i++){
+			if(validOpts.contains(opts[i])){
+				resultOpts.add(opts[i]);
+			}
+		}
+		if(resultOpts.size() == 0){
+			return null;
+		}else{
+			String result[] = new String[resultOpts.size()];
+			result = resultOpts.toArray(result);
+			return result;
+		}
+	}
 }
