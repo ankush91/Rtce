@@ -1,5 +1,7 @@
 package rtce;
 
+import java.io.IOException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class RTCEMessage {
@@ -116,5 +118,74 @@ public class RTCEMessage {
 		this.headerReserved3 = headerReserved3;
 	}
 
-	
+	// This function clears the Section List stored
+	// used only for S_LIST MessageType
+    public void clearSectionList() {
+      //To be filled in by Anthony
+    }
+    
+    // This function adds a section range to the message.
+    // used only for S_LIST MessageType
+    public void addToSectionList(int Start, int Finish) {
+      //To be filled in by Anthony	
+    }
+    
+    // This function sets the data for the S_DATA MessageType
+    public void setSectionData(int SectionID, int SeqID, int CompleteID, String Data)
+    {
+      //To be filled in by Anthony    	
+    }
+    
+    // This function builds and transmits the Message on the supplied socket
+    public void sendMessage(Socket s)
+    {
+       byte[] buffer = new byte[100000]; //The outgoing buffer, arbitrarily declared to some max length
+       int buffer_size = 0; 
+    
+       //Insert logic to build header data into buffer
+       
+       //Use the request type to build the remainder of the message
+       switch (request) {
+       case CUAUTH:
+    	  break;
+       case CONNECT:
+     	  break;    	   
+       case S_LIST:
+     	  break;    	   
+       case S_DATA:
+     	  break;    	   
+       case S_TREQST:
+     	  break;    	   
+       case S_TRESPN:
+     	  break;    	   
+       case S_DENIED:
+     	  break;    	   
+       case S_DONE:
+     	  break;    	   
+       case S_COMMIT:
+     	  break;    	   
+       case ABORT:
+     	  break;    	   
+       case ECHO:
+     	  break;    	   
+       case BLOCK:
+     	  break;    	   
+       case LOGOFF:
+     	  break;    	   
+       case LACK:
+     	  break;    	   
+       case CACK:
+     	  break;    	   
+       case S_REVOKE:
+     	  break;    	   
+    	        	
+       } //switch (request)
+       
+       //Send the message/buffer
+       try{
+       s.getOutputStream().write(buffer, 0, buffer_size);
+       }
+       catch(IOException ex)
+       { System.err.println("IOException in sendMessage"); }       
+    }
 }
