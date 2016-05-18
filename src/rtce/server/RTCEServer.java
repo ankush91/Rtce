@@ -5,7 +5,7 @@
  * @version 1
  */
 
-package rtce;
+package rtce.server;
 
 import java.net.*;
 import java.io.*;

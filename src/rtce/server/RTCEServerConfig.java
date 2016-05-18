@@ -1,4 +1,4 @@
-package rtce;
+package rtce.server;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import rtce.RTCEConstants;
 
 public class RTCEServerConfig {
 

@@ -6,7 +6,7 @@
  * 
  */
 
-package rtce;
+package rtce.client;
 
 import java.net.*;
 import java.io.*;
