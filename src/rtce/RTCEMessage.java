@@ -176,7 +176,7 @@ public class RTCEMessage {
 			}
 			return result;
 		}else{
-			throw new ArrayIndexOutOfBoundsException(s.length());
+			throw new StringIndexOutOfBoundsException(s.length());
 		}
 		return null;
 	}
