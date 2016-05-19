@@ -236,6 +236,22 @@ public class RTCEMessage {
 	public byte[] getDocumentTitleChars(){
 		return getStringAsBytes(documentTitle, RTCEConstants.getDocTitleLength());
 	}
+	
+	/**
+	 * Set the password as a byte array
+	 * @param passwordChars as a byte array
+	 */
+	public void setPassword(byte[] passwordChars){
+		password = new String(passwordChars, RTCEConstants.getRtcecharset());
+	}
+	
+	/**
+	 * Get the password as a byte array
+	 * @return byte array representing the password
+	 */
+	public byte[] getPasswordChars(){
+		return getStringAsBytes(password, RTCEConstants.getAuthStringLength());
+	}
 
 	/**
 	 * Get the session id
@@ -315,6 +331,24 @@ public class RTCEMessage {
 	 */
 	public void setHeaderReserved3(int headerReserved3) {
 		this.headerReserved3 = headerReserved3;
+	}
+	
+	/**
+	 * get the number of elements in a string array
+	 * @param a - the array
+	 * @return the number of elements in the array as an integer
+	 */
+	public int getNumberOfElementsInStringArray(String a[]){
+		return a.length;
+	}
+	
+	/**
+	 * get the number of elements in a byte 2D array
+	 * @param a - the array
+	 * @return the number of elements in the array as an integer
+	 */
+	public int getNumberOfElementsInByte2DArray(byte a[][]){
+		return a.length;
 	}
 
 	// This function clears the Section List stored

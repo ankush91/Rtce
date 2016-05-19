@@ -17,6 +17,9 @@ public class RTCEConstants {
 	//The number of characters maximum in a document title
 	private static final int DOCTITLELENGTH = 20;
 	
+	//The number of characters maximum in an authentication string (password)
+	private static final int AUTHSTRINGLENGTH = 16;
+	
 	/**
 	 * Returns the character set
 	 * @return the character set (ASCII)
@@ -47,5 +50,13 @@ public class RTCEConstants {
 	 */
 	public static int getDocTitleLength() {
 		return DOCTITLELENGTH;
+	}
+	
+	/**
+	 * Returns the length of the authentication string (password)
+	 * @return the number of characters in the authentication string or password (16)
+	 */
+	public static int getAuthStringLength() {
+		return AUTHSTRINGLENGTH;
 	}
 }
