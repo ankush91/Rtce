@@ -9,6 +9,8 @@ package rtce.server;
 
 import java.net.*;
 import java.io.*;
+import java.nio.ByteBuffer;
+import rtce.RTCEMessageType;
 
 
 
@@ -29,9 +31,14 @@ public class RTCEServer implements Runnable
     
     public void run()
     {
+      boolean flagConn = true;
+        while(flagConn)
+        {
         getRequest();
         process();
         sendResponse();
+        }
+        
         close();
         
     }       
@@ -42,10 +49,19 @@ public class RTCEServer implements Runnable
       {
           int dataSize;
           while((dataSize = recvStream.available())==0);
-          byte[] recvBuff = new byte[dataSize];
-          recvStream.read(recvBuff, 0, dataSize);
-          request = new String(recvBuff, 0, dataSize);
-          System.out.println(request);
+          byte readbf[] = new byte[dataSize];
+          
+          System.out.println(dataSize);
+          
+          ByteBuffer bf = ByteBuffer.allocate(52);
+          recvStream.read(readbf, 0, dataSize);
+          
+          bf.put(readbf);
+          request = new String(readbf, 0, 8);
+           
+          RTCEServerMessage clientMessage = new RTCEServerMessage(); 
+          clientMessage.recvMessage(sock, RTCEMessageType.valueOf(request), bf);
+          
       }
       
       catch(IOException ex)
@@ -64,7 +80,7 @@ public class RTCEServer implements Runnable
   {
       try
       {
-          System.out.println(response);
+          System.out.println("Response in String Format: " + response);
           byte[] sendBuff = new byte[response.length()];
           sendBuff = response.getBytes();
           sendStream.write(sendBuff, 0, sendBuff.length);
