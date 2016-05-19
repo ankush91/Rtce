@@ -6,7 +6,7 @@ import java.net.*;
 public class RTCEMessage {
 
 	//The request type
-	private RTCEMessageType request;
+	private RTCEMessageType messageType;
 	
 	//The username, for appropriate messages.  This doubles as the server host key.
 	private String username;
@@ -39,8 +39,8 @@ public class RTCEMessage {
 	 * Get the message type
 	 * @return The message type
 	 */
-	public RTCEMessageType getRequest() {
-		return request;
+	public RTCEMessageType getMessageType() {
+		return messageType;
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class RTCEMessage {
 	 * Set the request type
 	 * @param request - the request type
 	 */
-	public void setRequest(RTCEMessageType request) {
-		this.request = request;
+	public void setMessageType(RTCEMessageType request) {
+		messageType = request;
 	}
 
 	/**
@@ -151,9 +151,9 @@ public class RTCEMessage {
 	 * Set the request as a byte array
 	 * @param requestChars as a byte array
 	 */
-	public void setRequest(byte[] requestChars){
+	public void setMessageType(byte[] requestChars){
 		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
-		request = RTCEMessageType.valueOf(requestName);
+		messageType = RTCEMessageType.valueOf(requestName);
 	}
 	
 	/**
@@ -185,8 +185,8 @@ public class RTCEMessage {
 	 * Get the request as a byte array
 	 * @return byte array representing the request
 	 */
-	public byte[] getRequestChars(){
-		return getStringAsBytes(request.toString(), RTCEConstants.getRequestLength());
+	public byte[] getMessageTypeChars(){
+		return getStringAsBytes(messageType.toString(), RTCEConstants.getRequestLength());
 	}
 	
 	/**
@@ -201,7 +201,7 @@ public class RTCEMessage {
 	 * Get the username as a byte array
 	 * @return byte array representing the username
 	 */
-	public byte[] getusernameChars(){
+	public byte[] getUsernameChars(){
 		return getStringAsBytes(username, RTCEConstants.getUsernameLength());
 	}
 	
@@ -378,7 +378,7 @@ public class RTCEMessage {
        //Insert logic to build header data into buffer
        
        //Use the request type to build the remainder of the message
-       switch (request) {
+       switch (messageType) {
        case CUAUTH:
     	  break;
        case CONNECT:

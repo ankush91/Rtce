@@ -94,9 +94,9 @@ public class RTCEServerMessage {
 	}
 	
 	public byte[] getRequestChars(){
-		byte[] requestName = new byte[RTCEConstants.getRequestlength()];
+		byte[] requestName = new byte[RTCEConstants.getRequestLength()];
 		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
-		if(requestBytes.length == RTCEConstants.getRequestlength()){
+		if(requestBytes.length == RTCEConstants.getRequestLength()){
 			requestName = requestBytes;
 		}else{
 			for(int i = 0; i < requestBytes.length; i++){
@@ -392,10 +392,10 @@ class ControlMessage extends DataMessage
    
     
      
-    public ByteBuffer setS_TRSPN()
+    /*public ByteBuffer setS_TRSPN()
     {
         
-    }
+    }*/
     
 
 }
