@@ -8,8 +8,12 @@ public class RTCEMessage {
 	//The request type
 	private RTCEMessageType request;
 	
-	//The username, for appropriate messages
+	//The username, for appropriate messages.  This doubles as the server host key.
 	private String username;
+	
+	//The identifiers for the the document to access.
+	private String documentOwner;
+	private String documentTitle;
 	
 	//The password, for appropriate messages
 	private String password;
@@ -20,13 +24,13 @@ public class RTCEMessage {
 	//The other option list, for appropriate messages
 	private String genericOpts[];
 	
-	//The session ID for all headers
+	//The session ID for the header
 	private long sessionId;
 	
-	//The checksum, for all headers
+	//The checksum, for the header
 	private int checksum;
 	
-	//The reserved fields, for all headers
+	//The reserved fields, for the header
 	private int headerReserved1;
 	private int headerReserved2;
 	private int headerReserved3;
@@ -39,6 +43,38 @@ public class RTCEMessage {
 		return request;
 	}
 
+	/**
+	 * Get the document owner as a string, if applicable
+	 * @return The document owner as a string
+	 */
+	public String getDocumentOwner() {
+		return documentOwner;
+	}
+	
+	/**
+	 * Set the document owner
+	 * @param docOwner as a string
+	 */
+	public void setDocumentOwner(String docOwner) {
+		documentOwner = docOwner;
+	}
+	
+	/**
+	 * Get the document name as a string, if applicable
+	 * @return The document name as a string
+	 */
+	public String getDocumentTitle() {
+		return documentTitle;
+	}
+	
+	/**
+	 * Set the document name
+	 * @param docName as a string
+	 */
+	public void setDocumentTitle(String docName) {
+		documentTitle = docName;
+	}
+	
 	/**
 	 * Get the username as a string, if applicable
 	 * @return The username as a string
@@ -121,23 +157,84 @@ public class RTCEMessage {
 	}
 	
 	/**
+	 * Take a string and return it as an array of bytes
+	 * @param s - the string
+	 * @param length - the number of bytes
+	 * @return the byte array
+	 */
+	public static byte[] getStringAsBytes(String s, int length){
+		byte[] stringRep = s.getBytes(RTCEConstants.getRtcecharset());
+		byte[] result = new byte[length];
+		if(stringRep.length == length){
+			result = stringRep;
+		}else if(length > stringRep.length){
+			for(int i = 0; i < stringRep.length; i++){
+				result[i] = stringRep[0];
+			}
+			for(int i = stringRep.length; i < length; i++){
+				result[i] = 0;
+			}
+			return result;
+		}else{
+			throw new ArrayIndexOutOfBoundsException(s.length());
+		}
+		return null;
+	}
+	
+	/**
 	 * Get the request as a byte array
 	 * @return byte array representing the request
 	 */
 	public byte[] getRequestChars(){
-		byte[] requestName = new byte[RTCEConstants.getRequestlength()];
-		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
-		if(requestBytes.length == RTCEConstants.getRequestlength()){
-			requestName = requestBytes;
-		}else{
-			for(int i = 0; i < requestBytes.length; i++){
-				requestName[i] = requestBytes[0];
-			}
-			for(int i = requestBytes.length; i < requestName.length; i++){
-				requestName[i] = 0;
-			}
-		}
-		return requestName;
+		return getStringAsBytes(request.toString(), RTCEConstants.getRequestLength());
+	}
+	
+	/**
+	 * Set the username as a byte array
+	 * @param usernameChars as a byte array
+	 */
+	public void setUsername(byte[] usernameChars){
+		username = new String(usernameChars, RTCEConstants.getRtcecharset());
+	}
+	
+	/**
+	 * Get the username as a byte array
+	 * @return byte array representing the username
+	 */
+	public byte[] getusernameChars(){
+		return getStringAsBytes(username, RTCEConstants.getUsernameLength());
+	}
+	
+	/**
+	 * Set the documentOwner as a byte array
+	 * @param usernameChars as a byte array
+	 */
+	public void setDocumentOwner(byte[] usernameChars){
+		documentOwner = new String(usernameChars, RTCEConstants.getRtcecharset());
+	}
+	
+	/**
+	 * Get the documentOwner as a byte array
+	 * @return byte array representing the documentOwner
+	 */
+	public byte[] getDocumentOwnerChars(){
+		return getStringAsBytes(documentOwner, RTCEConstants.getUsernameLength());
+	}
+	
+	/**
+	 * Set the document title as a byte array
+	 * @param doucumentTitleChars as a byte array
+	 */
+	public void setDocumentTitle(byte[] documentTitleChars){
+		documentTitle = new String(documentTitleChars, RTCEConstants.getRtcecharset());
+	}
+	
+	/**
+	 * Get the document title as a byte array
+	 * @return byte array representing the document title
+	 */
+	public byte[] getDocumentTitleChars(){
+		return getStringAsBytes(documentTitle, RTCEConstants.getDocTitleLength());
 	}
 
 	/**
@@ -211,7 +308,7 @@ public class RTCEMessage {
 	public int getHeaderReserved3() {
 		return headerReserved3;
 	}
-
+	
 	/**
 	 * Set the header reserved field 3
 	 * @param headerReserved3 as an integer
