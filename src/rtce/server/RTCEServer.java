@@ -11,6 +11,7 @@ import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import rtce.RTCEMessageType;
+import rtce.RTCEDocument;
 
 
 
@@ -22,6 +23,8 @@ public class RTCEServer implements Runnable
     String request;
     String response;
     
+    RTCEDocument doc1 = new RTCEDocument(1);
+    
     RTCEServer (Socket s) throws IOException
     {
         sock = s;
@@ -30,7 +33,8 @@ public class RTCEServer implements Runnable
     } 
     
     public void run()
-    {
+    { 
+      
       boolean flagConn = true;
         while(flagConn)
         {
@@ -118,13 +122,13 @@ public class RTCEServer implements Runnable
       
       //Create and start the Discovery Thread
       RTCEDiscoveryServer discServer = new RTCEDiscoveryServer();
-      Thread discThread = new Thread(discServer);
+      Thread discThread = new Thread(discServer);      
       discThread.start();
       
       while(true)
       {
-          RTCEServer server = new RTCEServer(listenSock.accept());
-          Thread thread = new Thread(server);
+          RTCEServer server = new RTCEServer(listenSock.accept());          
+          Thread thread = new Thread(server);          
           thread.start();
           
       }

@@ -54,9 +54,10 @@ public class RTCEDiscoveryServer implements Runnable
            {  socket.receive(incomingPacket);
               if (incomingPacket.getLength() == 4)
               {
-                System.out.println("Client " + 
-                                    incomingPacket.getAddress().getHostAddress() +
-                                    " is attempting to discover");
+//This output was being too chatty            	  
+//                System.out.println("Client " + 
+//                                    incomingPacket.getAddress().getHostAddress() +
+//                                    " is attempting to discover");
                 socket.send(responsePacket);
               }
            }
