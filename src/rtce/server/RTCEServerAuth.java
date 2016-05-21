@@ -35,7 +35,7 @@ public class RTCEServerAuth {
 	 * @return true if the message is CUAUTH, false otherwise
 	 */
 	private boolean validAuth(){
-		if(clientMessage.getRequest() == RTCEMessageType.CUAUTH){
+		if(clientMessage.getMessageType() == RTCEMessageType.CUAUTH){
 			return true;
 		}else{
 			return false;

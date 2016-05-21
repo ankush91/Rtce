@@ -350,6 +350,36 @@ public class RTCEMessage {
 	public int getNumberOfElementsInByte2DArray(byte a[][]){
 		return a.length;
 	}
+	
+	/**
+	 * Take an array of strings and return it as a 2D array of bytes
+	 * @param s - the string array
+	 * @param length - the number of bytes per string
+	 * @return the byte 2D array
+	 */
+	public byte[][] getBytesFromStrings(String[] s, int length){
+		byte result[][] = new byte[s.length][length];
+		for(int i = 0; i < s.length; i++){
+			result[i] = getStringAsBytes(s[i], length);
+		}
+		return result;
+	}
+	
+	/**
+	 * Return the encryption options as a 2D array of bytes
+	 * @return encryption options as 2D byte array
+	 */
+	public byte[][] getEncryptOptsAsBytes(){
+		return getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
+	}
+	
+	/**
+	 * Return the generic options as a 2D array of bytes
+	 * @return generic options as 2D byte array
+	 */
+	public byte[][] getGenericOptsAsBytes(){
+		return getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
+	}
 
 	// This function clears the Section List stored
 	// used only for S_LIST MessageType

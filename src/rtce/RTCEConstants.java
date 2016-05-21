@@ -20,6 +20,9 @@ public class RTCEConstants {
 	//The number of characters maximum in an authentication string (password)
 	private static final int AUTHSTRINGLENGTH = 16;
 	
+	//The number of characters maximum in an option name
+	private static final int OPTLENGTH = 8;
+	
 	/**
 	 * Returns the character set
 	 * @return the character set (ASCII)
@@ -29,7 +32,7 @@ public class RTCEConstants {
 	}
 
 	/**
-	 * Returns the length of the request
+	 * Returns the length of the request names
 	 * @return the number of characters in the request (8)
 	 */
 	public static int getRequestLength() {
@@ -58,5 +61,13 @@ public class RTCEConstants {
 	 */
 	public static int getAuthStringLength() {
 		return AUTHSTRINGLENGTH;
+	}
+	
+	/**
+	 * Returns the length of the option names
+	 * @return the number of characters in the request (8)
+	 */
+	public static int getOptLength(){
+		return OPTLENGTH;
 	}
 }
