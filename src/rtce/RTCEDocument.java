@@ -12,6 +12,8 @@ public class RTCEDocument {
 	//The name of the document
 	private String docName;
 	
+	//
+	private int S_Itr = 0; 
 	
     public RTCEDocument(int Example)
     {
@@ -22,7 +24,7 @@ public class RTCEDocument {
         sectionOrder[i] = 0;
       }
       
-      //Populate the document with canned data
+      //If Example is 1, Populate the document with canned data (used by Server)
       if (Example == 1) 
       {
     	docName = new String("TheRaven");    	
@@ -68,17 +70,29 @@ public class RTCEDocument {
       sectionOrder[order_itr+1] = sectionID;
     
       
-    }
+    } //addSection()
+    
+    public void modifySection(int SectionID, String txt)
+    {
+      for(int i = 0; i < 1000; i++)
+      {
+    	  if (sections[i].ID == SectionID)
+    	  { sections[i].txt = txt;
+    	    return;
+    	  }
+      }
+    
+    } //modifySection()
     
     //Finds a SectionID object given an ID
-    public RTCEDocSection FindSection(int ID) 
+    public RTCEDocSection findSection(int ID) 
     {
       for(int i = 0; i < 1000; i++)
       {
     	  if (sections[i].ID == ID)  { return sections[i];}
        }
       return sections[0];
-    }
+    } //findSection()
    
     //Prints out the entire document
     public void printDocument()
@@ -90,9 +104,22 @@ public class RTCEDocument {
       
       while (sectionOrder[itr] > 0)
       {  System.out.print(sectionOrder[itr]+":");
-         System.out.println(FindSection(sectionOrder[itr]).txt);
+         System.out.println(findSection(sectionOrder[itr]).txt);
          itr++;	  
       }
     }
+    
+    
+    public void resetSectionItr()
+    {
+      S_Itr = 0;	
+    } //resetSectionItr
+    
+    public RTCEDocSection getNextSectionItr()
+    {
+      int sID = sectionOrder[S_Itr++];
+      
+      return findSection(sID);
+    } //getNextSectionItr()
     
 }

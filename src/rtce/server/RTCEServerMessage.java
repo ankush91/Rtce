@@ -364,7 +364,7 @@ class DataMessage extends RTCEServerMessage
     
     // This function adds a section range to the message.
     // used only for S_LIST MessageType
-    public void addToSectionList(int Start, int Finish) 
+    public void addToSectionList(int SectionID) 
     {
       //To be filled in by Anthony	
     }
