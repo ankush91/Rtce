@@ -110,15 +110,20 @@ public class RTCEDocument {
     }
     
     
-    public void resetSectionItr()
+    public int resetSectionItr()
     {
-      S_Itr = 0;	
+      S_Itr = 0;
+      for(int i = 1; i < 1000; i++)
+      {
+        if (sectionOrder[i] == 0) {return i-1;}
+      }
+      return 0;
     } //resetSectionItr
     
     public RTCEDocSection getNextSectionItr()
     {
-      int sID = sectionOrder[S_Itr++];
-      
+      int sID = sectionOrder[S_Itr++];      
+      if (sID == 0){return sections[0];}
       return findSection(sID);
     } //getNextSectionItr()
     

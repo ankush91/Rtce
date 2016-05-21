@@ -12,7 +12,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
-
+import rtce.RTCEMessageType;
 
 
 public class RTCEServer implements Runnable
@@ -36,6 +36,15 @@ public class RTCEServer implements Runnable
     { 
       
       boolean flagConn = true;
+
+      /*Anthony Test: This is temporary code created to verify that S_LIST is sent properly.
+       *    Anthony needs this here to uncomment when testing S_LIST, S_DATA, until a UI is developed     
+      RTCEServerMessage slistMessage = new RTCEServerMessage();
+      slistMessage.setDocument(doc1);
+      slistMessage.setRequest(RTCEMessageType.S_LIST);      
+      slistMessage.sendMessage(sock);
+      */
+      
         while(flagConn)
         {
         getRequest();

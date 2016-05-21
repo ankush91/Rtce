@@ -1,6 +1,7 @@
 package rtce.server;
 
 import rtce.RTCEMessageType;
+import rtce.RTCEDocument;
 import rtce.RTCEConstants;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -44,6 +45,8 @@ public class RTCEServerMessage {
 	private int headerReserved2;
 	private int headerReserved3;
 
+	public RTCEDocument document;
+	
 	/**
 	 * Get the message type
 	 * @return The message type
@@ -88,6 +91,9 @@ public class RTCEServerMessage {
 		this.genericOpts = genericOpts;
 	}
 	
+	public void setDocument(RTCEDocument doc) {
+		this.document = doc;
+	}
 	public void setRequest(byte[] requestChars){
 		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
 		request = RTCEMessageType.valueOf(requestName);
@@ -184,6 +190,7 @@ public class RTCEServerMessage {
         ControlMessage controlPayload = null;
         
        //Use the request type to send the response, still left to work on this
+       this.response = this.request;
        if(this.request == RTCEMessageType.S_TREQST)
         this.response = RTCEMessageType.S_TRESPN;
        
@@ -196,7 +203,8 @@ public class RTCEServerMessage {
            //payload = setCONNECT();
      	  break;    	   
        case S_LIST:
-           //payload = setS_LIST();
+    	  controlPayload = new ControlMessage(document);
+    	  controlPayload.setS_LIST();           
      	  break;    	   
        case S_DATA:
            //payload = setS_DATA();
@@ -384,12 +392,29 @@ class ControlMessage extends DataMessage
    
    byte[] payload;
    int messagetype;
+
    
    ControlMessage(int byteSize)
-   {
+   {	   
        payload = new byte[byteSize];
    }
+   ControlMessage(RTCEDocument doc)
+   { document = doc; 
+   }
    
+   public void setS_LIST()
+   {	   
+	  int numberOfIDs = this.document.resetSectionItr();	  
+	  ByteBuffer bbuf = ByteBuffer.allocate(numberOfIDs*4);
+	  	  
+	  for(int i = 0; i < numberOfIDs; i++)
+	  { bbuf.putInt(document.getNextSectionItr().ID);
+      }
+      
+	  payload = new byte[numberOfIDs*4];
+	  payload = bbuf.array();
+	   
+   }
     
      
     /*public ByteBuffer setS_TRSPN()
