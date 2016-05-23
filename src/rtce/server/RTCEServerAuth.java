@@ -11,22 +11,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rtce.RTCEMessage;
 import rtce.RTCEMessageType;
+import rtce.client.RTCEClientMessage;
 
 public class RTCEServerAuth {
 
 	//The client message used to construct the module
-	private RTCEMessage clientMessage;
+	private RTCEClientMessage clientMessage;
 	
 	//The server message constructed by the module
-	private RTCEMessage serverMessage;
+	private RTCEServerMessage serverMessage;
 	
 	/**
 	 * Create the server authentication module from the CUAUTH message
 	 * @param m - a CUAUTH message
 	 */
-	public RTCEServerAuth(RTCEMessage m){
+	public RTCEServerAuth(RTCEClientMessage m){
 		clientMessage = m;
 	}
 	
@@ -35,7 +35,7 @@ public class RTCEServerAuth {
 	 * @return true if the message is CUAUTH, false otherwise
 	 */
 	private boolean validAuth(){
-		if(clientMessage.getMessageType() == RTCEMessageType.CUAUTH){
+		if(clientMessage.getRequest() == RTCEMessageType.CUAUTH){
 			return true;
 		}else{
 			return false;
@@ -63,7 +63,7 @@ public class RTCEServerAuth {
 	 * Get the client message used to construct the module
 	 * @return the message which built the module
 	 */
-	public RTCEMessage getClientMessage() {
+	public RTCEClientMessage getClientMessage() {
 		return clientMessage;
 	}
 
@@ -71,7 +71,7 @@ public class RTCEServerAuth {
 	 * Get the server message constructed by the module
 	 * @return the message built by the module
 	 */
-	public RTCEMessage getServerMessage() {
+	public RTCEServerMessage getServerMessage() {
 		return serverMessage;
 	}
 	
