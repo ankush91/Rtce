@@ -28,6 +28,11 @@ public class RTCEServerAuth {
 	 */
 	public RTCEServerAuth(RTCEClientMessage m){
 		clientMessage = m;
+		if(performAuth()){
+			
+		}else{
+			//TODO send some sort of denial message
+		}
 	}
 	
 	/**
