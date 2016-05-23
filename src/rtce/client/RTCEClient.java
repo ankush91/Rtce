@@ -188,7 +188,7 @@ public class RTCEClient {
         s[7] = "S_DONE";
         s[8] = "S_TREQST";
         s[9] = "LOGOFF";
-        
+               
         while(i<10)
         {
         

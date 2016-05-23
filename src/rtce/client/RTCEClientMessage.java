@@ -290,11 +290,11 @@ public class RTCEClientMessage {
          case "CONNECT":
           return 97;
        
-        /*  case "S_LIST":
-              return ;
+         case "S_LIST":
+              return 1000;
               
-          case "S_DATA":
-              return;*/
+         case "S_DATA":
+              return 1000;
               
           case "S_TRESPN":
           return 72;  
@@ -347,14 +347,13 @@ public class RTCEClientMessage {
           control.getCONNECT(bf);
     	  break;
            
-           /* case S_LIST:
-          //payload = setCUAUTH(); 
+          case S_LIST:
+              System.out.println("S_LIST \n");               
     	  break;
            
-           /* case S_DATA:
-          //payload = setCUAUTH(); 
-    	  break;
-          */
+          case S_DATA:
+        	  System.out.println("S_DATA \n");
+    	  break;         
        
           case S_TRESPN:
           control.getS_TRESPN(bf);
