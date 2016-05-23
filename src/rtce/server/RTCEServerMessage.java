@@ -48,6 +48,7 @@ public class RTCEServerMessage {
 	private int headerReserved3;
 
 	public RTCEDocument document;
+    private int sectionID;
 	
 	/**
 	 * Get the message type
@@ -68,6 +69,8 @@ public class RTCEServerMessage {
 	public String getPassword() {
 		return password;
 	}
+	
+	
 
 	public void setRequest(RTCEMessageType request) {
 		this.request = request;
@@ -99,6 +102,10 @@ public class RTCEServerMessage {
 	
 	public void setDocument(RTCEDocument doc) {
 		this.document = doc;
+	}
+	
+	public void setSectionID(int sID) {
+	    this.sectionID = sID;		
 	}
 	public void setRequest(byte[] requestChars){
 		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
@@ -275,12 +282,14 @@ public class RTCEServerMessage {
            controlPayload = new ControlMessage(53);
            controlPayload.payload = controlPayload.setCONNECT(); 
      	  break;   
-     /*   case S_LIST:
-           //payload = setS_LIST();
+       case S_LIST:
+    	   controlPayload = new ControlMessage(document);
+           controlPayload.setS_LIST();
      	  break;    	   
        case S_DATA:
-           //payload = setS_DATA();
-     	  break;  */
+    	   controlPayload = new ControlMessage(document);
+    	   controlPayload.setS_DATA(sectionID);
+     	  break;  
           
        case S_TRESPN:
             controlPayload = new ControlMessage(24);
@@ -401,28 +410,7 @@ public class RTCEServerMessage {
 class DataMessage extends RTCEServerMessage
 {
 
-    // This function clears the Section List stored
-    // used only for S_LIST MessageType
-    
-    public void clearSectionList() 
-    {
-      //To be filled in by Anthony
-    }
-    
-    // This function adds a section range to the message.
-    // used only for S_LIST MessageType
-    public void addToSectionList(int SectionID) 
-    {
-      //To be filled in by Anthony	
-    }
-    
-    // This function sets the data for the S_DATA MessageType
-    public void setSectionData(int SectionID, int SeqID, int CompleteID, String Data)
-    {
-      //To be filled in by Anthony    	
-    }
-    
-
+      
 }
 
 //Control Messages and everything Else, inheerits both classes | Testing for now
@@ -454,14 +442,22 @@ class ControlMessage extends DataMessage
    
    public void setS_LIST()
    {	   
-	  int numberOfIDs = this.document.resetSectionItr();	  
-	  ByteBuffer bbuf = ByteBuffer.allocate(numberOfIDs*4);
-	  	  
+	  int numberOfIDs = this.document.resetSectionItr();	  	  
+	  payload = ByteBuffer.allocate(numberOfIDs*4);
+	  
 	  for(int i = 0; i < numberOfIDs; i++)
-	  { bbuf.putInt(document.getNextSectionItr().ID);
-          }
-      
-	  payload = bbuf; 
+	  { payload.putInt(document.getNextSectionItr().ID);  }
+	  
+   }
+   
+   public void setS_DATA(int sectionID)
+   {
+	  String sectionText = this.document.getDocumentSection(sectionID).txt;
+	  payload = ByteBuffer.allocate(4+sectionText.length());
+	  
+	  payload.putInt(sectionID);
+	  payload.put(sectionText.getBytes());
+	  
    }
       
  

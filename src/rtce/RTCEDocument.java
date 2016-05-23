@@ -127,4 +127,14 @@ public class RTCEDocument {
       return findSection(sID);
     } //getNextSectionItr()
     
+    public RTCEDocSection getDocumentSection(int ID)
+    {
+      for(int i = 1; i < 1000; i++)
+      {
+    	if (sections[i].ID == ID)
+    	{ return sections[i];}
+      }
+      return sections[0];    		
+          
+    } //getDocumentSection()
 }
