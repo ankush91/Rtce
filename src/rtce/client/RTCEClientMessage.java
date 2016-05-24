@@ -2,6 +2,8 @@ package rtce.client;
 
 import rtce.RTCEMessageType;
 import rtce.RTCEConstants;
+import rtce.RTCEDocument;
+
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,6 +28,9 @@ public class RTCEClientMessage {
 	
 	//The other option list, for appropriate messages
 	private String genericOpts[];
+
+	
+	public RTCEDocument document;
 	
 	//The session ID for all headers
 	private long sessionId;
@@ -85,6 +90,9 @@ public class RTCEClientMessage {
 		this.genericOpts = genericOpts;
 	}
 	
+	public void setDocument(RTCEDocument doc) {
+		this.document = doc;
+	}	
 	public void setRequest(byte[] requestChars){
 		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
 		request = RTCEMessageType.valueOf(requestName);
@@ -348,7 +356,18 @@ public class RTCEClientMessage {
     	  break;
            
           case S_LIST:
-              System.out.println("S_LIST \n");               
+              System.out.println("S_LIST \n");   
+              
+              bf.position(40);
+              document.clearOrder();
+              while (true)
+              {
+            	int temp = bf.getInt();            	
+            	document.setOrder(temp);
+            	System.out.print(""+temp+",");
+            	if (temp == 0)
+            	{System.out.println("");break;}              
+              }
     	  break;
            
           case S_DATA:

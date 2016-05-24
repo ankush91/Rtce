@@ -13,6 +13,8 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import rtce.RTCEConstants;
+import rtce.RTCEDocument;
+
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
 public class RTCEClient {
@@ -21,6 +23,7 @@ public class RTCEClient {
         OutputStream sendStream;
         InputStream recvStream;
         String request, response;
+        RTCEDocument doc = new RTCEDocument(0);
 
         //Constants used for Discovery
     	final static int    DISCOVERY_PORT = 4446;
@@ -65,7 +68,7 @@ public class RTCEClient {
           
           RTCEClientMessage serverMessage = new RTCEClientMessage(); 
            String s = new String(asciiVal, 0, serverMessage.lastByte(asciiVal));
-         
+          serverMessage.setDocument(doc);
          
           if((messageSize = serverMessage.lengthBuffer(s))!=0)
           {   

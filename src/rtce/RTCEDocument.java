@@ -14,6 +14,7 @@ public class RTCEDocument {
 	
 	//
 	private int S_Itr = 0; 
+	private int orderItr = 0;
 	
     public RTCEDocument(int Example)
     {
@@ -40,7 +41,7 @@ public class RTCEDocument {
     //This procedure adds a sectionID with txt after some other section ID in the document
     public void addSection(int afterSectionID, int sectionID, String txt)
     {
-      int section_itr = 0; //itr to find an available sectionID object
+      int section_itr = 1; //itr to find an available sectionID object
       int order_itr   = 0; //itr to find the location in the document
       
       //Find the afterSectionID in the order array
@@ -68,7 +69,7 @@ public class RTCEDocument {
         itr--;                  
       }
       sectionOrder[order_itr+1] = sectionID;
-    
+      
       
     } //addSection()
     
@@ -112,10 +113,10 @@ public class RTCEDocument {
     
     public int resetSectionItr()
     {
-      S_Itr = 0;
+      S_Itr = 1;
       for(int i = 1; i < 1000; i++)
       {
-        if (sectionOrder[i] == 0) {return i-1;}
+        if (sectionOrder[i] == 0) {return i;}
       }
       return 0;
     } //resetSectionItr
@@ -123,6 +124,7 @@ public class RTCEDocument {
     public RTCEDocSection getNextSectionItr()
     {
       int sID = sectionOrder[S_Itr++];      
+      
       if (sID == 0){return sections[0];}
       return findSection(sID);
     } //getNextSectionItr()
@@ -137,4 +139,16 @@ public class RTCEDocument {
       return sections[0];    		
           
     } //getDocumentSection()
+    
+    public void clearOrder ()
+    {
+        for(int i =0; i < 1000; i++)
+        { sectionOrder[i] = 0; }
+        orderItr = 1;          
+    }
+    
+    public void setOrder(int SectionID)
+    {
+      sectionOrder[orderItr++] = SectionID;      
+    }
 }

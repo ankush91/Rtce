@@ -443,11 +443,11 @@ class ControlMessage extends DataMessage
    public void setS_LIST()
    {	   
 	  int numberOfIDs = this.document.resetSectionItr();	  	  
-	  payload = ByteBuffer.allocate(numberOfIDs*4);
+	  payload = ByteBuffer.allocate(numberOfIDs*4+4);
 	  
 	  for(int i = 0; i < numberOfIDs; i++)
 	  { payload.putInt(document.getNextSectionItr().ID);  }
-	  
+	  payload.putInt(0);
    }
    
    public void setS_DATA(int sectionID)
