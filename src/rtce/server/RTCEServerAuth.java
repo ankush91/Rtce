@@ -29,7 +29,13 @@ public class RTCEServerAuth {
 	public RTCEServerAuth(RTCEClientMessage m){
 		clientMessage = m;
 		if(performAuth()){
-			
+			String encrypts[] = new String[1];
+			encrypts[0] = chooseEncrypt();
+			serverMessage = new ControlMessage();
+			serverMessage.setRequest(RTCEMessageType.CONNECT);
+			serverMessage.setPassword(RTCEServerConfig.getHostKey());
+			serverMessage.setEncryptOpts(encrypts);
+			serverMessage.setGenericOpts(chooseOpts());
 		}else{
 			//TODO send some sort of denial message
 		}
