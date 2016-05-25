@@ -47,6 +47,9 @@ public class RTCEServerConfig {
 	//The filename extension for documents
 	private static String fileExt;
 	
+	//The filename for the permissions document
+	private static String permissions;
+	
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -221,6 +224,14 @@ public class RTCEServerConfig {
 	 */
 	public static String getFileExt() {
 		return fileExt;
+	}
+
+	/**
+	 * Get the filename of the permissions document
+	 * @return the filename of the permissions document
+	 */
+	public static String getPermissions() {
+		return permissions;
 	}
 	
 }

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rtce.RTCEConstants;
 import rtce.RTCEDocument;
 import rtce.RTCEMessageType;
 import rtce.client.RTCEClientMessage;
@@ -132,6 +133,44 @@ public class RTCEServerAuth {
 	}
 	
 	/**
+	 * Determine if the user is allowed to edit the document
+	 * @return true if user permitted, false otherwise
+	 * @throws IOException - if cannot read the permission file
+	 */
+	public boolean hasPermissions() throws IOException{
+		String docOwner = clientMessage.getDocumentOwner();
+		String username = clientMessage.getUsername();
+		if(docOwner.equals(username)){
+			return true;
+		}
+		String docTitle = clientMessage.getDocumentTitle();
+		String docPath = RTCEServerConfig.getDocumentDir().getPath();
+		File permDoc = new File(docPath + "/" + docOwner + "/" + RTCEServerConfig.getPermissions());
+		if(permDoc.exists()){
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(permDoc), RTCEConstants.getRtcecharset()));
+			String line = reader.readLine();
+			while(line != null){
+				line = line.trim();
+				if(line.equals(docTitle + RTCEServerConfig.getFileExt() + " {")){
+					line = reader.readLine();
+					while(!line.equals("} " + docTitle + RTCEServerConfig.getFileExt())){
+						line = line.trim();
+						if(line.equals(username)){
+							return true;
+						}
+						line = reader.readLine();
+					}
+					break;
+				}
+				line = reader.readLine();
+			}
+			return false;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
 	 * Takes the document information from the message to return the document
 	 * @return the document itself
 	 * @throws IOException - if a document is meant to be created but cannot be.
@@ -141,7 +180,7 @@ public class RTCEServerAuth {
 		String docTitle = clientMessage.getDocumentTitle();
 		String docPath = RTCEServerConfig.getDocumentDir().getPath();
 		File doc = new File(docPath + "/" + docOwner + "/" + docTitle + RTCEServerConfig.getFileExt());
-		if(doc.exists()){
+		if(doc.exists() && hasPermissions()){
 			return new RTCEDocument(doc.getPath());
 		}else if(docOwner.equals(clientMessage.getUsername())){
 			doc.createNewFile();
