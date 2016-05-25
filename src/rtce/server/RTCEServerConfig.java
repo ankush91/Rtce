@@ -41,6 +41,9 @@ public class RTCEServerConfig {
 	//The list of valid generic options
 	private static ArrayList<String> validOpts;
 	
+	//The directory storing all of the documents
+	private static File documentDir;
+	
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -75,6 +78,8 @@ public class RTCEServerConfig {
 				}else if(line.startsWith("opt-file:")){
 					optionFile = new File(line.split("opt-file:")[1].trim());
 					readInOpts();
+				}else if(line.startsWith("doc-dir:")){
+					documentDir = new File(line.split("doc-dir:")[1].trim());
 				}
 			}
 			line = reader.readLine();
@@ -183,6 +188,14 @@ public class RTCEServerConfig {
 		return optionFile;
 	}
 
+	/**
+	 * Get the directory containing the documents
+	 * @return the directory containing the documents
+	 */
+	public static File getDocumentDir() {
+		return documentDir;
+	}
+	
 	/**
 	 * Get the list of allowable encryption options
 	 * @return the list of encryption options supported by the server
