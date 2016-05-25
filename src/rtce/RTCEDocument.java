@@ -73,6 +73,31 @@ public class RTCEDocument {
       
     } //addSection()
     
+    //This routine will add or update a section.   Unlike "addSection" this assumes
+    //the section is already in the ordered list of sections
+    public void updateSection(int sectionID, String txt)
+    {
+      for(int i = 0; i < 1000; i++)
+      {
+    	if (sections[i].ID == sectionID)
+    	{
+    		sections[i].txt = txt;
+    		return;
+    	}    	  
+      }
+      //Section does not exist, need to find an open spot to add
+      for(int i = 1; i < 1000; i++)
+      {
+    	if (sections[i].ID == 0)
+    	{ sections[i].ID = sectionID;
+    	  sections[i].txt = txt;
+    	  return;
+    	}      
+      }
+            
+      return;
+    
+    }
     public void modifySection(int SectionID, String txt)
     {
       for(int i = 0; i < 1000; i++)
