@@ -376,7 +376,8 @@ public class RTCEClientMessage {
         	  bf.position(40);
         	  int sID = bf.getInt();
         	  int txtLen = bf.getInt();
-        	  
+        	  String txt = new String(bf.array(),0,txtLen);
+        	  document.modifySection(sID, txt);
     	  break;         
        
           case S_TRESPN:

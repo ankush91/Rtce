@@ -48,12 +48,15 @@ public class RTCEServer implements Runnable
       slistMessage.setRequest(RTCEMessageType.S_LIST);      
       slistMessage.sendMessage(sock,RTCEMessageType.S_LIST);
       RTCEServerMessage sdataMessage = new RTCEServerMessage();
+      for (int i = 1; i <= 6 ;i++) 
+      {
       sdataMessage.setDocument(doc1);
       sdataMessage.setRequest(RTCEMessageType.S_DATA);
-      sdataMessage.setSectionID(2);
-      sdataMessage.sendMessage(sock,RTCEMessageType.S_DATA);
+      sdataMessage.setSectionID(i);
+      sdataMessage.sendMessage(sock,RTCEMessageType.S_DATA);      
+      try{wait(1000);} catch (Exception e){}          	  
+      }
       */
-      
 
       int i=0;
       String a[] = {"S_TRESPN", "S_DENIED", "ABORT", "ECHO", "BLOCK", "LACK", "S_REVOKE", "CONNECT"};
@@ -61,7 +64,7 @@ public class RTCEServer implements Runnable
         {
         getRequest();
         //process();
-        
+
         sendResponse(RTCEMessageType.valueOf(new String(a[i].getBytes(), getRtcecharset())));
         i = (i+1)%a.length;
         }
