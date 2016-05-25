@@ -372,6 +372,11 @@ public class RTCEClientMessage {
            
           case S_DATA:
         	  System.out.println("S_DATA \n");
+        	  
+        	  bf.position(40);
+        	  int sID = bf.getInt();
+        	  int txtLen = bf.getInt();
+        	  
     	  break;         
        
           case S_TRESPN:

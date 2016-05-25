@@ -453,9 +453,10 @@ class ControlMessage extends DataMessage
    public void setS_DATA(int sectionID)
    {
 	  String sectionText = this.document.getDocumentSection(sectionID).txt;
-	  payload = ByteBuffer.allocate(4+sectionText.length());
+	  payload = ByteBuffer.allocate(4+4+sectionText.length());
 	  
 	  payload.putInt(sectionID);
+	  payload.putInt(sectionText.length());
 	  payload.put(sectionText.getBytes());
 	  
    }
