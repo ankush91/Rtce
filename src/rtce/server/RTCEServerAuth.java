@@ -1,6 +1,7 @@
 package rtce.server;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rtce.RTCEDocument;
 import rtce.RTCEMessageType;
 import rtce.client.RTCEClientMessage;
 
@@ -126,6 +128,26 @@ public class RTCEServerAuth {
 			String result[] = new String[resultOpts.size()];
 			result = resultOpts.toArray(result);
 			return result;
+		}
+	}
+	
+	/**
+	 * Takes the document information from the message to return the document
+	 * @return the document itself
+	 * @throws IOException - if a document is meant to be created but cannot be.
+	 */
+	public RTCEDocument openDoc() throws IOException{
+		String docOwner = clientMessage.getDocumentOwner();
+		String docTitle = clientMessage.getDocumentTitle();
+		String docPath = RTCEServerConfig.getDocumentDir().getPath();
+		File doc = new File(docPath + "/" + docOwner + "/" + docTitle + RTCEServerConfig.getFileExt());
+		if(doc.exists()){
+			return new RTCEDocument(doc.getPath());
+		}else if(docOwner.equals(clientMessage.getUsername())){
+			doc.createNewFile();
+			return new RTCEDocument(doc.getPath());
+		}else{
+			throw new IOException("The document does not exist: " + docOwner + "/" + docTitle);
 		}
 	}
 }

@@ -44,6 +44,9 @@ public class RTCEServerConfig {
 	//The directory storing all of the documents
 	private static File documentDir;
 	
+	//The filename extension for documents
+	private static String fileExt;
+	
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -211,6 +214,13 @@ public class RTCEServerConfig {
 	public static List<String> getValidOpts() {
 		return validOpts;
 	}
-	
+
+	/**
+	 * Get the file extension for documents
+	 * @return the file extension
+	 */
+	public static String getFileExt() {
+		return fileExt;
+	}
 	
 }

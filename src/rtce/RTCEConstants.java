@@ -70,4 +70,29 @@ public class RTCEConstants {
 	public static int getOptLength(){
 		return OPTLENGTH;
 	}
+	
+	/**
+	 * Take a string and return it as an array of bytes
+	 * @param s - the string
+	 * @param length - the number of bytes
+	 * @return the byte array
+	 */
+	public static byte[] getStringAsBytes(String s, int length){
+		byte[] stringRep = s.getBytes(RTCEConstants.getRtcecharset());
+		byte[] result = new byte[length];
+		if(stringRep.length == length){
+			result = stringRep;
+		}else if(length > stringRep.length){
+			for(int i = 0; i < stringRep.length; i++){
+				result[i] = stringRep[0];
+			}
+			for(int i = stringRep.length; i < length; i++){
+				result[i] = 0;
+			}
+			return result;
+		}else{
+			throw new StringIndexOutOfBoundsException(s.length());
+		}
+		return null;
+	}
 }

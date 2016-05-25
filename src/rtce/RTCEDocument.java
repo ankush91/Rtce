@@ -12,6 +12,9 @@ public class RTCEDocument {
 	//The name of the document
 	private String docName;
 	
+	//The path on the disc to the document
+	private String docPath;
+	
 	//
 	private int S_Itr = 0; 
 	private int orderItr = 0;
@@ -36,6 +39,14 @@ public class RTCEDocument {
         addSection(4,5," Eagerly I wished the morrow;—vainly I had sought to borrow From my books surcease of sorrow—sorrow for the lost Lenore");
         addSection(5,6,"For the rare and radiant maiden whom the angels name Lenore— Nameless here for evermore");        
       }
+    }
+    
+    /**
+     * Constructor for a file by the filepath
+     * @param filepath - the path to the file on the disc
+     */
+    public RTCEDocument(String filepath){
+    	docPath = filepath;
     }
     
     //This procedure adds a sectionID with txt after some other section ID in the document
@@ -176,4 +187,10 @@ public class RTCEDocument {
     {
       sectionOrder[orderItr++] = SectionID;      
     }
+
+	public String getDocPath() {
+		return docPath;
+	}
+    
+    
 }
