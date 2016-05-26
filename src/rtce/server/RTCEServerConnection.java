@@ -17,12 +17,15 @@ public class RTCEServerConnection {
 	//The permission level
 	private RTCEPermission permission;
 	
+	//The session id
+	private long sessionId;
+	
 	/**
 	 * Create the connection
 	 * @param encrypt - the name of the encryption technique
 	 * @param opts - the names of the options to use
 	 */
-	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc, RTCEPermission perm){
+	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc, RTCEPermission perm, long sid){
 		encryptModule = new RTCEServerEncrypt(encrypt);
 		optionModules = new RTCEServerOpt[opts.length];
 		for(int i = 0; i < opts.length; i++){
@@ -30,6 +33,7 @@ public class RTCEServerConnection {
 		}
 		document = doc;
 		permission = perm;
+		sessionId = sid;
 	}
 
 	/**
@@ -55,5 +59,20 @@ public class RTCEServerConnection {
 	public RTCEDocument getDocument() {
 		return document;
 	}
-	
+
+	/**
+	 * Get the permission of the user with respect to the document
+	 * @return the permission level
+	 */
+	public RTCEPermission getPermission() {
+		return permission;
+	}
+
+	/**
+	 * Get the session id
+	 * @return teh session id as a long
+	 */
+	public long getSessionId() {
+		return sessionId;
+	}
 }

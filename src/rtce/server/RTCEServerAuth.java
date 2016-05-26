@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import rtce.RTCEConstants;
 import rtce.RTCEDocument;
@@ -49,15 +50,33 @@ public class RTCEServerAuth {
 				serverMessage.setPassword(RTCEServerConfig.getHostKey());
 				serverMessage.setEncryptOpts(encrypts);
 				serverMessage.setGenericOpts(opts);
-				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc, perm);
+				long sessionId = generateSessionId();
+				serverMessage.setSessionId(sessionId);
+				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc, perm, sessionId);
 				String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
 				serverMessage.setSharedSecrets(secrets);
+				// TODO add connection to list of current connections
 			} catch (IOException e) {
 				// TODO send some sort of denial message because cannot open document
 			}
 		}else{
 			//TODO send some sort of denial message because invalid credentials/message
 		}
+	}
+	
+	/**
+	 * Generate the session id for the connection
+	 * @return the session id
+	 */
+	private long generateSessionId(){
+		//TODO decide on proper randomization
+		Random rand = new Random();
+		long value = 0;
+		//TODO also check current session ids
+		while(value == 0){
+			value = Integer.toUnsignedLong(rand.nextInt());
+		}
+		return value;
 	}
 	
 	/**
@@ -76,7 +95,7 @@ public class RTCEServerAuth {
 	 * Determine if the authentication credentials are valid
 	 * @return true if valid authentication, false otherwise
 	 */
-	public boolean performAuth(){
+	private boolean performAuth(){
 		Map<String, String> authMap = RTCEServerConfig.getAuthMap();
 		if(validAuth()){
 			if(authMap.containsKey(clientMessage.getUsername()) && authMap.get(clientMessage.getUsername()).equals(clientMessage.getPassword())){
@@ -109,7 +128,7 @@ public class RTCEServerAuth {
 	 * Choose the encryption method for the session
 	 * @return the encryption option as a string
 	 */
-	public String chooseEncrypt(){
+	private String chooseEncrypt(){
 		String encryptOpts[] = clientMessage.getEncryptOpts();
 		List<String> validEncrypts = RTCEServerConfig.getValidEncrypts();
 		if(validEncrypts.size() == 0){
@@ -127,7 +146,7 @@ public class RTCEServerAuth {
 	 * Choose shared secrets for the client
 	 * @return the shared secrets to send to the client
 	 */
-	public String[] chooseSecrets(RTCEServerEncrypt encrypt, RTCEServerOpt[] opts){
+	private String[] chooseSecrets(RTCEServerEncrypt encrypt, RTCEServerOpt[] opts){
 		String secrets[];
 		String encryptSecrets[] = encrypt.getSecrets();
 		ArrayList<String[]> optSecrets = new ArrayList<String[]>();
@@ -156,7 +175,7 @@ public class RTCEServerAuth {
 	 * Select options for the session
 	 * @return the chosen options as an array of strings
 	 */
-	public String[] chooseOpts(){
+	private String[] chooseOpts(){
 		String opts[] = clientMessage.getGenericOpts();
 		List<String> validOpts = RTCEServerConfig.getValidOpts();
 		ArrayList<String> resultOpts = new ArrayList<String>();
@@ -220,7 +239,7 @@ public class RTCEServerAuth {
 	 * @return the document itself
 	 * @throws IOException - if a document is meant to be created but cannot be.
 	 */
-	public RTCEDocument openDoc() throws IOException{
+	private RTCEDocument openDoc() throws IOException{
 		String docOwner = clientMessage.getDocumentOwner();
 		String docTitle = clientMessage.getDocumentTitle();
 		String docPath = RTCEServerConfig.getDocumentDir().getPath();
