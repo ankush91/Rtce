@@ -1,6 +1,7 @@
 package rtce.server;
 
 public class RTCEServerEncrypt {
+	
 	//The name of the encryption module
 	private String method;
 	

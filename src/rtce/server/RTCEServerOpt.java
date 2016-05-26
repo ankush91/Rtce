@@ -1,6 +1,7 @@
 package rtce.server;
 
 public class RTCEServerOpt {
+	
 	//The name of the option module
 	private String opt;
 	
