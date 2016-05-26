@@ -15,7 +15,7 @@ public class RTCEDocument {
 	//The path on the disc to the document
 	private String docPath;
 	
-	//
+	//Iterators used to service functions
 	private int S_Itr = 0; 
 	private int orderItr = 0;
 	
@@ -48,6 +48,11 @@ public class RTCEDocument {
      */
     public RTCEDocument(String filepath){
     	docPath = filepath;
+    }
+    
+    public void setDocumentName(String theName){
+      docName = theName;	
+     
     }
     
     //This procedure adds a sectionID with txt after some other section ID in the document
@@ -86,17 +91,18 @@ public class RTCEDocument {
     } //addSection()
     
     //This routine will add or update a section.   Unlike "addSection" this assumes
-    //the section is already in the ordered list of sections
+    //the section is already in the ordered list of sections.   This routine should
+    //only be used due to receipt of S_DATA
     public void updateSection(int sectionID, String txt)
     {
+      //Try and find the section
       for(int i = 0; i < 1000; i++)
       {
     	if (sections[i].ID == sectionID)
-    	{
-    		sections[i].txt = txt;
-    		return;
-    	}    	  
+    	{	sections[i].txt = txt;
+    		return;  	}    	  
       }
+      
       //Section does not exist, need to find an open spot to add
       for(int i = 1; i < 1000; i++)
       {
@@ -107,8 +113,7 @@ public class RTCEDocument {
     	}      
       }
             
-      return;
-    
+      return;    
     }
     
     //This procedure modifies a section if it exists.
