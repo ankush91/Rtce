@@ -15,6 +15,7 @@ import java.util.Map;
 import rtce.RTCEConstants;
 import rtce.RTCEDocument;
 import rtce.RTCEMessageType;
+import rtce.RTCEPermission;
 import rtce.client.RTCEClientMessage;
 
 public class RTCEServerAuth {
@@ -34,6 +35,12 @@ public class RTCEServerAuth {
 		if(performAuth()){
 			try {
 				RTCEDocument doc = openDoc();
+				RTCEPermission perm;
+				if(clientMessage.getUsername().equals(clientMessage.getDocumentOwner())){
+					perm = RTCEPermission.OWNER;
+				}else{
+					perm = RTCEPermission.EDITOR;
+				}
 				String encrypts[] = new String[1];
 				encrypts[0] = chooseEncrypt();
 				String opts[] = chooseOpts();
@@ -42,7 +49,7 @@ public class RTCEServerAuth {
 				serverMessage.setPassword(RTCEServerConfig.getHostKey());
 				serverMessage.setEncryptOpts(encrypts);
 				serverMessage.setGenericOpts(opts);
-				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc);
+				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc, perm);
 				String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
 				serverMessage.setSharedSecrets(secrets);
 			} catch (IOException e) {

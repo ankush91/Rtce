@@ -1,6 +1,7 @@
 package rtce.server;
 
 import rtce.RTCEDocument;
+import rtce.RTCEPermission;
 
 public class RTCEServerConnection {
 	
@@ -13,18 +14,22 @@ public class RTCEServerConnection {
 	//The document
 	private RTCEDocument document;
 	
+	//The permission level
+	private RTCEPermission permission;
+	
 	/**
 	 * Create the connection
 	 * @param encrypt - the name of the encryption technique
 	 * @param opts - the names of the options to use
 	 */
-	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc){
+	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc, RTCEPermission perm){
 		encryptModule = new RTCEServerEncrypt(encrypt);
 		optionModules = new RTCEServerOpt[opts.length];
 		for(int i = 0; i < opts.length; i++){
 			optionModules[i] = new RTCEServerOpt(opts[i]);
 		}
 		document = doc;
+		permission = perm;
 	}
 
 	/**

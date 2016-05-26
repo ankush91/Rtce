@@ -1,6 +1,6 @@
 package rtce;
 
-public enum RTCEPermissions {
+public enum RTCEPermission {
 
 	OWNER,
 	EDITOR,
