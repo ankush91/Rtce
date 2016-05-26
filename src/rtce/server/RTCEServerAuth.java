@@ -215,9 +215,9 @@ public class RTCEServerAuth {
 			String line = reader.readLine();
 			while(line != null){
 				line = line.trim();
-				if(line.equals(docTitle + RTCEServerConfig.getFileExt() + " {")){
+				if(line.equals(docTitle + RTCEServerConfig.getFileExt() + " PermissionsMetadata{")){
 					line = reader.readLine();
-					while(!line.equals("} " + docTitle + RTCEServerConfig.getFileExt())){
+					while(!line.equals("} " + docTitle + RTCEServerConfig.getFileExt() + " PermissionsMetadata")){
 						line = line.trim();
 						if(line.equals(username)){
 							return true;

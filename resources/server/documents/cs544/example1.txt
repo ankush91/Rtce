@@ -1,0 +1,2 @@
+	This is the text of the first example document.
+	Can you read it?  Can you edit it?  Should you be able to?
