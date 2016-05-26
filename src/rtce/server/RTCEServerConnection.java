@@ -1,5 +1,7 @@
 package rtce.server;
 
+import rtce.RTCEDocument;
+
 public class RTCEServerConnection {
 	
 	//The encryption module
@@ -7,6 +9,9 @@ public class RTCEServerConnection {
 	
 	//The option modules
 	private RTCEServerOpt[] optionModules;
+	
+	//The document
+	private RTCEDocument document;
 	
 	/**
 	 * Create the connection
@@ -35,6 +40,14 @@ public class RTCEServerConnection {
 	 */
 	public RTCEServerOpt[] getOptionModules() {
 		return optionModules;
+	}
+
+	/**
+	 * Get the document of the connection
+	 * @return the document the connection is working on
+	 */
+	public RTCEDocument getDocument() {
+		return document;
 	}
 	
 }
