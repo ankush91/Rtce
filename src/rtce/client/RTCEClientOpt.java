@@ -13,4 +13,12 @@ public class RTCEClientOpt {
 		opt = o;
 	}
 	
+	/**
+	 * Take the parts of the list of secrets applicable to this option and return the remainder
+	 * @param sec - the set of secrets
+	 * @return the remaining secrets
+	 */
+	public String[] extractSecrets(String[] sec){
+		return sec;
+	}
 }

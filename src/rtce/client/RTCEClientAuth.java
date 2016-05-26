@@ -85,4 +85,16 @@ public class RTCEClientAuth {
 		List<String> opts = RTCEClientConfig.getDesiredOpts();
 		return opts.toArray(new String[opts.size()]);
 	}
+	
+	/**
+	 * Generate and return the client connection object
+	 * @return the client connection object
+	 */
+	public RTCEClientConnection getConnection(){
+		String encrypt = serverMessage.getEncryptOpts()[0];
+		String opts[] = serverMessage.getGenericOpts();
+		String sec[] = serverMessage.getSharedSecrets();
+		long session = serverMessage.getSessionId();
+		return new RTCEClientConnection(encrypt, opts, sec, null, session);
+	}
 }

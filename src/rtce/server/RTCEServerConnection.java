@@ -70,7 +70,7 @@ public class RTCEServerConnection {
 
 	/**
 	 * Get the session id
-	 * @return teh session id as a long
+	 * @return the session id as a long
 	 */
 	public long getSessionId() {
 		return sessionId;
