@@ -25,6 +25,7 @@ public class RTCEDocument {
       for(int i =0; i < 1000; i++)
       { sections[i] = new RTCEDocSection();
     	sections[i].ID = 0; 
+    	sections[i].txt = "";
         sectionOrder[i] = 0;
       }
       
@@ -109,6 +110,8 @@ public class RTCEDocument {
       return;
     
     }
+    
+    //This procedure modifies a section if it exists.
     public void modifySection(int SectionID, String txt)
     {
       for(int i = 0; i < 1000; i++)

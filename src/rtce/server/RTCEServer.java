@@ -42,7 +42,7 @@ public class RTCEServer implements Runnable
 
 
       /*Anthony Test: This is temporary code created to verify that S_LIST is sent properly.
-       *    Anthony needs this here to uncomment when testing S_LIST, S_DATA, until a UI is developed   
+       *    Anthony needs this here to uncomment when testing S_LIST, S_DATA, until a UI is developed    
       RTCEServerMessage slistMessage = new RTCEServerMessage();
       slistMessage.setDocument(doc1);
       slistMessage.setRequest(RTCEMessageType.S_LIST);      
@@ -54,7 +54,7 @@ public class RTCEServer implements Runnable
       sdataMessage.setRequest(RTCEMessageType.S_DATA);
       sdataMessage.setSectionID(i);
       sdataMessage.sendMessage(sock,RTCEMessageType.S_DATA);      
-      try{wait(1000);} catch (Exception e){}          	  
+      try{Thread.sleep(1000);} catch (Exception e){System.out.println("exception!"+e);}          	  
       }
       */
 

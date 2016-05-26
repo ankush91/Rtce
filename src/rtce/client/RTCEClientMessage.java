@@ -448,8 +448,9 @@ public class RTCEClientMessage {
         	  bf.position(40);
         	  int sID = bf.getInt();
         	  int txtLen = bf.getInt();
-        	  String txt = new String(bf.array(),0,txtLen);
-        	  document.modifySection(sID, txt);
+              String sectionTxt = new String(bf.array(), 48, txtLen);
+        	  System.out.println("sID="+sID+" txtLen="+txtLen+ "txt=" + sectionTxt);
+        	  document.updateSection(sID, sectionTxt);
     	  break;         
        
           case S_TRESPN:
