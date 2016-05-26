@@ -34,11 +34,15 @@ public class RTCEServerAuth {
 		if(performAuth()){
 			String encrypts[] = new String[1];
 			encrypts[0] = chooseEncrypt();
+			String opts[] = chooseOpts();
 			serverMessage = new ControlMessage();
 			serverMessage.setRequest(RTCEMessageType.CONNECT);
 			serverMessage.setPassword(RTCEServerConfig.getHostKey());
 			serverMessage.setEncryptOpts(encrypts);
-			serverMessage.setGenericOpts(chooseOpts());
+			serverMessage.setGenericOpts(opts);
+			RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts);
+			String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
+			serverMessage.setSharedSecrets(secrets);
 		}else{
 			//TODO send some sort of denial message
 		}
@@ -105,6 +109,35 @@ public class RTCEServerAuth {
 			}
 		}
 		return "NONE";
+	}
+	
+	/**
+	 * Choose shared secrets for the client
+	 * @return the shared secrets to send to the client
+	 */
+	public String[] chooseSecrets(RTCEServerEncrypt encrypt, RTCEServerOpt[] opts){
+		String secrets[];
+		String encryptSecrets[] = encrypt.getSecrets();
+		ArrayList<String[]> optSecrets = new ArrayList<String[]>();
+		for(RTCEServerOpt opt : opts){
+			optSecrets.add(opt.getSecrets());
+		}
+		int numSecrets = encryptSecrets.length;
+		for(String[] os : optSecrets){
+			numSecrets += os.length;
+		}
+		secrets = new String[numSecrets];
+		int i = 0;
+		for(; i < encryptSecrets.length; i++){
+			secrets[i] = encryptSecrets[i];
+		}
+		for(String[] os : optSecrets){
+			for(int j = 0; j < os.length; j++){
+				secrets[i+j] = os[j];
+			}
+			i += os.length;
+		}
+		return secrets;
 	}
 	
 	/**
