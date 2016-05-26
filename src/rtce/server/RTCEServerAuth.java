@@ -32,19 +32,24 @@ public class RTCEServerAuth {
 	public RTCEServerAuth(RTCEClientMessage m){
 		clientMessage = m;
 		if(performAuth()){
-			String encrypts[] = new String[1];
-			encrypts[0] = chooseEncrypt();
-			String opts[] = chooseOpts();
-			serverMessage = new ControlMessage();
-			serverMessage.setRequest(RTCEMessageType.CONNECT);
-			serverMessage.setPassword(RTCEServerConfig.getHostKey());
-			serverMessage.setEncryptOpts(encrypts);
-			serverMessage.setGenericOpts(opts);
-			RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts);
-			String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
-			serverMessage.setSharedSecrets(secrets);
+			try {
+				RTCEDocument doc = openDoc();
+				String encrypts[] = new String[1];
+				encrypts[0] = chooseEncrypt();
+				String opts[] = chooseOpts();
+				serverMessage = new ControlMessage();
+				serverMessage.setRequest(RTCEMessageType.CONNECT);
+				serverMessage.setPassword(RTCEServerConfig.getHostKey());
+				serverMessage.setEncryptOpts(encrypts);
+				serverMessage.setGenericOpts(opts);
+				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc);
+				String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
+				serverMessage.setSharedSecrets(secrets);
+			} catch (IOException e) {
+				// TODO send some sort of denial message because cannot open document
+			}
 		}else{
-			//TODO send some sort of denial message
+			//TODO send some sort of denial message because invalid credentials/message
 		}
 	}
 	

@@ -18,12 +18,13 @@ public class RTCEServerConnection {
 	 * @param encrypt - the name of the encryption technique
 	 * @param opts - the names of the options to use
 	 */
-	public RTCEServerConnection(String encrypt, String[] opts){
+	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc){
 		encryptModule = new RTCEServerEncrypt(encrypt);
 		optionModules = new RTCEServerOpt[opts.length];
 		for(int i = 0; i < opts.length; i++){
 			optionModules[i] = new RTCEServerOpt(opts[i]);
 		}
+		document = doc;
 	}
 
 	/**
