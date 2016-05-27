@@ -98,10 +98,14 @@ public class RTCEServerAuth {
 	private boolean performAuth(){
 		Map<String, String> authMap = RTCEServerConfig.getAuthMap();
 		if(validAuth()){
-			if(authMap.containsKey(clientMessage.getUsername()) && authMap.get(clientMessage.getUsername()).equals(clientMessage.getPassword())){
-				return true;
+			if(authMap.containsKey(clientMessage.getUsername())){
+				if(authMap.get(clientMessage.getUsername()).equals(clientMessage.getPassword())){
+					return true;
+				}else{
+					return false;
+				}
 			}else{
-				return false;
+				return RTCEServerConfig.createAuthor(clientMessage.getUsername(), clientMessage.getPassword());
 			}
 		}else{
 			return false;
