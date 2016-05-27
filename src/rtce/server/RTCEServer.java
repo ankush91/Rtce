@@ -40,24 +40,6 @@ public class RTCEServer implements Runnable
       
       boolean flagConn = true;
 
-
-      /*Anthony Test: This is temporary code created to verify that S_LIST is sent properly.
-       *    Anthony needs this here to uncomment when testing S_LIST, S_DATA, until a UI is developed    
-      RTCEServerMessage slistMessage = new RTCEServerMessage();
-      slistMessage.setDocument(doc1);
-      slistMessage.setRequest(RTCEMessageType.S_LIST);      
-      slistMessage.sendMessage(sock,RTCEMessageType.S_LIST);
-      RTCEServerMessage sdataMessage = new RTCEServerMessage();
-      for (int i = 1; i <= 6 ;i++) 
-      {
-      sdataMessage.setDocument(doc1);
-      sdataMessage.setRequest(RTCEMessageType.S_DATA);
-      sdataMessage.setSectionID(i);
-      sdataMessage.sendMessage(sock,RTCEMessageType.S_DATA);      
-      try{Thread.sleep(1000);} catch (Exception e){System.out.println("exception!"+e);}          	  
-      }
-      */
-
       int i=0;
       String a[] = {"S_TRESPN", "S_DENIED", "ABORT", "ECHO", "BLOCK", "LACK", "S_REVOKE", "CONNECT"};
       while(flagConn)
@@ -143,6 +125,29 @@ public class RTCEServer implements Runnable
           System.err.println("IOException in getRequest");
       }
       
+  }
+  
+  public void sendDocument(Socket s, RTCEDocument doc)
+  {
+      RTCEServerMessage sMsg = new RTCEServerMessage();
+      sMsg.setDocument(doc);
+      sMsg.setRequest(RTCEMessageType.S_LIST);
+      sMsg.setSessionId(123456); //Need to figure out how to get this value
+      sMsg.sendMessage(s,RTCEMessageType.S_LIST);
+	  
+      try{Thread.sleep(200);} catch (Exception e){}
+	  
+      doc.resetSectionItr();
+      
+      int sID = doc.getNextSectionItr().ID;
+      while (sID > 0)
+      {
+         sMsg.setRequest(RTCEMessageType.S_DATA);    	  
+         sMsg.setSectionID(sID);
+         sMsg.sendMessage(s,RTCEMessageType.S_DATA);
+         try{Thread.sleep(200);} catch (Exception e){}
+         sID = doc.getNextSectionItr().ID;
+      }  
   }
   
   public static void main(String arg[]) throws IOException
