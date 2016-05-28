@@ -11,6 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.xml.internal.txw2.Document;
+
 import static rtce.RTCEConstants.getRtcecharset;
 
 
@@ -50,7 +53,7 @@ public class RTCEServerMessage {
 	private int headerReserved2;
 	private int headerReserved3;
 
-	private RTCEDocument document;
+	public RTCEDocument document;
 	private int sectionID;
 
 	/**
@@ -266,7 +269,7 @@ public class RTCEServerMessage {
 			return 48;
 
 		case "S_COMMIT":
-			return 61;    
+			return 1000;    
 
 		case "ABORT":
 			return 40;
@@ -391,45 +394,53 @@ public class RTCEServerMessage {
 	{
 		//Extract header contents first, needed to make a function out of this
 		getHeader(bf);
-		ControlMessage control = new ControlMessage();
+		ControlMessage control = null; 
 
 		switch (request) 
 		{
 		case CUAUTH:
+			control = new ControlMessage();
 			control.getCUAUTH(bf); 
 			break;
 
 			// S_TREQST for testing
 		case S_TREQST:
+			control = new ControlMessage();
 			control.getS_TREQST(bf);
 			break;    
 
 		case S_DONE:
+			control = new ControlMessage();
 			control.getS_DONE(bf);
 			{}
 			break; 
 
 		case S_COMMIT:
+			control = new ControlMessage(document);
 			control.getS_COMMIT(bf);
 			{}
 			break;    
 
 		case ABORT:
+			control = new ControlMessage();
 			System.out.println("ABORT \n");
 			{}
 			break; 
 
 		case ECHO:
+			control = new ControlMessage();
 			System.out.println("ECHO \n");
 			{}
 			break;    	
 
 		case LOGOFF:
+			control = new ControlMessage();
 			System.out.println("LOGOFF \n");
 			{}
 			break; 
 
 		case CACK:
+			control = new ControlMessage();
 			System.out.println("CACK \n");
 			{}
 			break;  
@@ -551,11 +562,17 @@ class ControlMessage extends DataMessage
 	public void getS_COMMIT(ByteBuffer bf)
 	{
 		bf.position(40);
-		System.out.println("Token processin..");
-		bf.position(56);
-		System.out.println("length" + bf.getInt());
-		bf.position(60);
-		System.out.println("Data processing.. as per length");
+		//We would validate the token here?
+		int token = bf.getInt();
+		int prevID = bf.getInt();
+		int sID = bf.getInt();		
+        int len = bf.getInt();
+        
+        String sectionTxt = new String(bf.array(), 52, len);
+  	    System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
+        
+  	    document.processCommit(prevID, sID, sectionTxt);
+		//This would be the location to push out this to all connected clients
 	}
 
 	//ALL SEND MESSAGES FROM SERVER SIDE

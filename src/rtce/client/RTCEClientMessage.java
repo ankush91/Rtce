@@ -50,6 +50,12 @@ public class RTCEClientMessage {
 	private int headerReserved2;
 	private int headerReserved3;
 
+	//The three pieces of data for a Commit
+	private int    Commit_sID;
+	private int    Commit_prevID;
+	private String Commit_txt;
+	private int    Commit_token;
+	
 	/**
 	 * Get the message type
 	 * @return The message type
@@ -274,8 +280,16 @@ public class RTCEClientMessage {
           System.out.println("Reserved 3: "+ bf.getInt());
           
        }  
-     
-     
+    
+    //This function sets all the data needed to send a S_COMMIT message
+    public void setCommitData(int token, int prevID, int sID, String newText)
+    {
+      Commit_token  = token;
+      Commit_prevID = prevID; 
+      Commit_sID    = sID;
+      Commit_txt    = newText;
+    }
+    
     // This function builds and transmits the Message on the supplied socket
     public void sendMessage(Socket s, RTCEMessageType option)
     {
@@ -313,8 +327,12 @@ public class RTCEClientMessage {
      	  break;    
           
         case S_COMMIT:
-            controlPayload = new ControlMessage(21);
-            controlPayload.payload = controlPayload.setS_COMMIT();
+            controlPayload = new ControlMessage(4+4+4+4+Commit_txt.length());
+            controlPayload.payload.putInt(Commit_token);
+            controlPayload.payload.putInt(Commit_prevID);            
+            controlPayload.payload.putInt(Commit_sID);
+            controlPayload.payload.putInt(Commit_txt.length());
+            controlPayload.payload.put(Commit_txt.getBytes());
          	   
        case ABORT: {}
            //payload = setS_ABORT();
@@ -611,26 +629,6 @@ class ControlMessage extends DataMessage
             b.putInt(statuscode);
             b.putInt(error);
             return b;
-       }
-
-       public ByteBuffer setS_COMMIT()
-       {
-           byte[] token = new byte[16];
-           
-           for(int i=0; i<16; i++)
-             token[i] = (byte)0xe0;
-             
-           int length = 21;
-           byte[] data = new byte[1];
-           
-             for(int i=0; i<1; i++)
-               data[i] = (byte)0xe0;
-             
-           ByteBuffer b = ByteBuffer.allocate(21);
-           b.put(token);
-           b.putInt(length);
-           b.put(data);
-           return b;
        }
        
        //ALL RECEIVED MESSAGES FROM SERVER SIDE

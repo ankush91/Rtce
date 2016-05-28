@@ -181,7 +181,7 @@ public class RTCEClient {
          
         RTCEClient client = new RTCEClient(servPort);
         String s[] = new String[10];
-        s[0] = "S_COMMIT";
+        s[0] = "S_TREQST";
         s[1] = "S_TREQST";
         s[2] = "CACK";
         s[3] = "CUAUTH";

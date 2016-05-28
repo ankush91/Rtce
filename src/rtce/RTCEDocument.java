@@ -200,5 +200,14 @@ public class RTCEDocument {
 		return docPath;
 	}
     
+	public void processCommit(int prevID, int sID, String txt)
+	{
+       //First see if the section exists already
+	   if (findSection(sID).ID == sID)	
+	   { modifySection(sID,txt); }
+	   else
+	   { addSection(prevID,sID,txt); }
+	}
+	
     
 }
