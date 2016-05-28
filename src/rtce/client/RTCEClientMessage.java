@@ -184,6 +184,22 @@ public class RTCEClientMessage {
 	}
 
 	/**
+	 * Get the username as a byte array
+	 * @return username as a byte array
+	 */
+	public byte[] getUsernameChars(){
+		return RTCEConstants.getStringAsBytes(username, RTCEConstants.getUsernameLength());
+	}
+	
+	/**
+	 * Get the password as a byte array
+	 * @return password as a byte array
+	 */
+	public byte[] getPasswordChars(){
+		return RTCEConstants.getStringAsBytes(password, RTCEConstants.getAuthStringLength());
+	}
+	
+	/**
 	 * Set the documentOwner as a byte array
 	 * @param usernameChars as a byte array
 	 */
@@ -290,6 +306,14 @@ public class RTCEClientMessage {
 		this.headerReserved3 = headerReserved3;
 	}
         
+	public byte[][] getEncryptsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
+	}
+	
+	public byte[][] getOptsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
+	}
+	
     public ByteBuffer setHeader(RTCEMessageType request)
     {
 
@@ -304,7 +328,23 @@ public class RTCEClientMessage {
         bbuf.putInt(3);
         return bbuf;
         
-    }       
+    }   
+    
+    /**
+     * Generate the byte buffer for the message header
+     * @return the byte buffer for the header of the message
+     */
+    public ByteBuffer setHeader(){
+    	ByteBuffer bbuf = ByteBuffer.allocate(40);
+    	bbuf.put(getRequestChars());
+    	bbuf.putLong(getSessionId());
+    	bbuf.putLong(getTime());
+    	bbuf.putInt(getChecksum());
+    	bbuf.putInt(getHeaderReserved1());
+    	bbuf.putInt(getHeaderReserved2());
+    	bbuf.putInt(getHeaderReserved3());
+    	return bbuf;
+    }
    
      public void getHeader(ByteBuffer bf)
        {
@@ -601,47 +641,76 @@ class ControlMessage extends DataMessage
     public ByteBuffer setCUAUTH()
     {
        
-        byte[] version = new byte[4];
+       
+    	byte[] version = getVersion();
         
+    	/*byte[] version = new byte[4];
+    	
         for(int i=0; i<4; i++)
-               version[i] = (byte)0xe0;
+               version[i] = (byte)0xe0;*/
         
-        byte[] username = new byte[20];
+    	byte username[] = getUsernameChars();
+    	
+        /*byte[] username = new byte[20];
         
             for(int i=0; i<20; i++)
-               username[i] = (byte)0xe0;
+               username[i] = (byte)0xe0;*/
             
-        byte[] authentication = new byte[16];
+    	byte authentic[] = getPasswordChars();
+    	
+        /*byte[] authentication = new byte[16];
         
             for(int i=0; i<16; i++)
-               authentication[i] = (byte)0xe0;
+               authentication[i] = (byte)0xe0;*/
             
-        byte[] document_owner = new byte[20];
+    	byte docOwner[] = getDocumentOwnerChars();
+    	
+        /*byte[] document_owner = new byte[20];
         
             for(int i=0; i<20; i++)
-               document_owner[i] = (byte)0xe0;
+               document_owner[i] = (byte)0xe0;*/
              
-        byte[] document_title = new byte[20];
+    	byte docName[] = getDocumentTitleChars();
+    	
+        /*byte[] document_title = new byte[20];
                 
              for(int i=0; i<20; i++)
-               document_title[i] = (byte)0xe0;
+               document_title[i] = (byte)0xe0;*/
              
-        int num_encrypt_options = 1;
+    	byte encrypts[][] = getEncryptsAsBytes();
+    	byte generics[][] = getOptsAsBytes();
+    	
+    	int num_encrypt_opts = encrypts.length;
+    	int num_generic_opts = generics.length;
+    	
+        /*int num_encrypt_options = 1;
         
         byte[] option_list = new byte[num_encrypt_options];
         
             for(int i=0; i<num_encrypt_options; i++)
-               option_list[i] = (byte)0xe0;
+               option_list[i] = (byte)0xe0;*/
             
-        int num_other_options = 1;
+        /*int num_other_options = 1;
         
         byte[] other_option_list = new byte[num_other_options];
         
             for(int i=0; i< num_other_options; i++)
-               other_option_list[i] = (byte)0xe0;
+               other_option_list[i] = (byte)0xe0;*/
             
-        ByteBuffer bf = ByteBuffer.allocate(90);
-        
+        ByteBuffer bf = ByteBuffer.allocate(88 + (8*(num_encrypt_opts + num_generic_opts)));
+        bf.put(version);
+        bf.put(username);
+        bf.put(authentic);
+        bf.put(docOwner);
+        bf.put(docName);
+        bf.putInt(num_encrypt_opts);
+        for(int i = 0; i < num_encrypt_opts; i++){
+        	bf.put(encrypts[i]);
+        }
+        bf.putInt(num_generic_opts);
+    	for(int i = 0; i < num_generic_opts; i++){
+    		bf.put(generics[i]);
+    	}
         return bf;
         
     }

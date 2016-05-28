@@ -95,4 +95,18 @@ public class RTCEConstants {
 		}
 		return null;
 	}
+	
+	/**
+	 * Take an array of strings and return it as a 2D array of bytes
+	 * @param s - the string array
+	 * @param length - the number of bytes per string
+	 * @return the byte 2D array
+	 */
+	public static byte[][] getBytesFromStrings(String[] s, int length){
+		byte result[][] = new byte[s.length][length];
+		for(int i = 0; i < s.length; i++){
+			result[i] = getStringAsBytes(s[i], length);
+		}
+		return result;
+	}
 }

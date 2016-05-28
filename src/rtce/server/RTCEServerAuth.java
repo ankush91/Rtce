@@ -47,7 +47,7 @@ public class RTCEServerAuth {
 				String opts[] = chooseOpts();
 				serverMessage = new ControlMessage();
 				serverMessage.setRequest(RTCEMessageType.CONNECT);
-				serverMessage.setPassword(RTCEServerConfig.getHostKey());
+				serverMessage.setUsername(RTCEServerConfig.getHostKey());
 				serverMessage.setEncryptOpts(encrypts);
 				serverMessage.setGenericOpts(opts);
 				long sessionId = generateSessionId();
@@ -76,7 +76,8 @@ public class RTCEServerAuth {
 		long value = 0;
 		//TODO also check current session ids
 		while(value == 0){
-			value = Integer.toUnsignedLong(rand.nextInt());
+			value = rand.nextLong();
+			//value = Integer.toUnsignedLong(rand.nextInt());
 		}
 		return value;
 	}

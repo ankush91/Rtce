@@ -43,6 +43,7 @@ public class RTCEClientAuth {
 		clientMessage.setEncryptOpts(getEncryptOpts());
 		clientMessage.setGenericOpts(getGenericOpts());
 		clientMessage.setVersion(RTCEClientConfig.getVersion());
+		clientMessage.setSessionId(0);
 	}
 	
 	/**
