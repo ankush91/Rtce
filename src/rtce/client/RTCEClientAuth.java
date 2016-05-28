@@ -42,6 +42,7 @@ public class RTCEClientAuth {
 		clientMessage.setUsername(username);
 		clientMessage.setEncryptOpts(getEncryptOpts());
 		clientMessage.setGenericOpts(getGenericOpts());
+		clientMessage.setVersion(RTCEClientConfig.getVersion());
 	}
 	
 	/**
@@ -95,6 +96,7 @@ public class RTCEClientAuth {
 		String opts[] = serverMessage.getGenericOpts();
 		String sec[] = serverMessage.getSharedSecrets();
 		long session = serverMessage.getSessionId();
-		return new RTCEClientConnection(encrypt, opts, sec, null, session);
+		byte version[] = serverMessage.getVersion();
+		return new RTCEClientConnection(encrypt, opts, sec, null, session, version);
 	}
 }

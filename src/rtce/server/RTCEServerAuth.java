@@ -52,9 +52,11 @@ public class RTCEServerAuth {
 				serverMessage.setGenericOpts(opts);
 				long sessionId = generateSessionId();
 				serverMessage.setSessionId(sessionId);
-				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc, perm, sessionId);
+				serverMessage.setVersion(versionMatch(clientMessage.getVersion()));
+				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc, perm, sessionId, serverMessage.getVersion());
 				String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
 				serverMessage.setSharedSecrets(secrets);
+				
 				// TODO add connection to list of current connections
 			} catch (IOException e) {
 				// TODO send some sort of denial message because cannot open document
@@ -256,5 +258,23 @@ public class RTCEServerAuth {
 		}else{
 			throw new IOException("The document does not exist: " + docOwner + "/" + docTitle);
 		}
+	}
+	
+	/**
+	 * Match server version to client version, and return the lowest supported version
+	 * @param cVersion - the client version
+	 * @return the lowest supported version
+	 */
+	private byte[] versionMatch(byte[] cVersion){
+		byte sVersion[] = RTCEServerConfig.getVersion();
+		byte result[] = new byte[4];
+		for(int i = 0; i < 4; i++){
+			if(sVersion[i] <= cVersion[i]){
+				result[i] = sVersion[i];
+			}else{
+				result[i] = cVersion[i];
+			}
+		}
+		return result;
 	}
 }

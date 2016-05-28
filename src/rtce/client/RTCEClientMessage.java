@@ -50,6 +50,9 @@ public class RTCEClientMessage {
 	private int headerReserved2;
 	private int headerReserved3;
 
+	//The version
+	private byte version[];
+	
 	//The three pieces of data for a Commit
 	private int    Commit_sID;
 	private int    Commit_prevID;
@@ -138,6 +141,46 @@ public class RTCEClientMessage {
 
 	public RTCEDocument getDocument() {
 		return document;
+	}
+	
+	public byte[] getVersion() {
+		return version;
+	}
+
+	public void setVersion(byte[] version) {
+		this.version = version;
+	}
+
+	public int getCommit_sID() {
+		return Commit_sID;
+	}
+
+	public void setCommit_sID(int commit_sID) {
+		Commit_sID = commit_sID;
+	}
+
+	public int getCommit_prevID() {
+		return Commit_prevID;
+	}
+
+	public void setCommit_prevID(int commit_prevID) {
+		Commit_prevID = commit_prevID;
+	}
+
+	public String getCommit_txt() {
+		return Commit_txt;
+	}
+
+	public void setCommit_txt(String commit_txt) {
+		Commit_txt = commit_txt;
+	}
+
+	public int getCommit_token() {
+		return Commit_token;
+	}
+
+	public void setCommit_token(int commit_token) {
+		Commit_token = commit_token;
 	}
 
 	/**

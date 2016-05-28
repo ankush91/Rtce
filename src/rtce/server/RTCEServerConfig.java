@@ -53,6 +53,12 @@ public class RTCEServerConfig {
 	//The filename for the permissions document
 	private static String permissions;
 	
+	//The version number
+	private static final byte versionMajor = 0;
+	private static final byte versionMinor = 1;
+	private static final byte versionSub = 0;
+	private static final byte versionExtend = 0;
+	
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -259,5 +265,33 @@ public class RTCEServerConfig {
 			}
 		}
 	}
+
+	public static byte getVersionmajor() {
+		return versionMajor;
+	}
+
+	public static byte getVersionminor() {
+		return versionMinor;
+	}
+
+	public static byte getVersionsub() {
+		return versionSub;
+	}
+
+	public static byte getVersionextend() {
+		return versionExtend;
+	}
 	
+	/**
+	 * Get the version 
+	 * @return 4 bytes representing the version
+	 */
+	public static byte[] getVersion(){
+		byte version[] = new byte[4];
+		version[0] = versionMajor;
+		version[1] = versionMinor;
+		version[2] = versionSub;
+		version[3] = versionExtend;
+		return version;
+	}
 }

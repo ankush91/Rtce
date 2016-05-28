@@ -9,7 +9,7 @@ public class RTCEServerConnection {
 	private RTCEServerEncrypt encryptModule;
 	
 	//The option modules
-	private RTCEServerOpt[] optionModules;
+	private RTCEServerOpt optionModules[];
 	
 	//The document
 	private RTCEDocument document;
@@ -20,12 +20,15 @@ public class RTCEServerConnection {
 	//The session id
 	private long sessionId;
 	
+	//The version number
+	private byte version[];
+	
 	/**
 	 * Create the connection
 	 * @param encrypt - the name of the encryption technique
 	 * @param opts - the names of the options to use
 	 */
-	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc, RTCEPermission perm, long sid){
+	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc, RTCEPermission perm, long sid, byte v[]){
 		encryptModule = new RTCEServerEncrypt(encrypt);
 		optionModules = new RTCEServerOpt[opts.length];
 		for(int i = 0; i < opts.length; i++){
@@ -34,6 +37,7 @@ public class RTCEServerConnection {
 		document = doc;
 		permission = perm;
 		sessionId = sid;
+		version = v;
 	}
 
 	/**
@@ -75,4 +79,10 @@ public class RTCEServerConnection {
 	public long getSessionId() {
 		return sessionId;
 	}
+
+	public byte[] getVersion() {
+		return version;
+	}
+	
+	
 }

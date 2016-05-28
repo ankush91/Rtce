@@ -53,6 +53,9 @@ public class RTCEServerMessage {
 	private int headerReserved2;
 	private int headerReserved3;
 
+	//The version
+	private byte version[];
+	
 	public RTCEDocument document;
 	private int sectionID;
 
@@ -219,6 +222,14 @@ public class RTCEServerMessage {
 
 	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+	
+	public byte[] getVersion() {
+		return version;
+	}
+
+	public void setVersion(byte[] version) {
+		this.version = version;
 	}
 
 	public ByteBuffer setHeader(RTCEMessageType request)
