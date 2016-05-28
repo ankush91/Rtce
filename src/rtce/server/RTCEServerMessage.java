@@ -231,6 +231,34 @@ public class RTCEServerMessage {
 	public void setVersion(byte[] version) {
 		this.version = version;
 	}
+	
+	public byte[][] getEncryptsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
+	}
+	
+	public byte[][] getOptsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
+	}
+	
+	public byte[][] getSecretsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(sharedSecrets, RTCEConstants.getSecretLength());
+	}
+	
+	/**
+	 * Get the username as a byte array
+	 * @return username as a byte array
+	 */
+	public byte[] getUsernameChars(){
+		return RTCEConstants.getStringAsBytes(username, RTCEConstants.getUsernameLength());
+	}
+	
+	/**
+	 * Get the password as a byte array
+	 * @return password as a byte array
+	 */
+	public byte[] getPasswordChars(){
+		return RTCEConstants.getStringAsBytes(password, RTCEConstants.getAuthStringLength());
+	}
 
 	public ByteBuffer setHeader(RTCEMessageType request)
 	{
@@ -264,7 +292,22 @@ public class RTCEServerMessage {
 		System.out.println("Reserved 3: "+ bf.getInt());   
 	}   
 
-
+	 /**
+     * Generate the byte buffer for the message header
+     * @return the byte buffer for the header of the message
+     */
+    public ByteBuffer setHeader(){
+    	ByteBuffer bbuf = ByteBuffer.allocate(40);
+    	bbuf.put(getRequestChars());
+    	bbuf.putLong(getSessionId());
+    	bbuf.putLong(getTime());
+    	bbuf.putInt(getChecksum());
+    	bbuf.putInt(getHeaderReserved1());
+    	bbuf.putInt(getHeaderReserved2());
+    	bbuf.putInt(getHeaderReserved3());
+    	return bbuf;
+    }
+	
 	public int lengthBuffer(String s)
 	{
 		//Allocate buffer length according to request
@@ -641,7 +684,7 @@ class ControlMessage extends DataMessage
 
 	public ByteBuffer setCONNECT()
 	{      
-		ByteBuffer b = ByteBuffer.allocate(57);
+		/*ByteBuffer b = ByteBuffer.allocate(57);
 
 		byte[] version = new byte[4]; 
 		for(int i=0; i<4; i++)
@@ -665,15 +708,31 @@ class ControlMessage extends DataMessage
 
 		byte[] secret_list = new byte[16];
 		for(int i=0; i< 16; i++)
-			secret_list[i] = (byte)0xe0;
+			secret_list[i] = (byte)0xe0;*/
+		
+		byte version[] = getVersion();
+		byte authentication[] = getUsernameChars();
+		byte encrypt_option[] = getEncryptsAsBytes()[0];
+		byte generics[][] = getOptsAsBytes();
+		int num_other_options = generics.length;
+		byte secret_list[][] = getSecretsAsBytes();
+		int num_shared_secrets = secret_list.length;
 
+		ByteBuffer b = ByteBuffer.allocate(40 + (8*num_other_options) + (16*num_shared_secrets));
+		
 		b.put(version);
 		b.put(authentication);
 		b.put(encrypt_option);
 		b.putInt(num_other_options);
-		b.put(other_option_list);
+		for(int i = 0; i < generics.length; i++){
+			b.put(generics[i]);
+		}
+		//b.put(other_option_list);
 		b.putInt(num_shared_secrets);
-		b.put(secret_list);
+		for(int i = 0; i < secret_list.length; i++){
+			b.put(secret_list[i]);
+		}
+		//b.put(secret_list);
 
 		return b; 
 	}

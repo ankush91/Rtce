@@ -241,14 +241,11 @@ public class RTCEClientMessage {
 		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
 		if(requestBytes.length == RTCEConstants.getRequestLength()){
 			requestName = requestBytes;
-		}else{
-                
-			for(int i = 0; i < requestBytes.length; i++)
-                        {
+		}else{        
+			for(int i = 0; i < requestBytes.length; i++){
 				requestName[i] = requestBytes[i];
 			}
-			for(int i = requestBytes.length; i < requestName.length; i++)
-                        {
+			for(int i = requestBytes.length; i < requestName.length; i++){
 				requestName[i] = 0;
 			}
 		}

@@ -23,6 +23,9 @@ public class RTCEConstants {
 	//The number of characters maximum in an option name
 	private static final int OPTLENGTH = 8;
 	
+	//The number of characters maximum in a shared secret
+	private static final int SECRETLENGTH = 16;
+	
 	/**
 	 * Returns the character set
 	 * @return the character set (ASCII)
@@ -61,6 +64,14 @@ public class RTCEConstants {
 	 */
 	public static int getAuthStringLength() {
 		return AUTHSTRINGLENGTH;
+	}
+	
+	/**
+	 * Returns the length of the shared secrets
+	 * @return the number of characters in the shared secrets (16)
+	 */
+	public static int getSecretLength() {
+		return SECRETLENGTH;
 	}
 	
 	/**
