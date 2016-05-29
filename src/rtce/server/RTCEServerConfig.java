@@ -59,6 +59,9 @@ public class RTCEServerConfig {
 	private static final byte versionSub = 0;
 	private static final byte versionExtend = 0;
 	
+	//The list of valid port numbers
+	private static ArrayList<Integer> portNumbers = new ArrayList<Integer>();
+	
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -79,6 +82,7 @@ public class RTCEServerConfig {
 	private static void readConfigFile() throws IOException{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), RTCEConstants.getRtcecharset()));
 		String line = reader.readLine();
+		int minPort = 50000, maxPort = 60000;
 		while(line != null){
 			line = line.trim();
 			if(!line.startsWith("#")){
@@ -95,9 +99,16 @@ public class RTCEServerConfig {
 					readInOpts();
 				}else if(line.startsWith("doc-dir:")){
 					documentDir = new File(line.split("doc-dir:")[1].trim());
+				}else if(line.startsWith("min-port:")){
+					minPort = Integer.parseInt(line.split("min-port")[1].trim());
+				}else if(line.startsWith("max-port:")){
+					maxPort = Integer.parseInt(line.split("max-port")[1].trim());
 				}
 			}
 			line = reader.readLine();
+		}
+		for(int i = minPort; i < maxPort; i++){
+			portNumbers.add(i);
 		}
 		reader.close();
 	}
@@ -294,4 +305,10 @@ public class RTCEServerConfig {
 		version[3] = versionExtend;
 		return version;
 	}
+
+	public static ArrayList<Integer> getPortNumbers() {
+		return portNumbers;
+	}
+	
+	
 }

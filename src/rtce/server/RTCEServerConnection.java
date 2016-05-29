@@ -23,6 +23,9 @@ public class RTCEServerConnection {
 	//The version number
 	private byte version[];
 	
+	//The port number
+	private int portNumber;
+	
 	/**
 	 * Create the connection
 	 * @param encrypt - the name of the encryption technique
@@ -82,6 +85,10 @@ public class RTCEServerConnection {
 
 	public byte[] getVersion() {
 		return version;
+	}
+
+	public int getPortNumber() {
+		return portNumber;
 	}
 	
 	
