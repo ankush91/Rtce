@@ -303,16 +303,23 @@ public class RTCEServerMessage {
 		String request = new String(bf.array(), 0, 8);
 
 		System.out.println("Request in string format: " + request);
+		setRequest(RTCEMessageType.valueOf(request));
 		System.out.println(bf.position());
 
 		bf.position(8);
-		System.out.println("Session ID:   "+ bf.getLong());
-		System.out.println("Time Stamp:   "+ bf.getLong());
+		setSessionId(bf.getLong());
+		setTimeStamp(bf.getLong());
+		setChecksum(bf.getInt());
+		setHeaderReserved1(bf.getInt());
+		setHeaderReserved2(bf.getInt());
+		setHeaderReserved3(bf.getInt());
+		System.out.println("Session ID:   "+ getSessionId());
+		System.out.println("Time Stamp:   "+ getTimeStamp());
 
-		System.out.println("Checksum: "+ bf.getInt());
-		System.out.println("Reserved1:  "+bf.getInt());
-		System.out.println("Reserved 2: "+ bf.getInt());
-		System.out.println("Reserved 3: "+ bf.getInt());   
+		System.out.println("Checksum: "+ getChecksum());
+		System.out.println("Reserved1:  "+ getHeaderReserved1());
+		System.out.println("Reserved 2: "+ getHeaderReserved2());
+		System.out.println("Reserved 3: "+ getHeaderReserved3());   
 	}   
 
 	 /**

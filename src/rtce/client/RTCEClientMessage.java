@@ -28,6 +28,9 @@ public class RTCEClientMessage {
 	
 	//The other option list, for appropriate messages
 	private String genericOpts[];
+	
+	//The list of shared secrets
+	private String sharedSecrets[];
 
 	//The identifiers for the the document to access.
 	private String documentOwner;
@@ -103,6 +106,14 @@ public class RTCEClientMessage {
 		this.genericOpts = genericOpts;
 	}
 	
+	public String[] getSharedSecrets() {
+		return sharedSecrets;
+	}
+
+	public void setSharedSecrets(String[] sharedSecrets) {
+		this.sharedSecrets = sharedSecrets;
+	}
+
 	public void setDocument(RTCEDocument doc) {
 		this.document = doc;
 	}	
@@ -346,18 +357,25 @@ public class RTCEClientMessage {
      public void getHeader(ByteBuffer bf)
        {
           String request = new String(bf.array(), 0, 8);
-          
-          System.out.println("Request in string format: " + request);
-          System.out.println(bf.position());
-          
-          bf.position(8);
-          System.out.println("Session ID:   "+ bf.getLong());
-          System.out.println("Time Stamp:   "+ bf.getLong());
-          
-          System.out.println("Checksum: "+ bf.getInt());
-          System.out.println("Reserved1:  "+bf.getInt());
-          System.out.println("Reserved 2: "+ bf.getInt());
-          System.out.println("Reserved 3: "+ bf.getInt());
+
+  		System.out.println("Request in string format: " + request);
+  		setRequest(RTCEMessageType.valueOf(request));
+  		System.out.println(bf.position());
+
+  		bf.position(8);
+  		setSessionId(bf.getLong());
+  		setTimeStamp(bf.getLong());
+  		setChecksum(bf.getInt());
+  		setHeaderReserved1(bf.getInt());
+  		setHeaderReserved2(bf.getInt());
+  		setHeaderReserved3(bf.getInt());
+  		System.out.println("Session ID:   "+ getSessionId());
+  		System.out.println("Time Stamp:   "+ getTimeStamp());
+
+  		System.out.println("Checksum: "+ getChecksum());
+  		System.out.println("Reserved1:  "+ getHeaderReserved1());
+  		System.out.println("Reserved 2: "+ getHeaderReserved2());
+  		System.out.println("Reserved 3: "+ getHeaderReserved3());  
           
        }  
     
@@ -775,25 +793,47 @@ class ControlMessage extends DataMessage
     public void getCONNECT(ByteBuffer bf)
     {
            bf.position(40);
-           System.out.println("Version..");
+           	byte ver[] = new byte[4];
+   		 	ver[0] = bf.get();
+   			ver[1] = bf.get();
+   			ver[2] = bf.get();
+   			ver[3] = bf.get();
+   			setVersion(ver);
+   			System.out.println("Version: " + ver);
            
            bf.position(44);
-           System.out.println("Server Authentication..");
+           setUsername(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset()));
+           System.out.println("Server Authentication: " + getUsername());
            
-           bf.position(64);
-           System.out.println("Encrypt Option");
+           bf.position(44+RTCEConstants.getUsernameLength());
+           String enc[] = new String[1];
+           enc[0] = new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+           setEncryptOpts(enc);
+           System.out.println("Encrypt Option: " + getEncryptOpts()[0]);
            
-           bf.position(72);
-           System.out.println("Number of other options:"+bf.getInt());
+           bf.position(44+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength());
+           int numGenOpts = bf.getInt();
+           System.out.println("Number of other options: "+ numGenOpts);
+           String gen[] = new String[numGenOpts];
+           for(int i = 0; i < numGenOpts; i++){
+        	   gen[i] = new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+        	   System.out.println(gen[i]);
+           }
+           setGenericOpts(gen);
+           //bf.position(48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength());
+           //System.out.println("Other Option List");
            
-           bf.position(76);
-           System.out.println("Other Option List");
-           
-           bf.position(77);
-           System.out.println("Number of shared secrets"+bf.getInt());
-           
-           bf.position(81);
-           System.out.println("Secret List..");
+           bf.position(48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(numGenOpts*RTCEConstants.getOptLength()));
+           int numSecrets = bf.getInt();
+           System.out.println("Number of shared secrets: "+ numSecrets);
+           String sec[] = new String[numSecrets];
+           for(int i = 0; i < numSecrets; i++){
+        	   sec[i] = new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(numGenOpts*RTCEConstants.getOptLength())+(i*RTCEConstants.getSecretLength()), RTCEConstants.getSecretLength(), RTCEConstants.getRtcecharset());
+        	   System.out.println(sec[i]);
+           }
+           setSharedSecrets(sec);
+           //bf.position(81);
+           //System.out.println("Secret List..");
     }
     
        

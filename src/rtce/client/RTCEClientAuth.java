@@ -13,7 +13,7 @@ public class RTCEClientAuth {
 	private String documentTitle;
 	
 	private RTCEClientMessage clientMessage;
-	private RTCEServerMessage serverMessage;
+	private RTCEClientMessage serverMessage;
 	
 	/**
 	 * Create the authentication module from user input
@@ -58,7 +58,7 @@ public class RTCEClientAuth {
 	 * Get the server connection response
 	 * @return the server connection response
 	 */
-	public RTCEServerMessage getServerMessage() {
+	public RTCEClientMessage getServerMessage() {
 		return serverMessage;
 	}
 	
@@ -66,7 +66,7 @@ public class RTCEClientAuth {
 	 * Set the server connection response
 	 * @param serverMessage = the server connection response
 	 */
-	public void setServerMessage(RTCEServerMessage serverMessage) {
+	public void setServerMessage(RTCEClientMessage serverMessage) {
 		this.serverMessage = serverMessage;
 	}
 
