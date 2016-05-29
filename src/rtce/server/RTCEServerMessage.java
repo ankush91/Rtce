@@ -596,31 +596,48 @@ class ControlMessage extends DataMessage
 		ver[1] = bf.get();
 		ver[2] = bf.get();
 		ver[3] = bf.get();
-		System.out.println("Version " + ver);
+		setVersion(ver);
+		System.out.println("Version: " + ver);
 
 		bf.position(44);
-		System.out.println("Username..");
+		setUsername(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset()));
+		System.out.println("Username: " + getUsername());
 
-		bf.position(64);
-		System.out.println("Authentication..");
+		bf.position(44+RTCEConstants.getUsernameLength());
+		setPassword(new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getAuthStringLength(), RTCEConstants.getRtcecharset()));
+		System.out.println("Authentication: " + getPassword());
 
-		bf.position(80);
-		System.out.println("Document Owner..");
+		bf.position(44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength());
+		setDocumentOwner(new String(bf.array(), 44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength(), RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset()));
+		System.out.println("Document Owner: " + getDocumentOwner());
 
-		bf.position(100);
-		System.out.println("Document Title..");
+		bf.position(44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength());
+		setDocumentTitle(new String(bf.array(), 44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength(), RTCEConstants.getDocTitleLength(), RTCEConstants.getRtcecharset()));
+		System.out.println("Document Title: " + getDocumentTitle());
 
-		bf.position(120);
-		System.out.println("Num Encrypt Options:" + bf.getInt());
+		bf.position(44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength());
+		int numEncryptOptions = bf.getInt();
+		System.out.println("Num Encrypt Options:" + numEncryptOptions);
+		String encs[] = new String[numEncryptOptions];
+		for(int i = 0; i < numEncryptOptions; i++){
+			encs[i] = new String(bf.array(), 48+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+			System.out.println(encs[i]);
+		}
+		setEncryptOpts(encs);
+		//bf.position(124);
+		//System.out.println("Encrypt Option List Processing..");
 
-		bf.position(124);
-		System.out.println("Encrypt Option List Processing..");
-
-		bf.position(125);
-		System.out.println("Num Other Options.."+bf.getInt());
-
-		bf.position(129);
-		System.out.println("Num Other Options..");
+		bf.position(48+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(numEncryptOptions*RTCEConstants.getOptLength()));
+		int numGenOptions = bf.getInt();
+		System.out.println("Num Other Options: " + numGenOptions);
+		String gens[] = new String[numGenOptions];
+		for(int i = 0; i < numGenOptions; i++){
+			gens[i] = new String(bf.array(), 52+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(numEncryptOptions*RTCEConstants.getOptLength())+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+			System.out.println(gens[i]);
+		}
+		setGenericOpts(gens);
+		//bf.position(129);
+		//System.out.println("Num Other Options..");
 
 
 	}

@@ -123,7 +123,7 @@ public class RTCEServerAuth {
 	 * Get the client message used to construct the module
 	 * @return the message which built the module
 	 */
-	public RTCEClientMessage getClientMessage() {
+	public RTCEServerMessage getClientMessage() {
 		return clientMessage;
 	}
 
