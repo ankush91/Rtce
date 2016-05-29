@@ -18,13 +18,14 @@ import rtce.RTCEConstants;
 import rtce.RTCEDocument;
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
+import rtce.server.RTCEDiscoveryServer;
 public class RTCEClient {
 
-        Socket sock;
+        static Socket sock;
         OutputStream sendStream;
         InputStream recvStream;
         String request, response;
-        RTCEDocument doc = new RTCEDocument(0);
+        static RTCEDocument doc = new RTCEDocument(0);
 
         //Constants used for Discovery
     	final static int    DISCOVERY_PORT = 4446;
@@ -179,6 +180,15 @@ public class RTCEClient {
     {
         final int servPort = 25351; //Server Port       
          
+        RTCEClientUIInput UI_Input = new RTCEClientUIInput(sock);
+        Thread UI_InputThread = new Thread(UI_Input);      
+        UI_InputThread.start();
+
+        RTCEClientUIOutput UI_Output = new RTCEClientUIOutput();
+        UI_Output.setDocument(doc);
+        Thread UI_OutputThread = new Thread(UI_Output);      
+        UI_OutputThread.start();
+        
         RTCEClient client = new RTCEClient(servPort);
         String s = null;
         Scanner sc = new Scanner(System.in);
