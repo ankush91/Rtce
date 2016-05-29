@@ -328,12 +328,12 @@ public class RTCEClientMessage {
         setRequest(request);
         ByteBuffer bbuf = ByteBuffer.allocate(40);
         bbuf.put(getRequestChars());
-        bbuf.putLong(23);
-        bbuf.putLong(getTime());
-        bbuf.putInt(1001);
-        bbuf.putInt(1);
-        bbuf.putInt(2);
-        bbuf.putInt(3);
+        bbuf.putLong(getSessionId());
+    	bbuf.putLong(getTime());
+    	bbuf.putInt(getChecksum());
+    	bbuf.putInt(getHeaderReserved1());
+    	bbuf.putInt(getHeaderReserved2());
+    	bbuf.putInt(getHeaderReserved3());
         return bbuf;
         
     }   
@@ -356,7 +356,15 @@ public class RTCEClientMessage {
    
      public void getHeader(ByteBuffer bf)
        {
-          String request = new String(bf.array(), 0, 8);
+    	String requestFull = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
+ 		String request = "";
+ 		for(int i = 0; i < requestFull.length(); i++){
+ 			if(requestFull.charAt(i) == 0){
+ 				break;
+ 			}else{
+ 				request += requestFull.charAt(i);
+ 			}
+ 		}
 
   		System.out.println("Request in string format: " + request);
   		setRequest(RTCEMessageType.valueOf(request));
@@ -473,7 +481,7 @@ public class RTCEClientMessage {
                     s.getOutputStream().write(out.toByteArray(), 0, out.size());
                     
                     byte[] test = out.toByteArray();
-                     String s1 = new String(test, 0, 8);
+                     String s1 = new String(test, 0, 8, RTCEConstants.getRtcecharset());
                      System.out.println("OUTGOING REQUEST:  " + s1 + "\n");
                     
                     }
@@ -548,6 +556,11 @@ public class RTCEClientMessage {
        {
           case CONNECT:
           control.getCONNECT(bf);
+          version = control.getVersion();
+          username = control.getUsername();
+          encryptOpts = control.getEncryptOpts();
+          genericOpts = control.getGenericOpts();
+          sharedSecrets = control.getSharedSecrets();
     	  break;
            
           case S_LIST:
@@ -809,12 +822,12 @@ class ControlMessage extends DataMessage
    			System.out.println("Version: " + ver);
            
            bf.position(44);
-           setUsername(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset()));
+           setUsername(RTCEConstants.clipString(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
            System.out.println("Server Authentication: " + getUsername());
            
            bf.position(44+RTCEConstants.getUsernameLength());
            String enc[] = new String[1];
-           enc[0] = new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+           enc[0] = RTCEConstants.clipString(new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
            setEncryptOpts(enc);
            System.out.println("Encrypt Option: " + getEncryptOpts()[0]);
            
@@ -823,7 +836,7 @@ class ControlMessage extends DataMessage
            System.out.println("Number of other options: "+ numGenOpts);
            String gen[] = new String[numGenOpts];
            for(int i = 0; i < numGenOpts; i++){
-        	   gen[i] = new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+        	   gen[i] = RTCEConstants.clipString(new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
         	   System.out.println(gen[i]);
            }
            setGenericOpts(gen);
@@ -835,7 +848,7 @@ class ControlMessage extends DataMessage
            System.out.println("Number of shared secrets: "+ numSecrets);
            String sec[] = new String[numSecrets];
            for(int i = 0; i < numSecrets; i++){
-        	   sec[i] = new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(numGenOpts*RTCEConstants.getOptLength())+(i*RTCEConstants.getSecretLength()), RTCEConstants.getSecretLength(), RTCEConstants.getRtcecharset());
+        	   sec[i] = RTCEConstants.clipString(new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(numGenOpts*RTCEConstants.getOptLength())+(i*RTCEConstants.getSecretLength()), RTCEConstants.getSecretLength(), RTCEConstants.getRtcecharset()));
         	   System.out.println(sec[i]);
            }
            setSharedSecrets(sec);

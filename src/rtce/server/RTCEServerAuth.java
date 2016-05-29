@@ -253,11 +253,12 @@ public class RTCEServerAuth {
 	private RTCEDocument openDoc() throws IOException{
 		String docOwner = clientMessage.getDocumentOwner();
 		String docTitle = clientMessage.getDocumentTitle();
+		String username = clientMessage.getUsername();
 		String docPath = RTCEServerConfig.getDocumentDir().getPath();
 		File doc = new File(docPath + "/" + docOwner + "/" + docTitle + RTCEServerConfig.getFileExt());
 		if(doc.exists() && hasPermissions()){
 			return new RTCEDocument(doc.getPath());
-		}else if(docOwner.equals(clientMessage.getUsername())){
+		}else if(docOwner.equals(username)){
 			doc.createNewFile();
 			return new RTCEDocument(doc.getPath());
 		}else{

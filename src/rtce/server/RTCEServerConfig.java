@@ -101,9 +101,9 @@ public class RTCEServerConfig {
 				}else if(line.startsWith("doc-dir:")){
 					documentDir = new File(line.split("doc-dir:")[1].trim());
 				}else if(line.startsWith("min-port:")){
-					minPort = Integer.parseInt(line.split("min-port")[1].trim());
+					minPort = Integer.parseInt(line.split("min-port:")[1].trim());
 				}else if(line.startsWith("max-port:")){
-					maxPort = Integer.parseInt(line.split("max-port")[1].trim());
+					maxPort = Integer.parseInt(line.split("max-port:")[1].trim());
 				}
 			}
 			line = reader.readLine();

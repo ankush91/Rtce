@@ -78,7 +78,7 @@ public class RTCEClient {
               asciiVal[i] = readbf[i];
           
           RTCEClientMessage serverMessage = new RTCEClientMessage(); 
-           String s = new String(asciiVal, 0, serverMessage.lastByte(asciiVal));
+           String s = new String(asciiVal, 0, serverMessage.lastByte(asciiVal), RTCEConstants.getRtcecharset());
           serverMessage.setDocument(doc);
          
           if((messageSize = serverMessage.lengthBuffer(s))!=0)
@@ -87,7 +87,13 @@ public class RTCEClient {
             System.out.println(bf.capacity());
             
             bf.put(readbf);
-            response = new String(s.getBytes(),getRtcecharset());
+            response = "";
+            for(int i = 0; i < s.length(); i++){
+            	if(s.charAt(i) == 0){
+            		break;
+            	}
+            	response += s.charAt(i);
+            }
             System.out.println("INCOMING RESPONSE:  "+response+"\n");
             serverMessage.recvMessage(sock, RTCEMessageType.valueOf(response), bf);
           }

@@ -33,8 +33,12 @@ public class RTCEServerConnection {
 	 */
 	public RTCEServerConnection(String encrypt, String[] opts, RTCEDocument doc, RTCEPermission perm, long sid, byte v[]){
 		encryptModule = new RTCEServerEncrypt(encrypt);
-		optionModules = new RTCEServerOpt[opts.length];
-		for(int i = 0; i < opts.length; i++){
+		if(opts == null){
+			optionModules = new RTCEServerOpt[0];
+		}else{
+			optionModules = new RTCEServerOpt[opts.length];
+		}
+		for(int i = 0; i < optionModules.length; i++){
 			optionModules[i] = new RTCEServerOpt(opts[i]);
 		}
 		document = doc;

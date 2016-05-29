@@ -27,6 +27,7 @@ public class RTCEServer implements Runnable
     String request;
     String response;
     ServerLog log;
+    RTCEServerAuth sauth;
     RTCEDocument doc1 = new RTCEDocument(1);
     
     RTCEServer (Socket s) throws IOException
@@ -163,8 +164,9 @@ public class RTCEServer implements Runnable
              if(curr.matches("CUAUTH"))
              {
              cuauth = true;
-            
-             sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())));
+             RTCEServerMessage connectMessage = sauth.getServerMessage();
+             connectMessage.sendMessage(sock, RTCEMessageType.CONNECT);
+             //sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())));
              
                 
                     while(!(curr.matches("CACK")) || !(curr.matches("ABORT")) || !cack){ curr = getRequest();}
@@ -315,6 +317,9 @@ public class RTCEServer implements Runnable
             System.out.println("INCOMING REQUEST: " + request+ "\n");
           
             clientMessage.recvMessage(sock, RTCEMessageType.valueOf(request), bf);
+            if(request.equals("CUAUTH")){
+            	sauth = new RTCEServerAuth(clientMessage);
+            }
           }
           
           else  
@@ -386,6 +391,7 @@ public class RTCEServer implements Runnable
   
   public static void main(String arg[]) throws IOException
   {
+	  RTCEServerConfig.init("config/server/servConfig.conf");
       final int port = 25351; //Provide Server Port
       ServerSocket listenSock = new ServerSocket(port);
       

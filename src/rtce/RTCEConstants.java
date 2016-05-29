@@ -95,7 +95,7 @@ public class RTCEConstants {
 			result = stringRep;
 		}else if(length > stringRep.length){
 			for(int i = 0; i < stringRep.length; i++){
-				result[i] = stringRep[0];
+				result[i] = stringRep[i];
 			}
 			for(int i = stringRep.length; i < length; i++){
 				result[i] = 0;
@@ -117,6 +117,23 @@ public class RTCEConstants {
 		byte result[][] = new byte[s.length][length];
 		for(int i = 0; i < s.length; i++){
 			result[i] = getStringAsBytes(s[i], length);
+		}
+		return result;
+	}
+	
+	/**
+	 * Take a raw string with null characters and clip it to end prior to first null character
+	 * @param s - raw string
+	 * @return clipped string
+	 */
+	public static String clipString(String s){
+		String result = "";
+		for(int i = 0; i < s.length(); i++){
+			if(s.charAt(i) == 0){
+				break;
+			}else{
+				result += s.charAt(i);
+			}
 		}
 		return result;
 	}

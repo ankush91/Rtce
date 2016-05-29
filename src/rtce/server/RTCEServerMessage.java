@@ -300,8 +300,15 @@ public class RTCEServerMessage {
 	}  
 
 	public void getHeader(ByteBuffer bf){
-		String request = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
-
+		String requestFull = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
+		String request = "";
+		for(int i = 0; i < requestFull.length(); i++){
+			if(requestFull.charAt(i) == 0){
+				break;
+			}else{
+				request += requestFull.charAt(i);
+			}
+		}
 		System.out.println("Request in string format: " + request);
 		setRequest(RTCEMessageType.valueOf(request));
 		System.out.println(bf.position());
@@ -402,7 +409,11 @@ public class RTCEServerMessage {
 		switch (option) 
 		{
 		case CONNECT:
-			controlPayload = new ControlMessage(53);
+			controlPayload = new ControlMessage(40 + (8*genericOpts.length) + (16*sharedSecrets.length));
+			controlPayload.setUsername(username);
+			controlPayload.setEncryptOpts(encryptOpts);
+			controlPayload.setGenericOpts(genericOpts);
+			controlPayload.setSharedSecrets(sharedSecrets);
 			controlPayload.payload = controlPayload.setCONNECT(); 
 			break;   
 		case S_LIST:
@@ -485,6 +496,13 @@ public class RTCEServerMessage {
 		case CUAUTH:
 			control = new ControlMessage();
 			control.getCUAUTH(bf); 
+			username = control.getUsername();
+			password = control.getPassword();
+			documentOwner = control.getDocumentOwner();
+			documentTitle = control.getDocumentTitle();
+			encryptOpts = control.getEncryptOpts();
+			genericOpts = control.getGenericOpts();
+			version = control.getVersion();
 			break;
 
 			// S_TREQST for testing
@@ -607,19 +625,19 @@ class ControlMessage extends DataMessage
 		System.out.println("Version: " + ver);
 
 		bf.position(44);
-		setUsername(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset()));
+		setUsername(RTCEConstants.clipString(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
 		System.out.println("Username: " + getUsername());
 
 		bf.position(44+RTCEConstants.getUsernameLength());
-		setPassword(new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getAuthStringLength(), RTCEConstants.getRtcecharset()));
+		setPassword(RTCEConstants.clipString(new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getAuthStringLength(), RTCEConstants.getRtcecharset())));
 		System.out.println("Authentication: " + getPassword());
 
 		bf.position(44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength());
-		setDocumentOwner(new String(bf.array(), 44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength(), RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset()));
+		setDocumentOwner(RTCEConstants.clipString(new String(bf.array(), 44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength(), RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
 		System.out.println("Document Owner: " + getDocumentOwner());
 
 		bf.position(44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength());
-		setDocumentTitle(new String(bf.array(), 44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength(), RTCEConstants.getDocTitleLength(), RTCEConstants.getRtcecharset()));
+		setDocumentTitle(RTCEConstants.clipString(new String(bf.array(), 44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength(), RTCEConstants.getDocTitleLength(), RTCEConstants.getRtcecharset())));
 		System.out.println("Document Title: " + getDocumentTitle());
 
 		bf.position(44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength());
@@ -627,7 +645,7 @@ class ControlMessage extends DataMessage
 		System.out.println("Num Encrypt Options:" + numEncryptOptions);
 		String encs[] = new String[numEncryptOptions];
 		for(int i = 0; i < numEncryptOptions; i++){
-			encs[i] = new String(bf.array(), 48+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+			encs[i] = RTCEConstants.clipString(new String(bf.array(), 48+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
 			System.out.println(encs[i]);
 		}
 		setEncryptOpts(encs);
@@ -639,7 +657,7 @@ class ControlMessage extends DataMessage
 		System.out.println("Num Other Options: " + numGenOptions);
 		String gens[] = new String[numGenOptions];
 		for(int i = 0; i < numGenOptions; i++){
-			gens[i] = new String(bf.array(), 52+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(numEncryptOptions*RTCEConstants.getOptLength())+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset());
+			gens[i] = RTCEConstants.clipString(new String(bf.array(), 52+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(numEncryptOptions*RTCEConstants.getOptLength())+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
 			System.out.println(gens[i]);
 		}
 		setGenericOpts(gens);
