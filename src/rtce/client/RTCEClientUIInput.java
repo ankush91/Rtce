@@ -12,8 +12,12 @@ public class RTCEClientUIInput implements Runnable
 	{
 	   private Scanner sc = new Scanner(System.in);	   
 	   private Socket socket;
+	   private RTCEClient parent;
 	   
-	   RTCEClientUIInput(Socket s) throws IOException {socket = s;}
+	   RTCEClientUIInput(Socket s, RTCEClient c) throws IOException {
+		   socket = s;
+		   parent = c;
+	   }
 	
        public void run()
 	   {
@@ -21,22 +25,24 @@ public class RTCEClientUIInput implements Runnable
     	  
     	  while(true)
     	  {
-    		
-    		s = sc.next();      		 
+    		s = sc.nextLine();
+    		//s = sc.next();      		 
     		
     		//User wants to login 
-    		//example: login,username,documentname
+    		//example: login,username,password,documentowner,documentname
     		if (s.startsWith("login"))
     		{
     			String[] parts = s.split(",");
-    			System.out.println("Logging in as " + parts[1] + " to edit document " + parts[2]);
-    			RTCEClientMessage Message = new RTCEClientMessage();
+    			System.out.println("Logging in as " + parts[1] + " to edit document " + parts[3] + "/" + parts[4]);
+    			parent.setcAuthModule(new RTCEClientAuth(parts[1], parts[2], parts[3], parts[4]));
+    			parent.getcAuthModule().getClientMessage().sendMessage(socket, RTCEMessageType.CUAUTH);
+    			/*RTCEClientMessage Message = new RTCEClientMessage();
     			Message.setRequest(RTCEMessageType.CUAUTH);
     			Message.setVersion("v1.0".getBytes());;
     			Message.setUsername(parts[1]);
     			Message.setPassword("password");
     			Message.setDocumentTitle(parts[2]);
-    			Message.sendMessage(socket, RTCEMessageType.CUAUTH );
+    			Message.sendMessage(socket, RTCEMessageType.CUAUTH );*/
     			
     		}
     		//User just wants to send out a test message in PDU

@@ -406,8 +406,15 @@ public class RTCEClientMessage {
        switch (option) 
        {
       case CUAUTH:
-          controlPayload = new ControlMessage(89);
-          controlPayload.payload = controlPayload.setSTREQST();
+          controlPayload = new ControlMessage(88 + (8*(encryptOpts.length + genericOpts.length)));
+          controlPayload.setUsername(username);
+          controlPayload.setPassword(password);
+          controlPayload.setDocumentOwner(documentOwner);
+          controlPayload.setDocumentTitle(documentTitle);
+          controlPayload.setEncryptOpts(encryptOpts);
+          controlPayload.setGenericOpts(genericOpts);
+          controlPayload.setVersion(version);
+          controlPayload.payload = controlPayload.setCUAUTH();
     	  break;
      
         // S_TREQST for testing

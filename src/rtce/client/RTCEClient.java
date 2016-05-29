@@ -25,6 +25,7 @@ public class RTCEClient {
         OutputStream sendStream;
         InputStream recvStream;
         String request, response;
+        RTCEClientAuth cAuthModule;
         static RTCEDocument doc = new RTCEDocument(0);
 
         //Constants used for Discovery
@@ -53,7 +54,15 @@ public class RTCEClient {
            
         }
         
-        void getResponse()
+        public RTCEClientAuth getcAuthModule() {
+			return cAuthModule;
+		}
+
+		public void setcAuthModule(RTCEClientAuth cAuthModule) {
+			this.cAuthModule = cAuthModule;
+		}
+		
+		void getResponse()
         {
            try
       {
@@ -178,9 +187,12 @@ public class RTCEClient {
         
     public static void main(String[] args) throws IOException
     {
+    	RTCEClientConfig.init("config/client/clientConfig.conf");
         final int servPort = 25351; //Server Port       
          
-        RTCEClientUIInput UI_Input = new RTCEClientUIInput(sock);
+        RTCEClient client = new RTCEClient(servPort);
+        
+        RTCEClientUIInput UI_Input = new RTCEClientUIInput(sock, client);
         Thread UI_InputThread = new Thread(UI_Input);      
         UI_InputThread.start();
 
@@ -188,26 +200,26 @@ public class RTCEClient {
         UI_Output.setDocument(doc);
         Thread UI_OutputThread = new Thread(UI_Output);      
                 
-        RTCEClient client = new RTCEClient(servPort);
+        
         UI_OutputThread.start();
-        String s = null;
-        Scanner sc = new Scanner(System.in);
+        //String s = null;
+        //Scanner sc = new Scanner(System.in);
                
-        while(s !="quit")
-        {
-                while(!sc.hasNextLine()){}
-                 s =  sc.next();
-                 client.sendRequest(RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())));
-                 client.getResponse();   
+        //while(s !="quit")
+        //{
+                //while(!sc.hasNextLine()){}
+                 //s =  sc.next();
+                 //client.sendRequest(RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())));
+                 //client.getResponse();   
                  //Here's what I'd like this loop to look like now that UI exists (will talk on Skype):
                  // client.getResponse();
                  // UI_Output.refreshUI();
                  
                  
-        }
+        //}
         
         
-        client.close();
+        //client.close();
       
        
     }

@@ -34,7 +34,7 @@ public class RTCEClientAuth {
 	 * Build the client authentication message
 	 */
 	private void buildMessage(){
-		clientMessage = new ControlMessage();
+		clientMessage = new RTCEClientMessage();
 		clientMessage.setRequest(RTCEMessageType.CUAUTH);
 		clientMessage.setDocumentOwner(documentOwner);
 		clientMessage.setDocumentTitle(documentTitle);

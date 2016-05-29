@@ -12,6 +12,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
+import rtce.RTCEConstants;
 import rtce.RTCEDocument;
 import rtce.server.clientRecord;
 import rtce.RTCEMessageType;
@@ -162,6 +163,7 @@ public class RTCEServer implements Runnable
              if(curr.matches("CUAUTH"))
              {
              cuauth = true;
+            
              sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())));
              
                 
@@ -173,9 +175,9 @@ public class RTCEServer implements Runnable
                                 
                                 if(cuauth && cack)
                                         {
-                                        ServerLog client = new ServerLog(12345, );
-                                        log.addActiveConnection(, port);
-                                        sessionDriver(session, port);
+                                        //ServerLog client = new ServerLog(12345, );
+                                        //log.addActiveConnection(client, port);
+                                        //sessionDriver(session, port);
                                         }
                                 
                                 else {}
@@ -263,7 +265,7 @@ public class RTCEServer implements Runnable
                 if(slist){
                     sendResponse(RTCEMessageType.valueOf(new String("S_DATA".getBytes(), getRtcecharset())));
                         
-                        if(slist && sdata)
+                        //if(slist && sdata)
                                
             
               }
@@ -291,7 +293,7 @@ public class RTCEServer implements Runnable
               asciiVal[i] = readbf[i];
           
           RTCEServerMessage clientMessage = new RTCEServerMessage(); 
-           String s = new String(asciiVal, 0, clientMessage.lastByte(asciiVal));
+           String s = new String(asciiVal, 0, clientMessage.lastByte(asciiVal), RTCEConstants.getRtcecharset());
          
          
           if((messageSize = clientMessage.lengthBuffer(s))!=0)
@@ -299,8 +301,17 @@ public class RTCEServer implements Runnable
             ByteBuffer bf = ByteBuffer.allocate(messageSize);
             
             bf.put(readbf);
-            request = new String(s.getBytes(),getRtcecharset());
+            String requestTemp = new String(s.getBytes(),getRtcecharset());
+            request = "";
+            for(int i = 0; i < requestTemp.length(); i++){
+            	if(requestTemp.charAt(i) == 0){
+            		break;
+            	}else{
+            		request += requestTemp.charAt(i);
+            	}
+            }
             valid = true;
+            System.out.println(s + " : " + requestTemp + " : " + request);
             System.out.println("INCOMING REQUEST: " + request+ "\n");
           
             clientMessage.recvMessage(sock, RTCEMessageType.valueOf(request), bf);

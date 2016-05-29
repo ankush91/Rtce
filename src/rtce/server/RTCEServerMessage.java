@@ -300,7 +300,7 @@ public class RTCEServerMessage {
 	}  
 
 	public void getHeader(ByteBuffer bf){
-		String request = new String(bf.array(), 0, 8);
+		String request = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
 
 		System.out.println("Request in string format: " + request);
 		setRequest(RTCEMessageType.valueOf(request));
