@@ -187,9 +187,9 @@ public class RTCEClient {
         RTCEClientUIOutput UI_Output = new RTCEClientUIOutput();
         UI_Output.setDocument(doc);
         Thread UI_OutputThread = new Thread(UI_Output);      
-        UI_OutputThread.start();
-        
+                
         RTCEClient client = new RTCEClient(servPort);
+        UI_OutputThread.start();
         String s = null;
         Scanner sc = new Scanner(System.in);
                
@@ -198,7 +198,11 @@ public class RTCEClient {
                 while(!sc.hasNextLine()){}
                  s =  sc.next();
                  client.sendRequest(RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())));
-                 client.getResponse();         
+                 client.getResponse();   
+                 //Here's what I'd like this loop to look like now that UI exists (will talk on Skype):
+                 // client.getResponse();
+                 // UI_Output.refreshUI();
+                 
                  
         }
         

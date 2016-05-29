@@ -22,9 +22,9 @@ public class RTCEClientUIInput implements Runnable
     	  while(true)
     	  {
     		
-    		s = sc.next();  
-    		System.out.println(s);  
+    		s = sc.next();      		 
     		
+    		//User wants to login 
     		//example: login,username,documentname
     		if (s.startsWith("login"))
     		{
@@ -39,6 +39,7 @@ public class RTCEClientUIInput implements Runnable
     			Message.sendMessage(socket, RTCEMessageType.CUAUTH );
     			
     		}
+    		//User just wants to send out a test message in PDU
     		else if (s.startsWith("S_") | 
     			     s.startsWith("CUAUTH") |
     			     s.startsWith("ABORT") |

@@ -6,8 +6,9 @@ import rtce.RTCEDocument;
 public class RTCEClientUIOutput implements Runnable
 	{
 	   private RTCEDocument document;
+	   
+	   //Objects to handle requests to refresh the GUI
 	   private Object lock = new Object();
-	   private boolean startUI = false; 
 	   private boolean refreshUI = false;
 	   
 	   RTCEClientUIOutput() throws IOException
@@ -18,24 +19,16 @@ public class RTCEClientUIOutput implements Runnable
 	
        public void run()
 	   {
-    	  while(true)
-    	  { synchronized (lock) {if (startUI) {break;} }
-    	     try{Thread.sleep(500);} catch (Exception e){}
-    	  }
-    	  
+   	  
     	  redrawUI();
     	  
     	  while(true)
     	  {    		
     		  synchronized (lock) {
     			if (refreshUI)
-    			{
-    			  redrawUI();
-    			  refreshUI = false;
-    			}
-    			  
-    		  }
-    		  
+    			{ redrawUI();
+    			  refreshUI = false;}    			  
+    		  }    		  
     		  try{Thread.sleep(500);} catch (Exception e){}
     	  }
 	   } //run
@@ -46,17 +39,11 @@ public class RTCEClientUIOutput implements Runnable
               System.out.println("--------------------------------------------");
               document.printDocument();
               System.out.println("");
-              System.out.println(">");
+              System.out.println("Enter Command>>");
 		   }		   
 	   }
        
-	   public void startUI()
-	   {
-		 synchronized (lock) {
-		   startUI = true;
-		 }	   
-	   }
-	   
+	   //After creation this is the only routine expected to be called.
 	   public void refreshUI()
 	   {
 		 synchronized (lock) {
