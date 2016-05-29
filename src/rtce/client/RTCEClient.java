@@ -176,31 +176,21 @@ public class RTCEClient {
         
     public static void main(String[] args) throws IOException
     {
-        final int servPort = 25351; //Server Port        
-        int i =0;
+        final int servPort = 25351; //Server Port       
          
         RTCEClient client = new RTCEClient(servPort);
-        String s[] = new String[10];
-        s[0] = "S_TREQST";
-        s[1] = "S_TREQST";
-        s[2] = "CACK";
-        s[3] = "CUAUTH";
-        s[4] = "ECHO";
-        s[5] = "S_COMMIT";
-        s[6] = "CUAUTH";
-        s[7] = "S_DONE";
-        s[8] = "S_TREQST";
-        s[9] = "LOGOFF";
+        String s = null;
+        Scanner sc = new Scanner(System.in)
                
-        while(i<10)
+        while(s !="quit")
         {
-        
-            //client.makeRequest();
-            client.sendRequest(RTCEMessageType.valueOf(new String(s[i].getBytes(), getRtcecharset())));
-            client.getResponse();
-            //client.useResponse();
-            i=i+1;
+                while(!sc.hasNextLine()){}
+                 s =  sc.next();
+                 client.sendRequest(RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())));
+                 client.getResponse();         
+                 
         }
+        
         
         client.close();
       
