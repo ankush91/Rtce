@@ -22,7 +22,7 @@ import rtce.client.RTCEClientMessage;
 public class RTCEServerAuth {
 
 	//The client message used to construct the module
-	private RTCEClientMessage clientMessage;
+	private RTCEServerMessage clientMessage;
 	
 	//The server message constructed by the module
 	private RTCEServerMessage serverMessage;
@@ -35,7 +35,7 @@ public class RTCEServerAuth {
 	 * Create the server authentication module from the CUAUTH message
 	 * @param m - a CUAUTH message
 	 */
-	public RTCEServerAuth(RTCEClientMessage m){
+	public RTCEServerAuth(RTCEServerMessage m){
 		clientMessage = m;
 		if(performAuth()){
 			try {

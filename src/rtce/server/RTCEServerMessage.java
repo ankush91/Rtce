@@ -3,6 +3,7 @@ package rtce.server;
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
 import rtce.RTCEConstants;
+
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sun.corba.se.impl.util.Version;
 import com.sun.xml.internal.txw2.Document;
 
 import static rtce.RTCEConstants.getRtcecharset;
@@ -55,6 +57,10 @@ public class RTCEServerMessage {
 
 	//The version
 	private byte version[];
+	
+	//The identifiers for the the document to access.
+	private String documentOwner;
+	private String documentTitle;
 	
 	public RTCEDocument document;
 	private int sectionID;
@@ -232,6 +238,23 @@ public class RTCEServerMessage {
 		this.version = version;
 	}
 	
+	public String getDocumentOwner() {
+		return documentOwner;
+	}
+
+	public void setDocumentOwner(String documentOwner) {
+		this.documentOwner = documentOwner;
+	}
+
+	public String getDocumentTitle() {
+		return documentTitle;
+	}
+
+	public void setDocumentTitle(String documentTitle) {
+		this.documentTitle = documentTitle;
+	}
+
+
 	public byte[][] getEncryptsAsBytes(){
 		return RTCEConstants.getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
 	}
@@ -568,7 +591,12 @@ class ControlMessage extends DataMessage
 	public void getCUAUTH(ByteBuffer bf)
 	{
 		bf.position(40);
-		System.out.println("Version..");
+		byte ver[] = new byte[4];
+		ver[0] = bf.get();
+		ver[1] = bf.get();
+		ver[2] = bf.get();
+		ver[3] = bf.get();
+		System.out.println("Version " + ver);
 
 		bf.position(44);
 		System.out.println("Username..");
