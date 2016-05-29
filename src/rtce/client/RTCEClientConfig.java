@@ -28,6 +28,9 @@ public class RTCEClientConfig {
 	//The list of desired generic options
 	private static ArrayList<String> desiredOpts;
 	
+	//The port number
+	private static int portNumber;
+	
 	//The version number
 	private static final byte versionMajor = 0;
 	private static final byte versionMinor = 1;
@@ -62,6 +65,8 @@ public class RTCEClientConfig {
 				}else if(line.startsWith("opt-file:")){
 					optionFile = new File(line.split("opt-file:")[1].trim());
 					readInOpts();
+				}else if(line.startsWith("port-number:")){
+					portNumber = Integer.parseInt(line.split("port-number:")[1].trim());
 				}
 			}
 			line = reader.readLine();
@@ -169,4 +174,14 @@ public class RTCEClientConfig {
 		version[3] = versionExtend;
 		return version;
 	}
+
+	/**
+	 * Get the port number
+	 * @return the port number to use
+	 */
+	public static int getPortNumber() {
+		return portNumber;
+	}
+	
+	
 }
