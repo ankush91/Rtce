@@ -27,6 +27,10 @@ public class RTCEServerAuth {
 	//The server message constructed by the module
 	private RTCEServerMessage serverMessage;
 	
+	private long sessionId;
+	
+	private RTCEServerConnection connection;
+	
 	/**
 	 * Create the server authentication module from the CUAUTH message
 	 * @param m - a CUAUTH message
@@ -50,10 +54,10 @@ public class RTCEServerAuth {
 				serverMessage.setUsername(RTCEServerConfig.getHostKey());
 				serverMessage.setEncryptOpts(encrypts);
 				serverMessage.setGenericOpts(opts);
-				long sessionId = generateSessionId();
+				sessionId = generateSessionId();
 				serverMessage.setSessionId(sessionId);
 				serverMessage.setVersion(versionMatch(clientMessage.getVersion()));
-				RTCEServerConnection connection = new RTCEServerConnection(encrypts[0], opts, doc, perm, sessionId, serverMessage.getVersion());
+				connection = new RTCEServerConnection(encrypts[0], opts, doc, perm, sessionId, serverMessage.getVersion());
 				String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
 				serverMessage.setSharedSecrets(secrets);
 				
@@ -278,4 +282,14 @@ public class RTCEServerAuth {
 		}
 		return result;
 	}
+
+	public long getSessionId() {
+		return sessionId;
+	}
+
+	public RTCEServerConnection getConnection() {
+		return connection;
+	}
+	
+	
 }
