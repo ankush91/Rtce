@@ -12,9 +12,10 @@ import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import rtce.RTCEConstants;
 import rtce.RTCEDocument;
-
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
 public class RTCEClient {
@@ -180,7 +181,7 @@ public class RTCEClient {
          
         RTCEClient client = new RTCEClient(servPort);
         String s = null;
-        Scanner sc = new Scanner(System.in)
+        Scanner sc = new Scanner(System.in);
                
         while(s !="quit")
         {
