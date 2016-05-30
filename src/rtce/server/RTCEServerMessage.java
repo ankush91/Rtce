@@ -723,12 +723,12 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	{
 		bf.position(40);
 		//We would validate the token here?
-		int token = bf.getInt();
+		double token = bf.getDouble();
 		int prevID = bf.getInt();
 		int sID = bf.getInt();		
         int len = bf.getInt();
         
-        String sectionTxt = new String(bf.array(), 56, len);
+        String sectionTxt = new String(bf.array(), 60, len);
   	    System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
         
   	    document.processCommit(prevID, sID, sectionTxt);
