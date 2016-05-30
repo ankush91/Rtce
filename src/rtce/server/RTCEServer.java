@@ -41,7 +41,8 @@ public class RTCEServer implements Runnable
         recvStream = sock.getInputStream();
         sendStream = sock.getOutputStream();
         //Ports = getPortNumbers();
-        ServerLog log = new ServerLog();
+        log = new ServerLog();
+        
         ServerRecordMgmt control = new ServerRecordMgmt();
     } 
     
@@ -189,7 +190,7 @@ public class RTCEServer implements Runnable
                                 if(cuauth && cack)
                                         {
                                         
-                                        ServerLog client = new ServerLog(connectMessage.getSessionId(), sock.getInetAddress());
+                                        ServerLog client = new ServerLog(connectMessage.getSessionId(), sock.getInetAddress());                                        
                                         log.addActiveConnection(client, port);
                                         sessionDriver(connectMessage.getSessionId(), port, client, curr);
                                         }
