@@ -464,7 +464,7 @@ public class RTCEClientMessage {
      	  break;    
           
         case S_COMMIT:
-            controlPayload = new ControlMessage(4+4+4+4+Commit_txt.length());
+            controlPayload = new ControlMessage(8+4+4+4+Commit_txt.length());
             controlPayload.payload.putDouble(Commit_token);
             controlPayload.payload.putInt(Commit_prevID);            
             controlPayload.payload.putInt(Commit_sID);
