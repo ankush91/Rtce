@@ -96,6 +96,9 @@ public class RTCEClient {
             }
             System.out.println("INCOMING RESPONSE:  "+response+"\n");
             serverMessage.recvMessage(sock, RTCEMessageType.valueOf(response), bf);
+            if(response.equals("CONNECT")){
+            	cAuthModule.setServerMessage(serverMessage);
+            }
           }
           
           else{}
