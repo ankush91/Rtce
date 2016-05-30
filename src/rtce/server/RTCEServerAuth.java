@@ -49,7 +49,7 @@ public class RTCEServerAuth {
 				String encrypts[] = new String[1];
 				encrypts[0] = chooseEncrypt();
 				String opts[] = chooseOpts();
-				serverMessage = new ControlMessage();
+				serverMessage = new RTCEServerMessage();
 				serverMessage.setRequest(RTCEMessageType.CONNECT);
 				serverMessage.setUsername(RTCEServerConfig.getHostKey());
 				serverMessage.setEncryptOpts(encrypts);
@@ -199,7 +199,7 @@ public class RTCEServerAuth {
 			}
 		}
 		if(resultOpts.size() == 0){
-			return null;
+			return new String[0];
 		}else{
 			String result[] = new String[resultOpts.size()];
 			result = resultOpts.toArray(result);

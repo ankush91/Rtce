@@ -58,7 +58,7 @@ public class RTCEClientUIInput implements Runnable
               clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())));
     			                                      			    		
     		}
-    		
+    		parent.getResponse();
     		
     	  }
 	   } //run

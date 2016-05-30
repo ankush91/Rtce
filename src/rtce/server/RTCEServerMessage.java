@@ -409,11 +409,18 @@ public class RTCEServerMessage {
 		switch (option) 
 		{
 		case CONNECT:
+			if(genericOpts == null){
+				genericOpts = new String[0];
+			}
+			if(sharedSecrets == null){
+				sharedSecrets = new String[0];
+			}
 			controlPayload = new ControlMessage(40 + (8*genericOpts.length) + (16*sharedSecrets.length));
 			controlPayload.setUsername(username);
 			controlPayload.setEncryptOpts(encryptOpts);
 			controlPayload.setGenericOpts(genericOpts);
 			controlPayload.setSharedSecrets(sharedSecrets);
+			controlPayload.setVersion(version);
 			controlPayload.payload = controlPayload.setCONNECT(); 
 			break;   
 		case S_LIST:

@@ -93,18 +93,18 @@ public class RTCEConstants {
 		byte[] result = new byte[length];
 		if(stringRep.length == length){
 			result = stringRep;
-		}else if(length > stringRep.length){
+			
+		}else if(stringRep.length < length){
 			for(int i = 0; i < stringRep.length; i++){
 				result[i] = stringRep[i];
 			}
 			for(int i = stringRep.length; i < length; i++){
 				result[i] = 0;
 			}
-			return result;
 		}else{
 			throw new StringIndexOutOfBoundsException(s.length());
 		}
-		return null;
+		return result;
 	}
 	
 	/**

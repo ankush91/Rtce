@@ -45,17 +45,20 @@ public class RTCEServer implements Runnable
 
       int i=0;
       String a[] = {"S_TRESPN", "S_DENIED", "ABORT", "ECHO", "BLOCK", "LACK", "S_REVOKE", "CONNECT"};
+      String request;
       while(flagConn)
         {
-        getRequest();
+        request = getRequest();
+        if(request.equals("CUAUTH")){
+        	sauth.getServerMessage().sendMessage(sock, RTCEMessageType.CONNECT);
+        }
         //process(); ***HERE WE HAVE TO CALL THE DRIVER FUNCTION, REMOVE NORMAL REQUEST - RESPONSE FIT INTO DRIVER 
 
-        sendResponse(RTCEMessageType.valueOf(new String(a[i].getBytes(), getRtcecharset())));
-        i = (i+1)%a.length;
+        //sendResponse(RTCEMessageType.valueOf(new String(a[i].getBytes(), getRtcecharset())));
+        //i = (i+1)%a.length;
         }
         
         close();
-        
     }       
     
     //ASSUMING A DRIVER RUNS ON EACH PORT FOR EACH CLIENT SESSION -> THINKING OF SOCKET FACTORIES
