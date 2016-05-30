@@ -1,6 +1,5 @@
 package rtce.server;
 
-
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
 import rtce.RTCEConstants;
@@ -286,7 +285,6 @@ public class RTCEServerMessage {
 
 	public ByteBuffer setHeader(RTCEMessageType request)
 	{
-
 		setRequest(request);
 		ByteBuffer bbuf = ByteBuffer.allocate(40);
 		bbuf.put(getRequestChars());
@@ -614,7 +612,7 @@ class ControlMessage extends DataMessage
 
 		payload.putInt(sectionID);
 		payload.putInt(sectionText.length());
-		payload.put(sectionText.getBytes());
+		payload.put(sectionText.getBytes(RTCEConstants.getRtcecharset()));
 
 	}
 
