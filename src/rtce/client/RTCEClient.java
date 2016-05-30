@@ -210,7 +210,11 @@ public class RTCEClient {
         UI_OutputThread.start();
         //String s = null;
         //Scanner sc = new Scanner(System.in);
-               
+          while (true)
+          {
+        	  client.getResponse();        	  
+        	  UI_Output.refreshUI();
+          }
         //while(s !="quit")
         //{
                 //while(!sc.hasNextLine()){}
