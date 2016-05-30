@@ -35,10 +35,10 @@ public class RTCEDocument {
     	docName = new String("TheRaven");    	
     	addSection(0,1,"Once upon a midnight dreary, while I pondered, weak and weary, Over many a quaint and curious volume of forgotten lore");  
     	addSection(1,2,"While I nodded, nearly napping, suddenly there came a tapping, As of some one gently rapping, rapping at my chamber door");
-        addSection(2,3,"’Tis some visitor,' I muttered, 'tapping at my chamber door—  Only this and nothing more.' ");
+        addSection(2,3,"'Tis some visitor,' I muttered, 'tapping at my chamber door-  Only this and nothing more.' ");
         addSection(3,4,"Ah, distinctly I remember it was in the bleak December; And each separate dying ember wrought its ghost upon the floor.");
-        addSection(4,5," Eagerly I wished the morrow;—vainly I had sought to borrow From my books surcease of sorrow—sorrow for the lost Lenore");
-        addSection(5,6,"For the rare and radiant maiden whom the angels name Lenore— Nameless here for evermore");        
+        addSection(4,5," Eagerly I wished the morrow;-vainly I had sought to borrow From my books surcease of sorrow-sorrow for the lost Lenore");
+        addSection(5,6,"For the rare and radiant maiden whom the angels name Lenore- Nameless here for evermore");        
       }
     }
     
