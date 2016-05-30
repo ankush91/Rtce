@@ -63,10 +63,16 @@ public class RTCEServerAuth {
 				
 				// TODO add connection to list of current connections
 			} catch (IOException e) {
+				serverMessage = new RTCEServerMessage();
+				serverMessage.setRequest(RTCEMessageType.S_DENIED);
+				serverMessage.setSessionId(0);
 				// TODO send some sort of denial message because cannot open document
 			}
 		}else{
 			//TODO send some sort of denial message because invalid credentials/message
+			serverMessage = new RTCEServerMessage();
+			serverMessage.setRequest(RTCEMessageType.S_DENIED);
+			serverMessage.setSessionId(0);
 		}
 	}
 	
