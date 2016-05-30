@@ -62,7 +62,7 @@ public class RTCEClientUIInput implements Runnable
     			RTCEClientMessage Message = new RTCEClientMessage();
     			Message.setRequest(RTCEMessageType.S_COMMIT);
     			Message.setCommitData(
-    					123456, //need to hook to Ankush's token 
+    					parent.token, //need to hook to Ankush's token 
     					parent.commitPrevSectionID, 
     					parent.commitSectionID, 
     					parent.commitTxt);
