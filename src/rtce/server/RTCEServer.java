@@ -10,13 +10,14 @@ package rtce.server;
 import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
-import rtce.RTCEConstants;
 import rtce.RTCEDocument;
-import rtce.server.clientRecord;
 import rtce.RTCEMessageType;
-
+import static rtce.server.RTCEServerConfig.getPortNumbers;
 
 
 public class RTCEServer implements Runnable
@@ -26,16 +27,21 @@ public class RTCEServer implements Runnable
     OutputStream sendStream;
     String request;
     String response;
+    static ArrayList Ports;
     ServerLog log;
-    RTCEServerAuth sauth;
     RTCEDocument doc1 = new RTCEDocument(1);
+    ServerRecordMgmt control;
+    
+    RTCEServer(){}
     
     RTCEServer (Socket s) throws IOException
     {
         sock = s;
         recvStream = sock.getInputStream();
         sendStream = sock.getOutputStream();
+        //Ports = getPortNumbers();
         ServerLog log = new ServerLog();
+        ServerRecordMgmt control = new ServerRecordMgmt();
     } 
     
     public void run()
@@ -43,26 +49,25 @@ public class RTCEServer implements Runnable
       
       boolean flagConn = true;
 
-      int i=0;
-      String a[] = {"S_TRESPN", "S_DENIED", "ABORT", "ECHO", "BLOCK", "LACK", "S_REVOKE", "CONNECT"};
-      String request;
       while(flagConn)
         {
-        request = getRequest();
-        if(request.equals("CUAUTH")){
-        	sauth.getServerMessage().sendMessage(sock, RTCEMessageType.CONNECT);
-        }
-        //process(); ***HERE WE HAVE TO CALL THE DRIVER FUNCTION, REMOVE NORMAL REQUEST - RESPONSE FIT INTO DRIVER 
-
-        //sendResponse(RTCEMessageType.valueOf(new String(a[i].getBytes(), getRtcecharset())));
-        //i = (i+1)%a.length;
+          try {
+              
+              driver(this.sock.getLocalPort());
+              
+          } 
+          
+          catch (IOException ex) {
+              Logger.getLogger(RTCEServer.class.getName()).log(Level.SEVERE, null, ex);
+          }
         }
         
         close();
+        
     }       
     
     //ASSUMING A DRIVER RUNS ON EACH PORT FOR EACH CLIENT SESSION -> THINKING OF SOCKET FACTORIES
-    void driver(int port) //RUNS EACH CLIENT ON SPECIFIC PORT NUMBER
+    void driver(int port) throws IOException //RUNS EACH CLIENT ON SPECIFIC PORT NUMBER
     {
         /* -----------------------------------PSUEDOCODE MODEL FOR DRIVER-------------------------------------------
       
@@ -160,29 +165,31 @@ public class RTCEServer implements Runnable
         */
       
       boolean cuauth = false, cack  = false;
-      String curr = null;
+      String curr = "CLOSED";
+      System.out.println(port);
       
-     while(! curr.matches("CUAUTH") ||!cuauth){ curr = getRequest();} 
-            
+     while(!(curr.matches("CUAUTH")) && !cuauth){ curr = getRequest(); process(curr, sock);} 
              if(curr.matches("CUAUTH"))
              {
-             cuauth = true;
-             RTCEServerMessage connectMessage = sauth.getServerMessage();
-             connectMessage.sendMessage(sock, RTCEMessageType.CONNECT);
-             //sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())));
+             cuauth = true; 
+             sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())), -1, -1, sock);
              
+             System.out.println("CONNECT Done");
                 
-                    while(!(curr.matches("CACK")) || !(curr.matches("ABORT")) || !cack){ curr = getRequest();}
+                    while(!(curr.matches("CACK")) && !(curr.matches("ABORT")) && !cack){ curr = getRequest(); process(curr, sock);}
                                 
                             if(curr.matches("CACK"))
                             {
+                                
                                 cack = true;
+                                System.out.println("CACK");
                                 
                                 if(cuauth && cack)
                                         {
-                                        //ServerLog client = new ServerLog(12345, );
+                                        
+                                        //ServerLog client = new ServerLog(getSessionId(), sock.getInetAddress());
                                         //log.addActiveConnection(client, port);
-                                        //sessionDriver(session, port);
+                                        //sessionDriver(12345, port, client, curr);
                                         }
                                 
                                 else {}
@@ -203,7 +210,7 @@ public class RTCEServer implements Runnable
                     
     }
     
-    void sessionDriver(int session, int port)
+    void sessionDriver(int session, int port, ServerLog client, String curr) throws IOException
     {
         /*
         ***initialize all send flags S_LIST = FLASE, S_DATA = FALSE
@@ -260,95 +267,128 @@ public class RTCEServer implements Runnable
         
         */
         
-        boolean slist = false, sdata = false;
+        boolean slist = false, sdata = false, logoff = false, abort = false;
         
-        log.addActiveConnection(new ServerLog(session, null), port);
-            
-            sendResponse(RTCEMessageType.valueOf(new String("S_LIST".getBytes(), getRtcecharset())));
-            slist = true;
-            
-                if(slist){
-                    sendResponse(RTCEMessageType.valueOf(new String("S_DATA".getBytes(), getRtcecharset())));
-                        
-                        //if(slist && sdata)
+                    this.sendDocument(this.sock, doc1);
+                        slist = true;
+                        sdata = true;
+                    
+                        if(slist && sdata){
+                            
+                         control.insertClientRecord(client, null);
+                         
+                                while(!(logoff) || !(abort)){
+                                    
+                                    curr = getRequest();
+                                    
+                                    if(curr.matches("STREQST")){
+                                        System.out.println("STREQST");
+                                                process("STREQST", sock);
+                                     
+                                        /*
+                                        else 
+                                                control.queueAdd();
+                                                //send S_DENIED
+                                        
+                                        */
+                                    }
+                                    
+                                    if(curr.matches("S_COMMIT")){
+                                        //execute action
+                                        //S_DONE
+                                        //else
+                                        //S_REVOKE ->remove all client info
+                                        
+                                    }
+                                    
+                                    if(curr.matches("S_LOGOFF")){
+                                        logoff = true;
+                                            control.deleteClientRecord(client);
+                                            log.removeActiveConnection(port);
+                                            
+                                            sendResponse(RTCEMessageType.LACK, -1, -1, this.sock);
+                                        break;
+                                    }
+                                    
+                                    if(curr.matches("ABORT")){
+                                        abort = true;
+                                            control.deleteClientRecord(client);
+                                            log.removeActiveConnection(port);
+                                        break;
+                                    }
+                                     
+                                    /*if()
+                                
+                                    */
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                       
+                                
+                                
+                                
                                
+                        }
+                         
             
               }
     }
     
     
     
-  String getRequest()
+  String getRequest() throws IOException
   {
       boolean valid = false;
-      
-      try
-      {
-          int dataSize, messageSize;
-          
-          
-          while((dataSize = recvStream.available())==0);
-          
-          byte readbf[] = new byte[dataSize];
-          recvStream.read(readbf, 0, dataSize);
-          
-          byte asciiVal[] = new byte[8];
-          
-          for(int i=0; i<8; i++)
-              asciiVal[i] = readbf[i];
-          
-          RTCEServerMessage clientMessage = new RTCEServerMessage(); 
-           String s = new String(asciiVal, 0, clientMessage.lastByte(asciiVal), RTCEConstants.getRtcecharset());
-         
-         
-          if((messageSize = clientMessage.lengthBuffer(s))!=0)
-          {   
-            ByteBuffer bf = ByteBuffer.allocate(messageSize);
+      int dataSize;
+      byte asciiVal[] = new byte[8];
+      RTCEServerMessage clientMessage = new RTCEServerMessage();
+      String s; 
+             
+            while((dataSize = recvStream.available())==0);
             
-            bf.put(readbf);
-            String requestTemp = new String(s.getBytes(),getRtcecharset());
-            request = "";
-            for(int i = 0; i < requestTemp.length(); i++){
-            	if(requestTemp.charAt(i) == 0){
-            		break;
-            	}else{
-            		request += requestTemp.charAt(i);
-            	}
-            }
-            valid = true;
-            System.out.println(s + " : " + requestTemp + " : " + request);
-            System.out.println("INCOMING REQUEST: " + request+ "\n");
+                byte readbf[] = new byte[dataSize];
+                recvStream.read(readbf, 0, dataSize);
           
-            clientMessage.recvMessage(sock, RTCEMessageType.valueOf(request), bf);
-            if(request.equals("CUAUTH")){
-            	sauth = new RTCEServerAuth(clientMessage);
-            }
-          }
-          
-          else  
-                {
-              System.out.println("NOT PROCESSED.. \n");
-                }
-          
-      }
+                for(int i=0; i<8; i++)
+                    asciiVal[i] = readbf[i];
+              
+                s = new String(asciiVal, 0, clientMessage.lastByte(asciiVal));
+                System.out.println("INCOMING REQUEST: " + s + "\n");
+           
+     return s;
       
-      catch(IOException ex)
-      {
-          System.err.println("IOException in getRequest");
-      }
-      
-      
-      if(valid)
-          return request;
-      else
-        return null;
+  
   }
   
   
-  void sendResponse(RTCEMessageType response)
+  void process(String s, Socket sock)
+  {
+      int messageSize;
+      RTCEServerMessage clientMessage = new RTCEServerMessage();
+      
+            if((messageSize = clientMessage.lengthBuffer(s))!=0){
+                ByteBuffer bf = ByteBuffer.allocate(messageSize);
+                bf.put(s.getBytes());
+                s = new String(s.getBytes(),getRtcecharset());
+                clientMessage.recvMessage(sock, RTCEMessageType.valueOf(s), bf);
+            }
+      
+            else{
+                System.out.println("NOT PROCESSED.. \n");
+            }
+      
+  }
+  
+  void sendResponse(RTCEMessageType response, double token, int section, Socket sock)
   {
             RTCEServerMessage serverMessage = new RTCEServerMessage();
-            serverMessage.sendMessage(sock, response);
+            serverMessage.sendMessage(sock, response, token, section);
       
   }
   
@@ -375,7 +415,7 @@ public class RTCEServer implements Runnable
       sMsg.setDocument(doc);
       sMsg.setRequest(RTCEMessageType.S_LIST);
       sMsg.setSessionId(123456); //Need to figure out how to get this value
-      sMsg.sendMessage(s,RTCEMessageType.S_LIST);
+      sMsg.sendMessage(s,RTCEMessageType.S_LIST, -1, -1);
 	  
       try{Thread.sleep(200);} catch (Exception e){}
 	  
@@ -386,30 +426,52 @@ public class RTCEServer implements Runnable
       {
          sMsg.setRequest(RTCEMessageType.S_DATA);    	  
          sMsg.setSectionID(sID);
-         sMsg.sendMessage(s,RTCEMessageType.S_DATA);
+         sMsg.sendMessage(s,RTCEMessageType.S_DATA, -1, -1);
          try{Thread.sleep(200);} catch (Exception e){}
          sID = doc.getNextSectionItr().ID;
       }  
   }
   
+  /*public static ServerSocket create(ArrayList<Integer> ports) throws IOException {
+      
+      for (int port : ports) 
+    {
+        try {
+            System.out.println(port);
+            return new ServerSocket(port); //try if this port works
+        } catch (IOException ex) {
+            continue; // try next port
+        }
+    }
+
+    // if the program gets here, no port in the range was found free
+    throw new IOException("NO PORT IS FREE RIGHT NOW");
+}*/
+  
   public static void main(String arg[]) throws IOException
   {
-	  RTCEServerConfig.init("config/server/servConfig.conf");
-      final int port = 25351; //Provide Server Port
-      ServerSocket listenSock = new ServerSocket(port);
+      
+      
       
       //Create and start the Discovery Thread
       RTCEDiscoveryServer discServer = new RTCEDiscoveryServer();
       Thread discThread = new Thread(discServer);      
       discThread.start();
+      ServerSocket listenSock = new ServerSocket(25351);
+     // ServerSocket listenSock2 = new ServerSocket(50000);
       
       while(true)
       {
-          RTCEServer server = new RTCEServer(listenSock.accept());          
-          Thread thread = new Thread(server);          
+           //create a new socket here which is free
+          
+          RTCEServer server1 = new RTCEServer(listenSock.accept());          
+          Thread thread = new Thread(server1);          
           thread.start();
           
+          
       }
+      
+      
   }       
   
   
