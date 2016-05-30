@@ -262,7 +262,9 @@ public class RTCEServerConfig {
 	 * @return true if user created, false otherwise
 	 */
 	public static boolean createAuthor(String username, String password){
-		if(authMap.containsKey(username)){
+		if(username == null || username.trim().length() == 0 || authMap.containsKey(username)){
+			return false;
+		}else if(password != null || password.trim().length() == 0){
 			return false;
 		}else{
 			try {
