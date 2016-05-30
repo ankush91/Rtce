@@ -722,7 +722,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	public void getS_COMMIT(ByteBuffer bf, Socket s)
 	{
 		bf.position(40);
-		
+				
 		double token = bf.getDouble();
 		int prevID = bf.getInt();
 		int sID = bf.getInt();		

@@ -412,7 +412,7 @@ public class RTCEClientMessage {
        }  
     
     //This function sets all the data needed to send a S_COMMIT message
-    public void setCommitData(int token, int prevID, int sID, String newText)
+    public void setCommitData(double token, int prevID, int sID, String newText)
     {
       Commit_token  = token;
       Commit_prevID = prevID; 
