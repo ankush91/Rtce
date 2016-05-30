@@ -29,6 +29,7 @@ public class RTCEServer implements Runnable
     String response;
     static ArrayList Ports;
     ServerLog log;
+    RTCEServerAuth sauth;
     RTCEDocument doc1 = new RTCEDocument(1);
     ServerRecordMgmt control;
     
@@ -172,7 +173,9 @@ public class RTCEServer implements Runnable
              if(curr.matches("CUAUTH"))
              {
              cuauth = true; 
-             sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())), -1, -1, sock);
+             RTCEServerMessage connectMessage = sauth.getServerMessage();
+             connectMessage.sendMessage(sock, RTCEMessageType.CONNECT, -1, -1);
+             //sendResponse(RTCEMessageType.valueOf(new String("CONNECT".getBytes(), getRtcecharset())), -1, -1, sock);
              
              System.out.println("CONNECT Done");
                 
@@ -377,6 +380,9 @@ public class RTCEServer implements Runnable
                 bf.put(s.getBytes());
                 s = new String(s.getBytes(),getRtcecharset());
                 clientMessage.recvMessage(sock, RTCEMessageType.valueOf(s), bf);
+                if(clientMessage.getRequest().equals(RTCEMessageType.CUAUTH)){
+                	sauth = new RTCEServerAuth(clientMessage);
+                }
             }
       
             else{
@@ -451,7 +457,7 @@ public class RTCEServer implements Runnable
   public static void main(String arg[]) throws IOException
   {
       
-      
+      RTCEServerConfig.init("config/server/servConfig.conf");
       
       //Create and start the Discovery Thread
       RTCEDiscoveryServer discServer = new RTCEDiscoveryServer();
