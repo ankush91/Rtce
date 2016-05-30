@@ -26,13 +26,12 @@ public class ServerRecordMgmt
        sectionFree_list = sectionInitialize();
     }
     
-    public static ArrayList tokenInitialize() //free token list - assigning random values to tokens
+     public static ArrayList tokenInitialize() //free token list - assigning random values to tokens
     {
         ArrayList initial = new ArrayList<Integer>();
-        Random r = new Random();
         
         for(int i=0; i<100; i++)
-            initial.add(r.nextDouble());
+            initial.add((double)i);
         
         return initial;
         
