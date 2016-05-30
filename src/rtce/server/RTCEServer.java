@@ -41,9 +41,8 @@ public class RTCEServer implements Runnable
         recvStream = sock.getInputStream();
         sendStream = sock.getOutputStream();
         //Ports = getPortNumbers();
-        log = new ServerLog();
-        
-        ServerRecordMgmt control = new ServerRecordMgmt();
+        log = new ServerLog();        
+        control = new ServerRecordMgmt();
     } 
     
     public void run()
