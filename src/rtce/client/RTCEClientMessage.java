@@ -412,7 +412,7 @@ public class RTCEClientMessage {
        }  
     
     //This function sets all the data needed to send a S_COMMIT message
-    public void setCommitData(double token, int prevID, int sID, String newText)
+    public void setCommitData(int token, int prevID, int sID, String newText)
     {
       Commit_token  = token;
       Commit_prevID = prevID; 
@@ -618,7 +618,6 @@ public class RTCEClientMessage {
        
           case S_TRESPN:
           control.getS_TRESPN(bf);
-          setToken(control.getResponseToken());
      	  break;     
           
           case S_DENIED:
@@ -816,13 +815,16 @@ class ControlMessage extends DataMessage
        //ALL RECEIVED MESSAGES FROM SERVER SIDE
        public void getS_TRESPN(ByteBuffer bf)
     {   
+           bf.position(40);
            
            System.out.println("token processing..");
            
-           bf.position(40);
-           setToken(bf.getDouble());
-           bf.position(40);
-           System.out.println("in msg:"+bf.getDouble());
+           bf.position(48);
+           if(getSectionId()==bf.getInt())
+           {
+               bf.position(40);
+               setToken(bf.getDouble());
+           }
                
            //System.out.println("length processing..");    
            bf.getInt();
