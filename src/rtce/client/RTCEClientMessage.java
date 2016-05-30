@@ -733,6 +733,11 @@ class ControlMessage extends DataMessage
                other_option_list[i] = (byte)0xe0;*/
             
         ByteBuffer bf = ByteBuffer.allocate(88 + (8*(num_encrypt_opts + num_generic_opts)));
+        System.out.println("Version: " + getVersion());
+        System.out.println("Username: " + getUsername());
+        System.out.println("Password: " + getPassword());
+        System.out.println("DocOwner: " + getDocumentOwner());
+        System.out.println("DocName: " + getDocumentTitle());
         bf.put(version);
         bf.put(username);
         bf.put(authentic);

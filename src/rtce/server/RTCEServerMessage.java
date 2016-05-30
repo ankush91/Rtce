@@ -590,12 +590,6 @@ class ControlMessage extends DataMessage
 		setDocument(doc);
 	} 
 
-
-	public void getCUAUTH()
-	{
-
-	}
-
 	public void setS_LIST()
 	{	   
 		int numberOfIDs = this.getDocument().resetSectionItr();	  	  
