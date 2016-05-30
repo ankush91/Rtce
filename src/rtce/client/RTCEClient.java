@@ -25,6 +25,7 @@ public class RTCEClient {
         OutputStream sendStream;
         InputStream recvStream;
         String request, response;
+        RTCEClientConnection cliConn;
         RTCEClientAuth cAuthModule;
         static RTCEDocument doc = new RTCEDocument(0);
 
@@ -98,6 +99,8 @@ public class RTCEClient {
             serverMessage.recvMessage(sock, RTCEMessageType.valueOf(response), bf);
             if(response.equals("CONNECT")){
             	cAuthModule.setServerMessage(serverMessage);
+            	cliConn = cAuthModule.getConnection();
+            	cAuthModule.getCack().sendMessage(sock, RTCEMessageType.CACK);
             }
           }
           

@@ -14,6 +14,7 @@ public class RTCEClientAuth {
 	
 	private RTCEClientMessage clientMessage;
 	private RTCEClientMessage serverMessage;
+	private RTCEClientMessage cack;
 	
 	/**
 	 * Create the authentication module from user input
@@ -63,6 +64,14 @@ public class RTCEClientAuth {
 	}
 	
 	/**
+	 * Get the client acknowledgement message
+	 * @return the client acknowledgement message
+	 */
+	public RTCEClientMessage getCack() {
+		return cack;
+	}
+	
+	/**
 	 * Set the server connection response
 	 * @param serverMessage = the server connection response
 	 */
@@ -98,6 +107,9 @@ public class RTCEClientAuth {
 		String sec[] = serverMessage.getSharedSecrets();
 		long session = serverMessage.getSessionId();
 		byte version[] = serverMessage.getVersion();
+		cack = new RTCEClientMessage();
+		cack.setSessionId(session);
+		cack.setRequest(RTCEMessageType.CACK);
 		return new RTCEClientConnection(encrypt, opts, sec, null, session, version);
 	}
 }
