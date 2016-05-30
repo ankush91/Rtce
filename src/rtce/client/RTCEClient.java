@@ -38,6 +38,8 @@ public class RTCEClient {
     	public int commitSectionID     = 0;
     	public String commitTxt;
     	
+    	public double token = 0;
+    	
         
         RTCEClient(int port) throws IOException, UnknownHostException
                 {
@@ -111,6 +113,11 @@ public class RTCEClient {
             if(response.equals("S_DONE") && commitSectionID > 0) {
             	doc.processCommit(commitPrevSectionID, commitSectionID, commitTxt);
             	commitSectionID = 0;
+            }
+            if(response.equals("S_TRESPN"))
+            {
+                token = serverMessage.getResponseToken();	 
+                System.out.println("Got Token"+token);
             }
           }
           
