@@ -51,7 +51,8 @@ public class RTCEClientUIInput implements Runnable
     			     s.startsWith("ABORT") |
     			     s.startsWith("ECHO") |
     			     s.startsWith("LOGOFF") |
-    			     s.startsWith("BLOCK") 
+    			     s.startsWith("BLOCK") |
+    			     s.startsWith("CACK")
     			    )
     		{
               RTCEClientMessage clientMessage = new RTCEClientMessage();
