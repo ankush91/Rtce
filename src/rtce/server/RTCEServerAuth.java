@@ -111,8 +111,10 @@ public class RTCEServerAuth {
 				}else{
 					return false;
 				}
-			}else{
+			}else if(clientMessage.getUsername() != null && clientMessage.getPassword() != null && clientMessage.getUsername().trim().length() > 0 && clientMessage.getPassword().trim().length() > 0){
 				return RTCEServerConfig.createAuthor(clientMessage.getUsername(), clientMessage.getPassword());
+			}else{
+				return false;
 			}
 		}else{
 			return false;
