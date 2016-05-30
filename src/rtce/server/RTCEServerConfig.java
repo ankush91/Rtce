@@ -104,6 +104,10 @@ public class RTCEServerConfig {
 					minPort = Integer.parseInt(line.split("min-port:")[1].trim());
 				}else if(line.startsWith("max-port:")){
 					maxPort = Integer.parseInt(line.split("max-port:")[1].trim());
+				}else if(line.startsWith("doc-ext:")){
+					fileExt = line.split("doc-ext:")[1].trim();
+				}else if(line.startsWith("perm-doc:")){
+					permissions = line.split("perm-doc:")[1].trim();
 				}
 			}
 			line = reader.readLine();
