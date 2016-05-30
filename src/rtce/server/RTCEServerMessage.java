@@ -42,7 +42,7 @@ public class RTCEServerMessage {
 	private String sharedSecrets[];
 
 	//The session ID for all headers
-	private long sessionId;
+	public long sessionId;
 
 	//The time stamp value
 	private long timeStamp;
@@ -451,6 +451,11 @@ public class RTCEServerMessage {
 		{}
 		break;    	   
 
+		case S_DONE:
+			controlPayload = new ControlMessage(8);
+			controlPayload.payload = controlPayload.setS_DONE();
+			break;    	     	   
+			
 		case ECHO:
 		{}
 		break; 
@@ -531,7 +536,7 @@ public class RTCEServerMessage {
 
 		case S_COMMIT:
 			control = new ControlMessage(document);
-			control.getS_COMMIT(bf);
+			control.getS_COMMIT(bf, s);
 			{}
 			break;    
 
@@ -715,7 +720,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s)
                 
 	}
 
-	public void getS_COMMIT(ByteBuffer bf)
+	public void getS_COMMIT(ByteBuffer bf, Socket s)
 	{
 		bf.position(40);
 		//We would validate the token here?
@@ -724,10 +729,15 @@ public void getS_TREQST(ByteBuffer bf, Socket s)
 		int sID = bf.getInt();		
         int len = bf.getInt();
         
-        String sectionTxt = new String(bf.array(), 52, len);
+        String sectionTxt = new String(bf.array(), 56, len);
   	    System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
         
   	    document.processCommit(prevID, sID, sectionTxt);
+  	    
+  	    RTCEServerMessage response = new RTCEServerMessage();
+  	    response.setRequest(RTCEMessageType.S_DONE);
+  	    response.setSessionId(sessionId);
+  	    response.sendMessage(s, RTCEMessageType.S_DONE, 0, 0);
 		//This would be the location to push out this to all connected clients
 	}
 
@@ -752,6 +762,17 @@ public void getS_TREQST(ByteBuffer bf, Socket s)
 		return b;
 	}
 
+	public ByteBuffer setS_DONE()
+	{
+		
+		int statuscode = 0;
+		int error = 0;
+		ByteBuffer b = ByteBuffer.allocate(8);
+		b.putInt(statuscode);
+		b.putInt(error);
+		return b;
+	}
+	
 	public ByteBuffer setS_REVOKE()
 	{
 		//status code 1 revoke, error 1 -> Unique interpretation, token revoked due by application level

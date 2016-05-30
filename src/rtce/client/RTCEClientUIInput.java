@@ -45,6 +45,31 @@ public class RTCEClientUIInput implements Runnable
     			Message.sendMessage(socket, RTCEMessageType.CUAUTH );*/
     			
     		}
+    		
+    		//change section text
+    		//example:   commit,previous section ID,changed section ID
+    		//example:   commit,1,2
+    		else if (s.startsWith("commit"))
+    		{
+    			String[] parts = s.split(",");
+    			System.out.println("Enter new text");
+    			String newText = sc.nextLine();
+    			
+    			parent.commitPrevSectionID = Integer.parseInt(parts[1]);
+    			parent.commitSectionID     = Integer.parseInt(parts[2]);
+    			parent.commitTxt           = newText;
+    			
+    			RTCEClientMessage Message = new RTCEClientMessage();
+    			Message.setRequest(RTCEMessageType.S_COMMIT);
+    			Message.setCommitData(
+    					123456, //need to hook to Ankush's token 
+    					parent.commitPrevSectionID, 
+    					parent.commitSectionID, 
+    					parent.commitTxt);
+    			Message.setSessionId(parent.getcAuthModule().getConnection().getSessionId());
+    			Message.sendMessage(socket, RTCEMessageType.S_COMMIT);
+    			 
+    		}
     		//User just wants to send out a test message in PDU
     		else if (s.startsWith("S_") | 
     			     s.startsWith("CUAUTH") |

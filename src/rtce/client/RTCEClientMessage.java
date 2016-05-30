@@ -377,6 +377,7 @@ public class RTCEClientMessage {
   		setHeaderReserved1(bf.getInt());
   		setHeaderReserved2(bf.getInt());
   		setHeaderReserved3(bf.getInt());
+  		/* FOR DEBUG
   		System.out.println("Session ID:   "+ getSessionId());
   		System.out.println("Time Stamp:   "+ getTimeStamp());
 
@@ -384,7 +385,7 @@ public class RTCEClientMessage {
   		System.out.println("Reserved1:  "+ getHeaderReserved1());
   		System.out.println("Reserved 2: "+ getHeaderReserved2());
   		System.out.println("Reserved 3: "+ getHeaderReserved3());  
-          
+          */
        }  
     
     //This function sets all the data needed to send a S_COMMIT message
@@ -512,6 +513,9 @@ public class RTCEClientMessage {
           	   
           case "S_REVOKE":
            return 48;
+
+          case "S_DONE":
+              return 48;
            
           case "ABORT":
               return 40;

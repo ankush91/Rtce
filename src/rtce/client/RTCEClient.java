@@ -31,7 +31,13 @@ public class RTCEClient {
 
         //Constants used for Discovery
     	final static int    DISCOVERY_PORT = 4446;
-    	final static String MCAST_DISCOVERY_GROUP = "225.0.0.10";	
+    	final static String MCAST_DISCOVERY_GROUP = "225.0.0.10";
+    	
+    	//Used to alert document after S_DONE from S_COMMIT
+    	public int commitPrevSectionID = 0;
+    	public int commitSectionID     = 0;
+    	public String commitTxt;
+    	
         
         RTCEClient(int port) throws IOException, UnknownHostException
                 {
@@ -101,6 +107,10 @@ public class RTCEClient {
             	cAuthModule.setServerMessage(serverMessage);
             	cliConn = cAuthModule.getConnection();
             	cAuthModule.getCack().sendMessage(sock, RTCEMessageType.CACK);
+            }
+            if(response.equals("S_DONE") && commitSectionID > 0) {
+            	doc.processCommit(commitPrevSectionID, commitSectionID, commitTxt);
+            	commitSectionID = 0;
             }
           }
           

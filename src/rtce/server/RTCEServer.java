@@ -298,7 +298,7 @@ public class RTCEServer implements Runnable
                                     }
                                     
                                     if(curr.matches("S_COMMIT")){
-                                        //execute action
+                                    	process("S_COMMIT", sock, currRead);
                                         //S_DONE
                                         //else
                                         //S_REVOKE ->remove all client info
@@ -379,6 +379,7 @@ public class RTCEServer implements Runnable
                 ByteBuffer bf = ByteBuffer.allocate(messageSize);
                 bf.put(read);
                 s = new String(s.getBytes(),getRtcecharset());
+                clientMessage.setDocument(doc1);
                 clientMessage.recvMessage(sock, RTCEMessageType.valueOf(s), bf);
                 if(clientMessage.getRequest().equals(RTCEMessageType.CUAUTH)){
                 	sauth = new RTCEServerAuth(clientMessage);
