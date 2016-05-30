@@ -289,12 +289,18 @@ public class RTCEServerMessage {
 		setRequest(request);
 		ByteBuffer bbuf = ByteBuffer.allocate(40);
 		bbuf.put(getRequestChars());
-		bbuf.putLong(23);
+		bbuf.putLong(getSessionId());
+    	bbuf.putLong(getTime());
+    	bbuf.putInt(getChecksum());
+    	bbuf.putInt(getHeaderReserved1());
+    	bbuf.putInt(getHeaderReserved2());
+    	bbuf.putInt(getHeaderReserved3());
+		/*bbuf.putLong(23);
 		bbuf.putLong(getTime());
 		bbuf.putInt(1001);
 		bbuf.putInt(1);
 		bbuf.putInt(2);
-		bbuf.putInt(3);
+		bbuf.putInt(3);*/
 		return bbuf;
 
 	}  
