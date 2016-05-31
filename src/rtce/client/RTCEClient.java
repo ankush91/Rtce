@@ -71,6 +71,54 @@ public class RTCEClient {
 			this.cAuthModule = cAuthModule;
 		}
 		
+		public static Socket getSock() {
+			return sock;
+		}
+
+		public OutputStream getSendStream() {
+			return sendStream;
+		}
+
+		public InputStream getRecvStream() {
+			return recvStream;
+		}
+
+		public String getRequest() {
+			return request;
+		}
+
+		public RTCEClientConnection getCliConn() {
+			return cliConn;
+		}
+
+		public static RTCEDocument getDoc() {
+			return doc;
+		}
+
+		public static int getDiscoveryPort() {
+			return DISCOVERY_PORT;
+		}
+
+		public static String getMcastDiscoveryGroup() {
+			return MCAST_DISCOVERY_GROUP;
+		}
+
+		public int getCommitPrevSectionID() {
+			return commitPrevSectionID;
+		}
+
+		public int getCommitSectionID() {
+			return commitSectionID;
+		}
+
+		public String getCommitTxt() {
+			return commitTxt;
+		}
+
+		public double getToken() {
+			return token;
+		}
+
 		void getResponse()
         {
            try

@@ -66,7 +66,7 @@ public class RTCEClientUIInput implements Runnable
     					parent.commitPrevSectionID, 
     					parent.commitSectionID, 
     					parent.commitTxt);
-    			Message.setSessionId(parent.getcAuthModule().getConnection().getSessionId());
+    			Message.setSessionId(parent.getCliConn().getSessionId());
     			Message.sendMessage(socket, RTCEMessageType.S_COMMIT, -1, -1);
     			 
     		}
@@ -79,7 +79,7 @@ public class RTCEClientUIInput implements Runnable
                      int a = Integer.parseInt(s.replaceAll("[^0-9]", "")); 
                      System.out.println(a);
                      clientMessage.setSectionId(a);
-                     
+                     clientMessage.setSessionId(parent.getCliConn().getSessionId());
                      String reqst = "S_TREQST";
                      clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(reqst.getBytes(), getRtcecharset())), -1, a);
                      

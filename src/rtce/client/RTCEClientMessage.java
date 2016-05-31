@@ -64,8 +64,8 @@ public class RTCEClientMessage {
 	
         
         //The pieces for token request for a section and response token
-        private int Request_sID;
-        private double Response_token;
+        private static int Request_sID;
+        private static double Response_token;
 
 	/**
 	 * Get the message type
