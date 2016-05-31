@@ -3,7 +3,6 @@ package rtce.server;
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
 import rtce.RTCEConstants;
-import rtce.client.ControlMessage;
 
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
