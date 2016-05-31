@@ -3,6 +3,9 @@ package rtce.client;
 import rtce.RTCEMessageType;
 import rtce.RTCEConstants;
 import rtce.RTCEDocument;
+import rtce.server.ControlMessage;
+import rtce.server.ServerLog;
+import rtce.server.ServerRecordMgmt;
 
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -455,12 +458,7 @@ public class RTCEClientMessage {
             controlPayload.payload = controlPayload.setSTREQST(section);
      	  break;    
           
-       case S_DONE:
-       
-           controlPayload = new ControlMessage(8);
-            controlPayload.payload = controlPayload.setS_DONE();
-           //payload = setS_DONE();
-     	  break;    
+          
           
         case S_COMMIT:
             controlPayload = new ControlMessage(8+4+4+4+Commit_txt.length());
@@ -648,6 +646,12 @@ public class RTCEClientMessage {
              {}
      	  break;  
 
+       case S_DONE:
+			control = new ControlMessage();
+			control.getS_DONE(bf, s, log, record, client);
+			{}
+			break; 
+     	  
        default: {}
     	        	
        } //switch (request)
@@ -735,16 +739,7 @@ class ControlMessage extends RTCEClientMessage
         return b; 
     }
      
-       public ByteBuffer setS_DONE()
-       {
-           //status code 1 means no error
-           int statuscode = 1;
-           int error = 0;
-            ByteBuffer b = ByteBuffer.allocate(8);
-            b.putInt(statuscode);
-            b.putInt(error);
-            return b;
-       }
+      
        
        //ALL RECEIVED MESSAGES FROM SERVER SIDE
        public void getS_TRESPN(ByteBuffer bf)
@@ -837,6 +832,16 @@ class ControlMessage extends RTCEClientMessage
            //System.out.println("Secret List..");
     }
     
-       
+    public void getS_DONE(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt record, ServerLog client)
+
+	{       
+		bf.position(40);
+                //default status and error message
+		int status = bf.getInt();
+                int error = bf.getInt();
+               
+                record.tokenRevoke(client);
+                
+	}
        
 }
