@@ -69,107 +69,13 @@ public class RTCEServer implements Runnable
     
     //ASSUMING A DRIVER RUNS ON EACH PORT FOR EACH CLIENT SESSION -> THINKING OF SOCKET FACTORIES
     void driver(int port) throws IOException //RUNS EACH CLIENT ON SPECIFIC PORT NUMBER
-    {
-        /* -----------------------------------PSUEDOCODE MODEL FOR DRIVER-------------------------------------------
-      
-        
-        **********inialize all necessary driver flags****************
-        WHEN A NEW DOCUMENT IS CREATED START DATA TIMEOUT ; KEEP IT LONG -> NOT IN THIS FUNCTION THOUGH
-        
-        WHILE(NOT CUAUTH RECEIVED OR CUAUTH FLAG = FALSE DO NOTHING);
-        
-                IF CUAUTH RECEIEVED
-                                    CHANGE CUAUTH FLAG = TRUE
-                                    PROCESS CUAUTH IN SERVER MESSAGE
-                                    SEND CONNECT                        
-                            
-                            WHILE(!(TIMEOUT RECEIVED) OR !(ABORT RECEIVED) OR !(CONNECT RECEIVED) OR CACK FLAG = FALSE DO NOTHING){} //BARRIER BLOCK HERE
-                            
-                                IF CONNECT RECEIVED 
-                                       CACK FLAG = TRUE
-                                       IF (CUAUTH FLAG = TRUE, CACK = TRUE)
-                                            
-                                                SESSION ESTABLISHED CALL DRIVER ON SESSION ->
-                                                EXTRACT SESSION INFORMATION
-                                                call sessionDriver function
-        
-                                ELSE
-                                    BREAK OUT OF LOOP; //NO CONNECTION ESTABLISHED
-        
-                                  
-                                    
-        
-                                void sessionDriver(int session number)
-        
-                                        ***initialize all send flags S_LIST = FLASE, S_DATA = FALSE
-                                        ADD CLIENT IN SERVER LOG -> CLIENT IP, PORT NUMBER, SESSION ID    
-                                            
-                                        SEND S_LIST
-                                        CHANGE S_LIST = TRUE 
-                                                
-                                                IF S_LIST = TRUE
-                                                     SEND S_DATA
-                                                     
-                                                        IF S_LIST = TRUE AND S_DATA = TRUE
-                                                        ADD CLIENT IN CLIENT RECORD -> EMPTY TOKEN
-        
-                                                        WHILE LOGOUT FLAG = FALSE || ABORT FLAG = FALSE || NO TIMEOUT DO THE FOLLOWING
-                                                        |    
-                                                        |    WHILE(NEW REQUEST NOT RECEIVED DO NOTHING)
-                                                        |            START TIMER HERE -> EXCEEDINGLY LONG TIMER A FEW HOURS MAY BE
-                                                        |        
-                                                        |
-                                                        |            IF TOKENREQUEST 
-                                                        |               CHECK SECTION FREE USING freeSectionList in ServerRecordMgmt
-                                                        |                
-                                                        |                IF SECTION FREE && CAN ACCESS SECTION
-                                                        |                    GRANT REQUEST 
-                                                        |               
-                                                        |                 ELSE
-                                                        |                     PENDING QUEUE ->SCHEDULING DONE BY PRIORITY IF NEEDED 
-                                                        |        
-                                                        |            IF COMMIT REQUEST
-                                                        |                
-                                                        |                 CHECK IF SECTION !FREE && TOKEN FOUND IN CLIENT RECORD
-                                                        |                        
-                                                        |                        IF RECORD FOUND
-                                                        |                        PERFORM COMMIT 
-                                                        |                        UPDATE CENTRAL DOCUMENT
-                                                        |                       SEND S_DONE
-                                                        |
-                                                        |                       ELSE
-                                                        |                        SEND S_REVOKE
-                                                        |
-                                                        |             IF LOGOFF
-                                                        |                SEND LACK;  BREAK FROM HERE; LOGOUT FLAG = TRUE
-                                                        |
-                                                        |             IF ABORT 
-                                                        |                ABORT FLAG = TRUE; BREAK FROM HERE
-                                                        |                       
-                                                        |
-                                                        |             IF BLOCK FLAG = ON 
-                                                        |               SEND BLOCK INFORMATION; BLOCK FLAG = TRUE
-                                                        |            
-                                                        |           
-                                                        |            
-        
-        DRIVER FOR DATA UPDATE
-        
-        void dataUpdate()
-        
-        IF DATA TIMEOUT
-                SEND UPDATED DATA TO ALL ACTIVE CLIENT CONNECTIONS FOUND IN LOG                                                          
-                                                     
-     ************************************************************************************************************************************   
-         
-        
-        */
+    {       
       
       boolean cuauth = false, cack  = false;
       String curr = "CLOSED";
       System.out.println(port);
       byte[] currRead;
-     while(!(curr.matches("CUAUTH")) && !cuauth){ currRead = getRequest(); curr = getName(currRead); process(curr, sock, currRead, log, control);} 
+     while(!(curr.matches("CUAUTH")) && !cuauth){ currRead = getRequest(); curr = getName(currRead); process(curr, sock, currRead, log, control, null);} 
              if(curr.matches("CUAUTH"))
              {
              cuauth = true; 
@@ -178,7 +84,7 @@ public class RTCEServer implements Runnable
              
              System.out.println("CONNECT Done");
                 
-                    while(!(curr.matches("CACK")) && !(curr.matches("ABORT")) && !cack){ currRead = getRequest(); curr = getName(currRead); process(curr, sock, currRead, log, control);}
+                    while(!(curr.matches("CACK")) && !(curr.matches("ABORT")) && !cack){ currRead = getRequest(); curr = getName(currRead); process(curr, sock, currRead, log, control, null);}
                                 
                             if(curr.matches("CACK"))
                             {
@@ -187,8 +93,7 @@ public class RTCEServer implements Runnable
                                 System.out.println("CACK");
                                 
                                 if(cuauth && cack)
-                                        {
-                                        
+                                        {  
                                         ServerLog client = new ServerLog(connectMessage.getSessionId(), sock.getInetAddress());                                        
                                         log.addActiveConnection(client, port);
                                         sessionDriver(connectMessage.getSessionId(), port, client, curr);
@@ -214,60 +119,7 @@ public class RTCEServer implements Runnable
     
     void sessionDriver(long session, int port, ServerLog client, String curr) throws IOException
     {
-        /*
-        ***initialize all send flags S_LIST = FLASE, S_DATA = FALSE
-                                        ADD CLIENT IN SERVER LOG -> CLIENT IP, PORT NUMBER, SESSION ID    
-                                            
-                                        SEND S_LIST
-                                        CHANGE S_LIST = TRUE 
-                                                
-                                                IF S_LIST = TRUE
-                                                     SEND S_DATA
-                                                     
-                                                        IF S_LIST = TRUE AND S_DATA = TRUE
-                                                        ADD CLIENT IN CLIENT RECORD -> EMPTY TOKEN
-        
-                                                        WHILE LOGOUT FLAG = FALSE || ABORT FLAG = FALSE || NO TIMEOUT DO THE FOLLOWING
-                                                        |    
-                                                        |    WHILE(NEW REQUEST NOT RECEIVED DO NOTHING)
-                                                        |            START TIMER HERE -> EXCEEDINGLY LONG TIMER A FEW HOURS MAY BE
-                                                        |        
-                                                        |
-                                                        |            IF TOKENREQUEST 
-                                                        |               CHECK SECTION FREE USING freeSectionList in ServerRecordMgmt
-                                                        |                
-                                                        |                IF SECTION FREE && CAN ACCESS SECTION
-                                                        |                    GRANT REQUEST 
-                                                        |               
-                                                        |                 ELSE
-                                                        |                     PENDING QUEUE ->SCHEDULING DONE BY PRIORITY IF NEEDED 
-                                                        |        
-                                                        |            IF COMMIT REQUEST
-                                                        |                
-                                                        |                 CHECK IF SECTION !FREE && TOKEN FOUND IN CLIENT RECORD
-                                                        |                        
-                                                        |                        IF RECORD FOUND
-                                                        |                        PERFORM COMMIT 
-                                                        |                        UPDATE CENTRAL DOCUMENT
-                                                        |                       SEND S_DONE
-                                                        |
-                                                        |                       ELSE
-                                                        |                        SEND S_REVOKE
-                                                        |
-                                                        |             IF LOGOFF
-                                                        |                SEND LACK;  BREAK FROM HERE; LOGOUT FLAG = TRUE
-                                                        |
-                                                        |             IF ABORT 
-                                                        |                ABORT FLAG = TRUE; BREAK FROM HERE
-                                                        |                       
-                                                        |
-                                                        |             IF BLOCK FLAG = ON 
-                                                        |               SEND BLOCK INFORMATION; BLOCK FLAG = TRUE
-                                                        |            
-                                                        |           
-                                                        |            
-        
-        */
+       
         
         boolean slist = false, sdata = false, logoff = false, abort = false;
         byte[] currRead;
@@ -287,7 +139,7 @@ public class RTCEServer implements Runnable
                                     
                                     if(curr.matches("S_TREQST")){
                                         System.out.println("S_TREQST");
-                                        process("S_TREQST", sock, currRead, log, control);
+                                        process("S_TREQST", sock, currRead, log, control, client);
                                      
                                         /*
                                         else 
@@ -297,15 +149,18 @@ public class RTCEServer implements Runnable
                                         */
                                     }
                                     
-                                    if(curr.matches("S_COMMIT")){
-                                    	process("S_COMMIT", sock, currRead, log, control);
-                                        //S_DONE
-                                        //else
-                                        //S_REVOKE ->remove all client info
-                                        
+                                    else if(curr.matches("S_DONE"))
+                                    {
+                                        process("S_COMMIT", sock, currRead, log, control, client);
                                     }
                                     
-                                    if(curr.matches("LOGOFF")){
+                                    else if(curr.matches("S_COMMIT"))
+                                     {
+                                    	process("S_COMMIT", sock, currRead, log, control, client);
+                                        
+                                     }
+                                    
+                                        else if(curr.matches("LOGOFF")){
                                             logoff = true;
                                             control.deleteClientRecord(client);
                                             log.removeActiveConnection(port);
@@ -314,8 +169,8 @@ public class RTCEServer implements Runnable
                                         break;
                                     }
                                     
-                                    if(curr.matches("ABORT")){
-                                        abort = true;
+                                        else if(curr.matches("ABORT")){
+                                            abort = true;
                                             control.deleteClientRecord(client);
                                             log.removeActiveConnection(port);
                                             flagConn = false;
@@ -370,7 +225,7 @@ public class RTCEServer implements Runnable
   }
   
   
-  void process(String s, Socket sock, byte[] read, ServerLog log, ServerRecordMgmt Control)
+  void process(String s, Socket sock, byte[] read, ServerLog log, ServerRecordMgmt Control, ServerLog client)
   {
       int messageSize;
       RTCEServerMessage clientMessage = new RTCEServerMessage();
@@ -380,7 +235,7 @@ public class RTCEServer implements Runnable
                 bf.put(read);
                 s = new String(s.getBytes(),getRtcecharset());
                 clientMessage.setDocument(doc1);
-                clientMessage.recvMessage(sock, RTCEMessageType.valueOf(s), bf, log, control);
+                clientMessage.recvMessage(sock, RTCEMessageType.valueOf(s), bf, log, Control, client);
                 if(clientMessage.getRequest().equals(RTCEMessageType.CUAUTH)){
                 	sauth = new RTCEServerAuth(clientMessage);
                 }
