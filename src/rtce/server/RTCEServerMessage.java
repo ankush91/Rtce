@@ -539,7 +539,10 @@ public class RTCEServerMessage {
 			control.getS_TREQST(bf, s, log, record, client);
 			break;   
                         
-                        
+		case BLOCK:
+			control = new ControlMessage();
+			control.getBLOCK(bf);
+			break;
 
 		case S_COMMIT:
 			control = new ControlMessage(document);
@@ -798,6 +801,38 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 		return b;
 	}
 
+	  public void getBLOCK(ByteBuffer bf)
+	    {
+	           bf.position(40);
+	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
+	           System.out.println("Username: " + getUsername());
+	           bf.position(40+RTCEConstants.getUsernameLength());
+	           boolean blockFlags[] = new boolean[4*8];
+	           byte readFlags[] = new byte[4];
+	           bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
+	           blockFlags = readBits(readFlags);
+	           setFlags(blockFlags);
+	           System.out.println("Flags processing..");
+	           for(int i = 0; i < blockFlags.length; i++){
+	        	   System.out.print(blockFlags[i] + ";");
+	           }
+	           System.out.println();
+	    }
+	  
+	  public boolean[] readBits(byte bitFlags[]){
+	    	boolean flags[] = new boolean[bitFlags.length * 8];
+	    	for(int i = 0; i < bitFlags.length; i++){
+	    		for(int j = 0; j < 8; j++){
+	    			if(((bitFlags[i] >> j) & 1) == 1){
+	    				flags[(i*8)+j] = true;
+	    			}else{
+	    				flags[(i*8)+j] = false;
+	    			}
+	    		}
+	    	}
+	    	return flags;
+	    }
+	
 	public ByteBuffer setS_BLOCK()
 	{
 		/*byte[] username = new byte[20];

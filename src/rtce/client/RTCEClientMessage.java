@@ -481,7 +481,12 @@ public class RTCEClientMessage {
             controlPayload.payload = controlPayload.setSTREQST(section);
      	  break;    
           
-          
+       case BLOCK:
+			controlPayload = new ControlMessage(24);
+			controlPayload.setUsername(username);
+			controlPayload.setFlags(flags);
+			controlPayload.payload = controlPayload.setS_BLOCK();
+			break;   
           
         case S_COMMIT:
             controlPayload = new ControlMessage(8+4+4+4+Commit_txt.length());
@@ -878,6 +883,34 @@ class ControlMessage extends RTCEClientMessage
            //bf.position(81);
            //System.out.println("Secret List..");
     }
+    
+	public ByteBuffer setS_BLOCK()
+	{
+		/*byte[] username = new byte[20];
+		byte[] flag = new byte[1];
+		byte[] reserved = new byte[3];*/
+		byte uname[] = getUsernameChars();
+		byte blockFlags[] = flagsToBytes(getFlags());
+		ByteBuffer b = ByteBuffer.allocate(RTCEConstants.getUsernameLength()+4);
+		b.put(uname);
+		b.put(blockFlags);
+		return b; 
+	}
+
+	public byte[] flagsToBytes(boolean flags[]){
+		byte bytes[] = new byte[flags.length / 8];
+		int value;
+		for(int i = 0; i < bytes.length; i++){
+			bytes[i] = 0;
+			for(int j = 0; j < 8; j++){
+				if(flags[(i*8)+j]){
+					value = (int) Math.pow(2, (7-j));
+					bytes[i] += value;
+				}
+			}
+		}
+		return bytes;
+	}
     
     public void getS_DONE(ByteBuffer bf, Socket s)
 
