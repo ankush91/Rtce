@@ -13,9 +13,6 @@ import java.net.DatagramSocket;
 public class RTCEDiscoveryServer implements Runnable
 	{
 
-	//Constants used for Discovery
-	final static int    DISCOVERY_PORT = 4446;
-	final static String MCAST_DISCOVERY_GROUP = "225.0.0.10";	
 	
     RTCEDiscoveryServer() throws IOException
 	   {	   }
