@@ -157,6 +157,7 @@ public class RTCEServer implements Runnable
                                     else if(curr.matches("S_COMMIT"))
                                      {
                                     	process("S_COMMIT", sock, currRead, log, control, client);
+                                    	sendDocument(sock,doc1);
                                         
                                      }
                                     
