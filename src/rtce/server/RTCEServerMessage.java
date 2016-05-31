@@ -59,11 +59,14 @@ public class RTCEServerMessage {
 	//The version
 	private byte version[];
 	
+	//These are the flags for blocked message 
+	private boolean flags[];
+	
 	//The identifiers for the the document to access.
 	private String documentOwner;
 	private String documentTitle;
 	
-	public RTCEDocument document;
+	private RTCEDocument document;
 	private int sectionID;
 
 	/**
@@ -169,6 +172,14 @@ public class RTCEServerMessage {
 
 	public long getTime(){
 		return timeStamp;
+	}
+	
+	public boolean[] getFlags() {
+		return flags;
+	}
+
+	public void setFlags(boolean[] flags) {
+		this.flags = flags;
 	}
 
 	public int getHeaderReserved1() {
@@ -460,6 +471,8 @@ public class RTCEServerMessage {
 
 		case BLOCK:
 			controlPayload = new ControlMessage(24);
+			controlPayload.setUsername(username);
+			controlPayload.setFlags(flags);
 			controlPayload.payload = controlPayload.setS_BLOCK();
 			break;    	   
 
@@ -715,7 +728,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
             
                 if(token == control.checkClientToken(client))  
                 {  
-                    document.processCommit(prevID, sID, sectionTxt);
+                    getDocument().processCommit(prevID, sID, sectionTxt);
                     System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
                      
                     response = new RTCEServerMessage();
@@ -787,16 +800,32 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 
 	public ByteBuffer setS_BLOCK()
 	{
-		byte[] username = new byte[20];
+		/*byte[] username = new byte[20];
 		byte[] flag = new byte[1];
-		byte[] reserved = new byte[3];
-		ByteBuffer b = ByteBuffer.allocate(24);
-		b.put(username);
-		b.put(flag);
-		b.put(reserved);
+		byte[] reserved = new byte[3];*/
+		byte uname[] = getUsernameChars();
+		byte blockFlags[] = flagsToBytes(getFlags());
+		ByteBuffer b = ByteBuffer.allocate(RTCEConstants.getUsernameLength()+4);
+		b.put(uname);
+		b.put(blockFlags);
 		return b; 
 	}
 
+	public byte[] flagsToBytes(boolean flags[]){
+		byte bytes[] = new byte[flags.length / 8];
+		int value;
+		for(int i = 0; i < bytes.length; i++){
+			bytes[i] = 0;
+			for(int j = 0; j < 8; j++){
+				if(flags[(i*8)+j]){
+					value = (int) Math.pow(2, (7-j));
+					bytes[i] += value;
+				}
+			}
+		}
+		return bytes;
+	}
+	
 	public ByteBuffer setCONNECT()
 	{      
 		

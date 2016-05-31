@@ -62,6 +62,8 @@ public class RTCEClientMessage {
 	private String Commit_txt;
 	private double    Commit_token;
 	
+	//These are the flags for blocked message 
+	private boolean flags[];
         
         //The pieces for token request for a section and response token
         private static int Request_sID;
@@ -345,7 +347,31 @@ public class RTCEClientMessage {
 		return RTCEConstants.getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
 	}
 	
-    public ByteBuffer setHeader(RTCEMessageType request)
+    public boolean[] getFlags() {
+		return flags;
+	}
+
+	public void setFlags(boolean[] flags) {
+		this.flags = flags;
+	}
+
+	public static int getRequest_sID() {
+		return Request_sID;
+	}
+
+	public static void setRequest_sID(int request_sID) {
+		Request_sID = request_sID;
+	}
+
+	public static double getResponse_token() {
+		return Response_token;
+	}
+
+	public static void setResponse_token(double response_token) {
+		Response_token = response_token;
+	}
+
+	public ByteBuffer setHeader(RTCEMessageType request)
     {
 
         setRequest(request);
@@ -778,9 +804,33 @@ class ControlMessage extends RTCEClientMessage
     public void getBLOCK(ByteBuffer bf)
     {
            bf.position(40);
-           System.out.println("Username processing..:");
-           bf.position(60);
+           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
+           System.out.println("Username: " + getUsername());
+           bf.position(40+RTCEConstants.getUsernameLength());
+           boolean blockFlags[] = new boolean[4*8];
+           byte readFlags[] = new byte[4];
+           bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
+           blockFlags = readBits(readFlags);
+           setFlags(blockFlags);
            System.out.println("Flags processing..");
+           for(int i = 0; i < blockFlags.length; i++){
+        	   System.out.print(blockFlags[i] + ";");
+           }
+           System.out.println();
+    }
+    
+    public boolean[] readBits(byte bitFlags[]){
+    	boolean flags[] = new boolean[bitFlags.length * 8];
+    	for(int i = 0; i < bitFlags.length; i++){
+    		for(int j = 0; j < 8; j++){
+    			if(((bitFlags[i] >> j) & 1) == 1){
+    				flags[(i*8)+j] = true;
+    			}else{
+    				flags[(i*8)+j] = false;
+    			}
+    		}
+    	}
+    	return flags;
     }
     
     public void getCONNECT(ByteBuffer bf)
