@@ -31,19 +31,21 @@ public class RTCEClientUIInput implements Runnable
     		//User wants to login 
     		//example: login,username,password,documentowner,documentname
     		if (s.startsWith("login"))
-    		{
-    			String[] parts = s.split(",");
-    			System.out.println("Logging in as " + parts[1] + " to edit document " + parts[3] + "/" + parts[4]);
-    			parent.setcAuthModule(new RTCEClientAuth(parts[1], parts[2], parts[3], parts[4]));
-    			parent.getcAuthModule().getClientMessage().sendMessage(socket, RTCEMessageType.CUAUTH, -1, -1);
-    			/*RTCEClientMessage Message = new RTCEClientMessage();
-    			Message.setRequest(RTCEMessageType.CUAUTH);
-    			Message.setVersion("v1.0".getBytes());;
-    			Message.setUsername(parts[1]);
-    			Message.setPassword("password");
-    			Message.setDocumentTitle(parts[2]);
-    			Message.sendMessage(socket, RTCEMessageType.CUAUTH );*/
-    			
+    		{   if (parent.connect == false)
+       		    {
+    			  String[] parts = s.split(",");
+    			  if (parts.length != 5)
+    			  { System.out.println("INVALID: Invalid login format (ex: login,cs544,cs544,cs544,example1"); }
+    			  else
+    			  {
+    			    System.out.println("Logging in as " + parts[1] + " to edit document " + parts[3] + "/" + parts[4]);
+    			    parent.setcAuthModule(new RTCEClientAuth(parts[1], parts[2], parts[3], parts[4]));
+    			    parent.getcAuthModule().getClientMessage().sendMessage(socket, RTCEMessageType.CUAUTH, -1, -1);
+    			    parent.cuauth = true;
+    			  }
+    		    }
+    		    else
+    		    {	System.out.println("INVALID: Already logged in");	    }
     		}
     		
     		//change section text
@@ -51,39 +53,68 @@ public class RTCEClientUIInput implements Runnable
     		//example:   commit,1,2
     		else if (s.startsWith("commit"))
     		{
-    			String[] parts = s.split(",");
-    			System.out.println("Enter new text");
-    			String newText = sc.nextLine();
+    			if (parent.connect == true && parent.token > 0)
+    			{
+    			  String[] parts = s.split(",");
+    			  System.out.println("Enter new text");
+      			  String newText = sc.nextLine();
     			
-    			parent.commitPrevSectionID = Integer.parseInt(parts[1]);
-    			parent.commitSectionID     = Integer.parseInt(parts[2]);
-    			parent.commitTxt           = newText;
+      			  if (parts.length != 3)
+      			  {
+      				System.out.println("INVALID: Invalid format for commit (ex. commit,1,2)"); 
+      			  }
+      			  else
+      			  {
+    			    parent.commitPrevSectionID = Integer.parseInt(parts[1]);
+       			    parent.commitSectionID     = Integer.parseInt(parts[2]);
+    			    parent.commitTxt           = newText;
     			
-    			RTCEClientMessage Message = new RTCEClientMessage();
-    			Message.setRequest(RTCEMessageType.S_COMMIT);
-    			Message.setCommitData(
-    					parent.token, //need to hook to Ankush's token 
+    			    if (parent.commitSectionID != parent.tokenSection)
+    			    {  System.out.println("INVALID: Token is only for section " + parent.tokenSection); }
+    			    else
+    			    {
+    			      RTCEClientMessage Message = new RTCEClientMessage();
+    			      Message.setRequest(RTCEMessageType.S_COMMIT);
+    			      Message.setCommitData(
+    			  		parent.token,  
     					parent.commitPrevSectionID, 
     					parent.commitSectionID, 
     					parent.commitTxt);
-    			Message.setSessionId(parent.getCliConn().getSessionId());
-    			Message.sendMessage(socket, RTCEMessageType.S_COMMIT, -1, -1);
-    			 
-    		}
+    			      Message.setSessionId(parent.getCliConn().getSessionId());
+    			      Message.sendMessage(socket, RTCEMessageType.S_COMMIT, -1, -1);
+    			      parent.token = 0;
+    			      parent.commitSectionID = 0;
+    			    }
+      			  }
+    			}
+    			else
+    			{
+    			  if (parent.connect == false) {System.out.println("INVALID: Not logged in");}
+    			  if (parent.token   == 0)     {System.out.println("INVALID: No token aquired");}    			      				
+    			}
+    			
+    		} //commit
                 
-                //test for Request message 
-                 else if(s.startsWith("S_TREQST"))
-                {
-                     RTCEClientMessage clientMessage = new RTCEClientMessage();
+            //test for Request message 
+            else if(s.startsWith("S_TREQST"))
+            {
+              if (parent.connect == true)	
+              {
+                 RTCEClientMessage clientMessage = new RTCEClientMessage();
                      
-                     int a = Integer.parseInt(s.replaceAll("[^0-9]", "")); 
-                     System.out.println(a);
-                     clientMessage.setSectionId(a);
-                     clientMessage.setSessionId(parent.getCliConn().getSessionId());
-                     String reqst = "S_TREQST";
-                     clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(reqst.getBytes(), getRtcecharset())), -1, a);
-                     
-                }
+                 int a = Integer.parseInt(s.replaceAll("[^0-9]", "")); 
+                 System.out.println(a);
+                 clientMessage.setSectionId(a);
+                 parent.tokenSection = a;
+                 clientMessage.setSessionId(parent.getCliConn().getSessionId());
+                 String reqst = "S_TREQST";
+                 clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(reqst.getBytes(), getRtcecharset())), -1, a);
+              }
+              else
+              {
+            	 System.out.println("INVALID: Not Logged in");              	  
+              }
+            }
                  
     		//User just wants to send out a test message in PDU
     		else if (s.startsWith("S_") | 
@@ -95,10 +126,18 @@ public class RTCEClientUIInput implements Runnable
     			     s.startsWith("CACK") 
     			    )
     		{
-              RTCEClientMessage clientMessage = new RTCEClientMessage();
-              clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())), -1, -1);
-    			                                      			    		
-    		}
+    			
+    		  if (parent.connect == true)
+    		  {
+                RTCEClientMessage clientMessage = new RTCEClientMessage();
+                clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())), -1, -1);
+    		  }
+    		  else
+    		  {
+    			System.out.println("INVALID: Not Logged in");
+    		  }
+    		  
+    		} //PDU commands
                 
                
                 

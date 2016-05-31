@@ -28,6 +28,11 @@ public class RTCEClient {
         RTCEClientConnection cliConn;
         RTCEClientAuth cAuthModule;
         static RTCEDocument doc = new RTCEDocument(0);
+        
+        
+        public boolean cuauth  = false;
+        public boolean connect = false;
+        
 
         //Constants used for Discovery
     	final static int    DISCOVERY_PORT = 4446;
@@ -39,7 +44,7 @@ public class RTCEClient {
     	public String commitTxt;
     	
     	public double token = 0;
-    	
+    	public int tokenSection = 0;
         
         RTCEClient(int port) throws IOException, UnknownHostException
                 {
@@ -157,15 +162,14 @@ public class RTCEClient {
             	cAuthModule.setServerMessage(serverMessage);
             	cliConn = cAuthModule.getConnection();
             	cAuthModule.getCack().sendMessage(sock, RTCEMessageType.CACK, -1, -1);
+            	connect = true;
             }
-            if(response.equals("S_DONE") && commitSectionID > 0) {
-            	doc.processCommit(commitPrevSectionID, commitSectionID, commitTxt);
+            if(response.equals("S_DONE") && commitSectionID > 0) {            	
             	commitSectionID = 0;
             }
             if(response.equals("S_TRESPN"))
             {
-                token = serverMessage.getResponseToken();	 
-                System.out.println("Got Token"+token);
+                token = serverMessage.getResponseToken();	                 
             }
           }
           
