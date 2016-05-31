@@ -3,6 +3,7 @@ package rtce.server;
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
 import rtce.RTCEConstants;
+import rtce.client.ControlMessage;
 
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 
 import com.sun.corba.se.impl.util.Version;
 //import com.sun.xml.internal.txw2.Document;
+
 
 import static rtce.RTCEConstants.getRtcecharset;
 
@@ -451,7 +453,13 @@ public class RTCEServerMessage {
 		{}
 		break;    	   
   	     	   
-			
+		case S_DONE:
+		       
+	           controlPayload = new ControlMessage(8);
+	            controlPayload.payload = controlPayload.setS_DONE();
+	           //payload = setS_DONE();
+	     	  break; 	
+		
 		case ECHO:
 		{}
 		break; 
@@ -524,11 +532,7 @@ public class RTCEServerMessage {
 			control.getS_TREQST(bf, s, log, record, client);
 			break;    
 
-		case S_DONE:
-			control = new ControlMessage();
-			control.getS_DONE(bf, s, log, record);
-			{}
-			break; 
+		
 
 		case S_COMMIT:
 			control = new ControlMessage(document);
@@ -700,17 +704,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
                       
 	}
 
-	public void getS_DONE(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt record)
-
-	{       
-		bf.position(40);
-		int status = bf.getInt();
-                int error = bf.getInt();
-                   
-                    if(status==1 && error ==1)
-                        record.tokenRevoke(log.getClient((int)s.getLocalPort()));
-                
-	}
+	
 
 	public void getS_COMMIT(ByteBuffer bf, Socket s, ServerRecordMgmt control, ServerLog client)
 	{
@@ -770,17 +764,6 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
                 b.put(length);
 		b.put(priviledge);
 
-		return b;
-	}
-
-	public ByteBuffer getS_DONE()
-	{
-		
-		int statuscode = 0;
-		int error = 0;
-		ByteBuffer b = ByteBuffer.allocate(8);
-		b.putInt(statuscode);
-		b.putInt(error);
 		return b;
 	}
 	
@@ -848,4 +831,15 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 		return b; 
 	}
 
+	
+	 public ByteBuffer setS_DONE()
+     {
+         //status code 1 means no error
+         int statuscode = 1;
+         int error = 0;
+          ByteBuffer b = ByteBuffer.allocate(8);
+          b.putInt(statuscode);
+          b.putInt(error);
+          return b;
+     }
 }
