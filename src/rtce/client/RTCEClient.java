@@ -210,20 +210,23 @@ public class RTCEClient {
         	
         	try{
             //Create the socket and join the Multicast Group for Discovery
-        	MulticastSocket socket = new MulticastSocket(DISCOVERY_PORT);
-            InetAddress m_group = InetAddress.getByName(MCAST_DISCOVERY_GROUP);
-            socket.joinGroup(m_group);
-        	
+            DatagramSocket socket = new DatagramSocket(4447);
+        	socket.setReuseAddress(true);
             //Create the Datagram with this client's IP Address as the payload
             DatagramPacket outboundPacket;
             System.out.println("Client " + InetAddress.getLocalHost().getHostAddress() + 
             		" is searching for a server...");
             outboundBuf = InetAddress.getLocalHost().getAddress();
-            outboundPacket = new DatagramPacket(
-            		outboundBuf,
-            		outboundBuf.length,
-            		m_group,DISCOVERY_PORT);
             
+            for(int i=1; i < 255;i++)
+            {   String host = "192.168.1." + i;
+                outboundPacket = new DatagramPacket(
+                		outboundBuf,
+                		outboundBuf.length,
+                		InetAddress.getByName(host),4446);
+            	socket.send(outboundPacket);
+            }
+
             //Prepare to send packet and receive response from server
             int attempts = 0;
             socket.setSoTimeout(1000);     //Give the server 1 second to respond            
@@ -231,12 +234,11 @@ public class RTCEClient {
             DatagramPacket responsePacket;
             responsePacket = new DatagramPacket(
             		responseBuf,
-            		responseBuf.length,
-            		m_group,DISCOVERY_PORT);
+            		responseBuf.length);
                         
             //Attempt discovery
             while (attempts < 10)
-            {  socket.send(outboundPacket);
+            {  
                try {            	 
                  socket.receive(responsePacket);
                  if (responseBuf[0] == 'H' & responseBuf[1] == 'I')
@@ -260,6 +262,7 @@ public class RTCEClient {
         	
         	return "127.0.0.1";
         } // end discoverServer()
+
         
         
     public static void main(String[] args) throws IOException
