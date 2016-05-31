@@ -526,7 +526,7 @@ public class RTCEServerMessage {
 
 		case S_DONE:
 			control = new ControlMessage();
-			control.getS_DONE(bf, s, log, record);
+			control.getS_DONE(bf, s, log, record, client);
 			{}
 			break; 
 
@@ -700,15 +700,15 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
                       
 	}
 
-	public void getS_DONE(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt record)
+	public void getS_DONE(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt record, ServerLog client)
 
 	{       
 		bf.position(40);
+                //default status and error message
 		int status = bf.getInt();
                 int error = bf.getInt();
-                   
-                    if(status==1 && error ==1)
-                        record.tokenRevoke(log.getClient((int)s.getLocalPort()));
+               
+                record.tokenRevoke(client);
                 
 	}
 
@@ -770,17 +770,6 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
                 b.put(length);
 		b.put(priviledge);
 
-		return b;
-	}
-
-	public ByteBuffer getS_DONE()
-	{
-		
-		int statuscode = 0;
-		int error = 0;
-		ByteBuffer b = ByteBuffer.allocate(8);
-		b.putInt(statuscode);
-		b.putInt(error);
 		return b;
 	}
 	
