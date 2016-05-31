@@ -362,9 +362,6 @@ public class RTCEServerMessage {
 		case "S_TREQST":
 			return 52;  
 
-		case "S_DONE":
-			return 48;
-
 		case "S_COMMIT":
 			return 1000;    
 
@@ -451,17 +448,15 @@ public class RTCEServerMessage {
 		case ABORT:
 		{}
 		break;    	   
-  	     	   
-		case S_DONE:
-		       
-	           controlPayload = new ControlMessage(8);
-	            controlPayload.payload = controlPayload.setS_DONE();
-	           //payload = setS_DONE();
-	     	  break; 	
 		
 		case ECHO:
 		{}
 		break; 
+                
+                case S_DONE:
+                        controlPayload = new ControlMessage(8);
+			controlPayload.payload = controlPayload.setS_DONE();
+			break; 
 
 		case BLOCK:
 			controlPayload = new ControlMessage(24);
@@ -529,9 +524,9 @@ public class RTCEServerMessage {
 		case S_TREQST:
 			control = new ControlMessage();
 			control.getS_TREQST(bf, s, log, record, client);
-			break;    
-
-		
+			break;   
+                        
+                        
 
 		case S_COMMIT:
 			control = new ControlMessage(document);
@@ -722,21 +717,12 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
                 {  
                     document.processCommit(prevID, sID, sectionTxt);
                     System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
-                    
-                        if(control.checkFreeSection(sID))
-                        {    
-                            response = new RTCEServerMessage();
-                            response.setRequest(RTCEMessageType.S_TRESPN);
-                            response.setSessionId(client.getSessionId());
-                            response.sendMessage(s, RTCEMessageType.S_TRESPN, control.tokenGrant(client, sID), sID);
-                        } 
-                        else
-                        {
-                        response = new RTCEServerMessage();
-                        response.setRequest(RTCEMessageType.S_REVOKE);
-                        response.setSessionId(client.getSessionId());
-                        response.sendMessage(s, RTCEMessageType.S_REVOKE, -1, -1); 
-                        }
+                     
+                    response = new RTCEServerMessage();
+                    response.setRequest(RTCEMessageType.S_DONE);
+                    response.setSessionId(client.getSessionId());
+                    response.sendMessage(s, RTCEMessageType.S_DONE, -1, -1);
+                       
                 //This would be the location to push out this to all connected clients
                 }
                 
@@ -776,7 +762,18 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 		b.putInt(error);
 		return b;
 	}
-
+        
+        public ByteBuffer setS_DONE()
+	{
+		//status code 1 revoke, error 0 -> Unique interpretation, Commit performed by application
+		int statuscode = 1;
+		int error = 0;
+		ByteBuffer b = ByteBuffer.allocate(8);
+		b.putInt(statuscode);
+		b.putInt(error);
+		return b;
+	}
+        
 	public ByteBuffer setS_DENIED()
 	{
 		//status code 1 denied, error 1 -> Unique interpretation, token in use
@@ -830,15 +827,4 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 		return b; 
 	}
 
-	
-	 public ByteBuffer setS_DONE()
-     {
-         //status code 1 means no error
-         int statuscode = 1;
-         int error = 0;
-          ByteBuffer b = ByteBuffer.allocate(8);
-          b.putInt(statuscode);
-          b.putInt(error);
-          return b;
-     }
 }
