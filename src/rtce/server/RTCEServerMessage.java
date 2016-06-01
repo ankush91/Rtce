@@ -59,6 +59,9 @@ public class RTCEServerMessage {
 	//The version
 	private byte version[];
 	
+	//These are the flags for blocked message 
+	private boolean flags[];
+	
 	//The identifiers for the the document to access.
 	private String documentOwner;
 	private String documentTitle;
@@ -89,6 +92,14 @@ public class RTCEServerMessage {
 
 	public void setRequest(RTCEMessageType request) {
 		this.request = request;
+	}
+	
+	public boolean[] getFlags() {
+		return flags;
+	}
+
+	public void setFlags(boolean[] flags) {
+		this.flags = flags;
 	}
 
 	public void setUsername(String username) {
@@ -453,15 +464,17 @@ public class RTCEServerMessage {
 		{}
 		break; 
                 
-                case S_DONE:
-                        controlPayload = new ControlMessage(8);
+       case S_DONE:
+            controlPayload = new ControlMessage(8);
 			controlPayload.payload = controlPayload.setS_DONE();
-			break; 
+		break; 
 
-		case BLOCK:
-			controlPayload = new ControlMessage(24);
-			controlPayload.payload = controlPayload.setS_BLOCK();
-			break;    	   
+       case BLOCK:
+        	controlPayload = new ControlMessage(24);
+        	controlPayload.setUsername(username);
+        	controlPayload.setFlags(flags);
+       		controlPayload.payload = controlPayload.setS_BLOCK();
+        	break;     	   
 
 		case LACK:
 		{} 
@@ -526,7 +539,10 @@ public class RTCEServerMessage {
 			control.getS_TREQST(bf, s, log, record, client);
 			break;   
                         
-                        
+		case BLOCK:
+			control = new ControlMessage();
+			control.getBLOCK(bf);
+			break;           
 
 		case S_COMMIT:
 			control = new ControlMessage(document);
@@ -785,16 +801,64 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 		return b;
 	}
 
+	  public void getBLOCK(ByteBuffer bf)
+	    {
+	           bf.position(40);
+	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
+	           System.out.println("Username: " + getUsername());
+	           bf.position(40+RTCEConstants.getUsernameLength());
+	           boolean blockFlags[] = new boolean[4*8];
+	           byte readFlags[] = new byte[4];
+	           bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
+	           blockFlags = readBits(readFlags);
+	           setFlags(blockFlags);
+	           System.out.println("Flags processing..");
+	           for(int i = 0; i < blockFlags.length; i++){
+	        	   System.out.print(blockFlags[i] + ";");
+	           }
+	           System.out.println();
+	    }
+	  
+	  public boolean[] readBits(byte bitFlags[]){
+	    	boolean flags[] = new boolean[bitFlags.length * 8];
+	    	for(int i = 0; i < bitFlags.length; i++){
+	    		for(int j = 0; j < 8; j++){
+	    			if(((bitFlags[i] >> j) & 1) == 1){
+	    				flags[(i*8)+j] = true;
+	    			}else{
+	    				flags[(i*8)+j] = false;
+	    			}
+	    		}
+	    	}
+	    	return flags;
+	    }
+	
 	public ByteBuffer setS_BLOCK()
 	{
-		byte[] username = new byte[20];
+		/*byte[] username = new byte[20];
 		byte[] flag = new byte[1];
-		byte[] reserved = new byte[3];
-		ByteBuffer b = ByteBuffer.allocate(24);
-		b.put(username);
-		b.put(flag);
-		b.put(reserved);
+		byte[] reserved = new byte[3];*/
+		byte uname[] = getUsernameChars();
+		byte blockFlags[] = flagsToBytes(getFlags());
+		ByteBuffer b = ByteBuffer.allocate(RTCEConstants.getUsernameLength()+4);
+		b.put(uname);
+		b.put(blockFlags);
 		return b; 
+	}
+
+	public byte[] flagsToBytes(boolean flags[]){
+		byte bytes[] = new byte[flags.length / 8];
+		int value;
+		for(int i = 0; i < bytes.length; i++){
+			bytes[i] = 0;
+			for(int j = 0; j < 8; j++){
+				if(flags[(i*8)+j]){
+					value = (int) Math.pow(2, (7-j));
+					bytes[i] += value;
+				}
+			}
+		}
+		return bytes;
 	}
 
 	public ByteBuffer setCONNECT()
