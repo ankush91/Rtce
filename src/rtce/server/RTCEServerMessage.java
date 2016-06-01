@@ -544,7 +544,7 @@ public class RTCEServerMessage {
                         
 		case BLOCK:
 			control = new ControlMessage();
-			control.getBLOCK(bf);
+			control.getBLOCK(bf, log);
 			break;           
 
 		case S_COMMIT:
@@ -804,7 +804,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 		return b;
 	}
 
-	  public void getBLOCK(ByteBuffer bf)
+	  public void getBLOCK(ByteBuffer bf, ServerLog log)
 	    {
 	           bf.position(40);
 	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
@@ -824,6 +824,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	        	   System.out.print(blockFlags[i] + ";");
 	           }
 	           System.out.println();
+	           log.setBlock(getUsername());
 	    }
 	  
 	  public boolean[] readBits(byte bitFlags[]){

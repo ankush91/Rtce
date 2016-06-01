@@ -106,8 +106,8 @@ public class RTCEServer implements Runnable
                                         {  
                                          sauth.getClientMessage().getUsername();
                                         ServerLog client = new ServerLog(connectMessage.getSessionId(), sock.getInetAddress(), sauth.getClientMessage().getUsername());                                        
-                                        log.addActiveConnection(client, port);
                                         boolean owner = log.checkOwner();
+                                        log.addActiveConnection(client, port);
                                         sessionDriver(connectMessage.getSessionId(), port, client, curr, owner);
                                         }
                                 
