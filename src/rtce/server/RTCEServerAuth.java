@@ -265,10 +265,10 @@ public class RTCEServerAuth {
 		String docPath = RTCEServerConfig.getDocumentDir().getPath();
 		File doc = new File(docPath + "/" + docOwner + "/" + docTitle + RTCEServerConfig.getFileExt());
 		if(doc.exists() && hasPermissions()){
-			return new RTCEDocument(doc.getPath());
+			return new RTCEDocument(docPath, docOwner, docTitle, RTCEServerConfig.getFileExt());
 		}else if(docOwner.equals(username)){
 			doc.createNewFile();
-			return new RTCEDocument(doc.getPath());
+			return new RTCEDocument(docPath, docOwner, docTitle, RTCEServerConfig.getFileExt());
 		}else{
 			throw new IOException("The document does not exist: " + docOwner + "/" + docTitle);
 		}

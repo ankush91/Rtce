@@ -16,6 +16,8 @@ public class RTCEDocument {
 	
 	//The name of the document
 	private String docName;
+	private String docOwn;
+	private String docExt;
 	
 	//The path on the disc to the document
 	private String docPath;
@@ -27,6 +29,8 @@ public class RTCEDocument {
     public RTCEDocument(int Example)
     {
     	docPath = null;
+    	docOwn = null;
+    	docExt = null;
       //Initialize all fields
       for(int i =0; i < 1000; i++)
       { sections[i] = new RTCEDocSection();
@@ -38,7 +42,7 @@ public class RTCEDocument {
       //If Example is 1, Populate the document with canned data (used by Server)
       if (Example == 1) 
       {
-    	docName = new String("TheRaven");    	
+    	docName = new String("TheRaven");  
     	addSection(0,1,"Once upon a midnight dreary, while I pondered, weak and weary, Over many a quaint and curious volume of forgotten lore");  
     	addSection(1,2,"While I nodded, nearly napping, suddenly there came a tapping, As of some one gently rapping, rapping at my chamber door");
         addSection(2,3,"'Tis some visitor,' I muttered, 'tapping at my chamber door-  Only this and nothing more.' ");
@@ -53,15 +57,18 @@ public class RTCEDocument {
      * @param filepath - the path to the file on the disc
      * @throws IOException - an exception if it cannot read the file
      */
-    public RTCEDocument(String filepath) throws IOException{
+    public RTCEDocument(String basepath, String owner, String title, String ext) throws IOException{
     	for(int i =0; i < 1000; i++)
         { sections[i] = new RTCEDocSection();
       	sections[i].ID = 0; 
       	sections[i].txt = "";
           sectionOrder[i] = 0;
         }
-    	docPath = filepath;
-    	BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filepath), RTCEConstants.getRtcecharset()));
+    	docPath = basepath + "/" + owner + "/" + title + ext;
+    	docOwn = owner;
+    	docName = title;
+    	docExt = ext;
+    	BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(docPath), RTCEConstants.getRtcecharset()));
     	String line = reader.readLine();
     	int i = 0;
     	while(line != null){
@@ -231,5 +238,37 @@ public class RTCEDocument {
 	   { addSection(prevID,sID,txt); }
 	}
 	
-    
+    public RTCEDocSection[] getSections() {
+		return sections;
+	}
+
+	public int[] getSectionOrder() {
+		return sectionOrder;
+	}
+
+	public String getDocName() {
+		return docName;
+	}
+
+	public String getDocOwn() {
+		return docOwn;
+	}
+
+	public int getS_Itr() {
+		return S_Itr;
+	}
+
+	public int getOrderItr() {
+		return orderItr;
+	}
+
+	public boolean equals(Object o){
+    	if(o instanceof RTCEDocument){
+    		RTCEDocument d = (RTCEDocument) o;
+    		if(d.getDocPath().equals(docPath) || (d.getDocOwn().equals(docOwn) && d.getDocName().equals(docName))){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }
