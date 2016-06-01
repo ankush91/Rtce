@@ -57,6 +57,9 @@ public class RTCEServerConfig {
 	//The length of time to block users (in milliseconds)
 	private static long blockTime;
 	
+	//The length of time to grant tokens (in milliseconds)
+	private static long tokenTime;
+	
 	//The version number
 	private static final byte versionMajor = 0;
 	private static final byte versionMinor = 1;
@@ -113,6 +116,8 @@ public class RTCEServerConfig {
 					permissions = line.split("perm-doc:")[1].trim();
 				}else if(line.startsWith("block-time:")){
 					blockTime = Long.parseLong(line.split("block-time:")[1].trim());
+				}else if(line.startsWith("token-time:")){
+					tokenTime = Long.parseLong(line.split("token-time:")[1].trim());
 				}
 			}
 			line = reader.readLine();
@@ -324,6 +329,10 @@ public class RTCEServerConfig {
 
 	public static long getBlockTime() {
 		return blockTime;
+	}
+
+	public static long getTokenTime() {
+		return tokenTime;
 	}
 
 }
