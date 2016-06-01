@@ -222,6 +222,7 @@ public class RTCEClient {
             		" is searching for a server...");
             outboundBuf = InetAddress.getLocalHost().getAddress();
             
+            
             for(int i=1; i < 255;i++)
             {   String thisIP = new String(InetAddress.getLocalHost().getHostAddress());
                 String[] parts = thisIP.split("\\.");
