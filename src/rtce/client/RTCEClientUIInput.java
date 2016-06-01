@@ -122,7 +122,7 @@ public class RTCEClientUIInput implements Runnable
 		         RTCEClientMessage Message = new RTCEClientMessage();
 			     Message.setRequest(RTCEMessageType.BLOCK);
 			     Message.setUsername(parts[1]);
-			     boolean[] flags = new boolean[2];
+			     boolean[] flags = new boolean[4*8];
 			     Message.setFlags(flags);
 			     Message.setSessionId(parent.getCliConn().getSessionId());
 			     Message.sendMessage(socket, RTCEMessageType.BLOCK, -1, -1);            	

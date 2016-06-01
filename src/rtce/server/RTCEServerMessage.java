@@ -812,7 +812,11 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	           bf.position(40+RTCEConstants.getUsernameLength());
 	           boolean blockFlags[] = new boolean[4*8];
 	           byte readFlags[] = new byte[4];
-	           bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
+	           readFlags[0] = bf.get();
+	           readFlags[1] = bf.get();
+	           readFlags[2] = bf.get();
+	           readFlags[3] = bf.get();
+	           //bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
 	           blockFlags = readBits(readFlags);
 	           setFlags(blockFlags);
 	           System.out.println("Flags processing..");

@@ -148,9 +148,9 @@ public class RTCEServer implements Runnable
                                   curr = getName(currRead); 
                                   //process(curr, sock, currRead);
                                     
-                                  if(client.block == false)
+                                  if(client.block == true)
                                   {
-                                      while(client.block!=true){};
+                                      while(client.block==true){};
                                   }
                                   
                                   else if(curr.matches("S_TREQST")){
