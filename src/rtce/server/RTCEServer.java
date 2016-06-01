@@ -31,16 +31,19 @@ public class RTCEServer implements Runnable
     String request;
     String response;
     static ArrayList Ports;
-    ServerLog log;
+    static ServerLog log;
     RTCEServerAuth sauth;
     static RTCEDocument doc1 = new RTCEDocument(1);
-    ServerRecordMgmt control;
+    static ServerRecordMgmt control;
     boolean flagConn;
     private boolean timeout;
     private boolean waitTimeout;
     private Timer timer;
     
-    RTCEServer(){}
+    RTCEServer(){
+    	log = new ServerLog();        
+        control = new ServerRecordMgmt();
+    }
     
     RTCEServer (Socket s) throws IOException
     {
@@ -48,8 +51,7 @@ public class RTCEServer implements Runnable
         recvStream = sock.getInputStream();
         sendStream = sock.getOutputStream();
         //Ports = getPortNumbers();
-        log = new ServerLog();        
-        control = new ServerRecordMgmt();
+        
         flagConn = true;
         timeout = false;
         waitTimeout = false;
@@ -61,9 +63,9 @@ public class RTCEServer implements Runnable
       while(flagConn)
         {
           try {
-              boolean ownerFlag = log.checkOwner();
-              driver(this.sock.getLocalPort(), ownerFlag);
-              
+              //boolean ownerFlag = log.checkOwner();
+              //driver(this.sock.getLocalPort(), ownerFlag);
+              driver(this.sock.getLocalPort());
           } 
           
           catch (IOException ex) {
@@ -76,7 +78,7 @@ public class RTCEServer implements Runnable
     }       
     
     //ASSUMING A DRIVER RUNS ON EACH PORT FOR EACH CLIENT SESSION 
-    void driver(int port, boolean owner) throws IOException //RUNS EACH CLIENT ON SPECIFIC PORT NUMBER
+    void driver(int port) throws IOException //RUNS EACH CLIENT ON SPECIFIC PORT NUMBER
     {       
       
       boolean cuauth = false, cack  = false;
@@ -105,6 +107,7 @@ public class RTCEServer implements Runnable
                                          sauth.getClientMessage().getUsername();
                                         ServerLog client = new ServerLog(connectMessage.getSessionId(), sock.getInetAddress(), sauth.getClientMessage().getUsername());                                        
                                         log.addActiveConnection(client, port);
+                                        boolean owner = log.checkOwner();
                                         sessionDriver(connectMessage.getSessionId(), port, client, curr, owner);
                                         }
                                 
@@ -384,7 +387,7 @@ public class RTCEServer implements Runnable
       discThread.start();
       ServerSocket listenSock = new ServerSocket(25351);
      // ServerSocket listenSock2 = new ServerSocket(50000);
-      
+      RTCEServer server = new RTCEServer();
       while(true)
       {
            //create a new socket here which is free

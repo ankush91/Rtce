@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class ServerLog
 {
-    private HashMap connection_list; 
+    private static HashMap connection_list; 
     private InetAddress clientIp;
     private int clientPort;
     private long sessionId;
