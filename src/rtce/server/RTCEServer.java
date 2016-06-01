@@ -33,7 +33,7 @@ public class RTCEServer implements Runnable
     static ArrayList Ports;
     ServerLog log;
     RTCEServerAuth sauth;
-    RTCEDocument doc1 = new RTCEDocument(1);
+    static RTCEDocument doc1 = new RTCEDocument(1);
     ServerRecordMgmt control;
     boolean flagConn;
     private boolean timeout;
