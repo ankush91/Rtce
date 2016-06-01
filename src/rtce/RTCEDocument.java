@@ -1,5 +1,10 @@
 package rtce;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class RTCEDocument {
 	
     
@@ -45,9 +50,24 @@ public class RTCEDocument {
     /**
      * Constructor for a file by the filepath
      * @param filepath - the path to the file on the disc
+     * @throws IOException - an exception if it cannot read the file
      */
-    public RTCEDocument(String filepath){
+    public RTCEDocument(String filepath) throws IOException{
+    	for(int i =0; i < 1000; i++)
+        { sections[i] = new RTCEDocSection();
+      	sections[i].ID = 0; 
+      	sections[i].txt = "";
+          sectionOrder[i] = 0;
+        }
     	docPath = filepath;
+    	BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filepath), RTCEConstants.getRtcecharset()));
+    	String line = reader.readLine();
+    	int i = 0;
+    	while(line != null){
+    		addSection(i, i+1, line);
+    		line = reader.readLine();
+    		i++;
+    	}
     }
     
     public void setDocumentName(String theName){
