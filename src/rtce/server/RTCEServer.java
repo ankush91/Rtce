@@ -11,8 +11,11 @@ import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
@@ -30,9 +33,12 @@ public class RTCEServer implements Runnable
     static ArrayList Ports;
     ServerLog log;
     RTCEServerAuth sauth;
-    RTCEDocument doc1 = new RTCEDocument(1);
+    static RTCEDocument doc1 = new RTCEDocument(1);
     ServerRecordMgmt control;
     boolean flagConn;
+    private boolean timeout;
+    private boolean waitTimeout;
+    private Timer timer;
     
     RTCEServer(){}
     
@@ -45,6 +51,8 @@ public class RTCEServer implements Runnable
         log = new ServerLog();        
         control = new ServerRecordMgmt();
         flagConn = true;
+        timeout = false;
+        waitTimeout = false;
     } 
     
     public void run()
@@ -310,6 +318,58 @@ public class RTCEServer implements Runnable
     // if the program gets here, no port in the range was found free
     throw new IOException("NO PORT IS FREE RIGHT NOW");
 }*/
+  
+  public boolean isTimeout() {
+		return timeout;
+	}
+	
+	public void setTimeout(boolean timeout) {
+		this.timeout = timeout;
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+	
+	public boolean isWaitTimeout() {
+		return waitTimeout;
+	}
+
+	public void setWaitTimeout(boolean waitTimeout) {
+		this.waitTimeout = waitTimeout;
+	}
+
+	public void startTimer(long time){
+		timer = new Timer("Timeout Timer");
+		waitTimeout = true;
+		timeout = false;
+		timer.schedule(new RTCETimeoutTask(), time);
+	}
+	
+	public void cancelTimer(){
+		timer.cancel();
+		waitTimeout = false;
+		timeout = false;
+		timer = null;
+	}
+	
+	public class RTCETimeoutTask extends TimerTask{
+		@Override
+		public void run(){
+			if(waitTimeout){
+				timeout = true;
+			}else{
+				timeout = false;
+			}
+			waitTimeout = false;
+			timer.cancel();
+			timer = null;
+		}
+	}
   
   public static void main(String arg[]) throws IOException
   {
