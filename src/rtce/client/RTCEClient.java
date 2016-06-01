@@ -223,7 +223,9 @@ public class RTCEClient {
             outboundBuf = InetAddress.getLocalHost().getAddress();
             
             for(int i=1; i < 255;i++)
-            {   String host = "192.168.1." + i;
+            {   String thisIP = new String(InetAddress.getLocalHost().getHostAddress());
+                String[] parts = thisIP.split("\\.");
+            	String host = parts[0] + "." + parts[1] + "." + parts[2] + "." + i;
                 outboundPacket = new DatagramPacket(
                 		outboundBuf,
                 		outboundBuf.length,
