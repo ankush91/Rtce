@@ -126,7 +126,6 @@ public class RTCEClientUIInput implements Runnable
     			     s.startsWith("CACK") 
     			    )
     		{
-    			
     		  if (parent.connect == true)
     		  {
                 RTCEClientMessage clientMessage = new RTCEClientMessage();
@@ -135,6 +134,12 @@ public class RTCEClientUIInput implements Runnable
     		  else
     		  {
     			System.out.println("INVALID: Not Logged in");
+    		  }
+    		  if (s.startsWith("ABORT") | s.startsWith("LOGOFF"))
+    		  {
+    		    parent.connect = false;
+    		    parent.cuauth  = false;
+    		    System.exit(0);
     		  }
     		  
     		} //PDU commands
