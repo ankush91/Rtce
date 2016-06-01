@@ -26,6 +26,7 @@ public class RTCEDocument {
 	
     public RTCEDocument(int Example)
     {
+    	docPath = null;
       //Initialize all fields
       for(int i =0; i < 1000; i++)
       { sections[i] = new RTCEDocSection();
