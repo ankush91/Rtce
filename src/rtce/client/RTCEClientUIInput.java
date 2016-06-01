@@ -115,7 +115,19 @@ public class RTCEClientUIInput implements Runnable
             	 System.out.println("INVALID: Not Logged in");              	  
               }
             }
-                 
+            else if (s.startsWith("block"))
+            {
+              if (parent.connect == true)	
+              {  String[] parts = s.split(",");
+		         RTCEClientMessage Message = new RTCEClientMessage();
+			     Message.setRequest(RTCEMessageType.BLOCK);
+			     Message.setUsername(parts[1]);
+			     boolean[] flags = new boolean[2];
+			     Message.setFlags(flags);
+			     Message.setSessionId(parent.getCliConn().getSessionId());
+			     Message.sendMessage(socket, RTCEMessageType.BLOCK, -1, -1);            	
+              }            
+            }
     		//User just wants to send out a test message in PDU
     		else if (s.startsWith("S_") | 
     			     s.startsWith("CUAUTH") |
