@@ -54,6 +54,9 @@ public class RTCEServerConfig {
 	//The filename for the permissions document
 	private static String permissions;
 	
+	//The length of time to block users (in milliseconds)
+	private static long blockTime;
+	
 	//The version number
 	private static final byte versionMajor = 0;
 	private static final byte versionMinor = 1;
@@ -108,6 +111,8 @@ public class RTCEServerConfig {
 					fileExt = line.split("doc-ext:")[1].trim();
 				}else if(line.startsWith("perm-doc:")){
 					permissions = line.split("perm-doc:")[1].trim();
+				}else if(line.startsWith("block-time:")){
+					blockTime = Long.parseLong(line.split("block-time:")[1].trim());
 				}
 			}
 			line = reader.readLine();
@@ -315,6 +320,10 @@ public class RTCEServerConfig {
 
 	public static ArrayList<Integer> getPortNumbers() {
 		return portNumbers;
+	}
+
+	public static long getBlockTime() {
+		return blockTime;
 	}
 
 }
