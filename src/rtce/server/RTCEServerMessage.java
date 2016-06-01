@@ -387,6 +387,9 @@ public class RTCEServerMessage {
 
 		case "CACK":
 			return 40; 
+			
+		case "BLOCK":
+	           return 64;	
 
 		default: return 0;	        
 
