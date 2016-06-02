@@ -171,6 +171,12 @@ public class RTCEClient {
             {
                 token = serverMessage.getResponseToken();	                 
             }
+            if(response.equals("LACK"))
+            {
+               System.out.println("Logoff acknowledged by server");
+               try{Thread.sleep(2000);} catch (Exception e){}
+               System.exit(0);
+            }
           }
           
           else{}

@@ -148,7 +148,7 @@ public class RTCEClientUIInput implements Runnable
     			System.out.println("INVALID: Not Logged in");
     		  }
     		  
-    		  if (s.startsWith("ABORT") | s.startsWith("LOGOFF"))
+    		  if (s.startsWith("ABORT"))
     		  {
     		    parent.connect = false;
     		    parent.cuauth  = false;
