@@ -471,6 +471,12 @@ public class RTCEServerMessage {
 
        case BLOCK:
         	controlPayload = new ControlMessage(24);
+        	if(username == null){
+        		username = "";
+        	}
+        	if(flags == null){
+        		flags = new boolean[4*8];
+        	}
         	controlPayload.setUsername(username);
         	controlPayload.setFlags(flags);
        		controlPayload.payload = controlPayload.setS_BLOCK();
