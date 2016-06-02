@@ -347,11 +347,11 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
   }
   
   // functions for timeouts
-	public void startTokenTimer(){
+	public void startTokenTimer(ServerLog client){
 		tokenTimer = new Timer("Token Timeout Timer");
 		tokenWaitTimeout = true;
 		tokenTimeout = false;
-		tokenTimer.schedule(new RTCETokenTimeoutTask(), RTCEServerConfig.getTokenTime());
+		tokenTimer.schedule(new RTCETokenTimeoutTask(client), RTCEServerConfig.getTokenTime());
 	}
 	
 	public void startBlockTimer(){
@@ -417,12 +417,16 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	}
 	
 	public class RTCETokenTimeoutTask extends TimerTask{
+		private ServerLog client;
+		public RTCETokenTimeoutTask(ServerLog client){
+			this.client = client;
+		}
+		
 		@Override
 		public void run(){
 			if(tokenWaitTimeout){
-				tokenTimeout = true;
-			}else{
-				tokenTimeout = false;
+				control.tokenRevoke(client);
+				//tokenTimeout = true;
 			}
 			tokenWaitTimeout = false;
 			tokenTimer.cancel();
