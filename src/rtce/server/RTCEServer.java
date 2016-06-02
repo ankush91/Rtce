@@ -36,7 +36,6 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
     static RTCEDocument doc1 = new RTCEDocument(1); 
     static ServerRecordMgmt control;
     boolean flagConn;
-    private boolean tokenTimeout;
     private boolean tokenWaitTimeout;
     private Timer tokenTimer;
     private boolean blockTimeout;
@@ -58,7 +57,6 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
         sendStream = sock.getOutputStream();
         
         flagConn = true;
-        tokenTimeout = false;
         tokenWaitTimeout = false;
         blockTimeout = false;
         blockWaitTimeout = false;
@@ -188,12 +186,13 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                   else if(curr.matches("S_TREQST")){
                                         System.out.println("S_TREQST");
                                         process("S_TREQST", sock, currRead, log, control, client);
-                                     
+                                        startTokenTimer(client);
                                     }
                                     
                                     //if client commits then process it (done or no-op)
                                     else if(curr.matches("S_COMMIT")) {
                                     	process("S_COMMIT", sock, currRead, log, control, client);
+                                    	cancelTokenTimer();
                                             for(Object key : log.connection_list.keySet())
                                             {
                                                 ServerLog l = (ServerLog)key;
@@ -350,7 +349,6 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	public void startTokenTimer(ServerLog client){
 		tokenTimer = new Timer("Token Timeout Timer");
 		tokenWaitTimeout = true;
-		tokenTimeout = false;
 		tokenTimer.schedule(new RTCETokenTimeoutTask(client), RTCEServerConfig.getTokenTime());
 	}
 	
@@ -359,14 +357,6 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 		blockWaitTimeout = true;
 		blockTimeout = false;
 		blockTimer.schedule(new RTCEBlockTimeoutTask(), RTCEServerConfig.getBlockTime());
-	}
-	
-	public boolean isTokenTimeout() {
-		return tokenTimeout;
-	}
-
-	public void setTokenTimeout(boolean tokenTimeout) {
-		this.tokenTimeout = tokenTimeout;
 	}
 
 	public boolean isTokenWaitTimeout() {
@@ -412,8 +402,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	public void cancelTokenTimer(){
 		tokenTimer.cancel();
 		tokenWaitTimeout = false;
-		tokenTimeout = false;
-		tokenTimer = null;
+		//tokenTimer = null;
 	}
 	
 	public class RTCETokenTimeoutTask extends TimerTask{
@@ -430,7 +419,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 			}
 			tokenWaitTimeout = false;
 			tokenTimer.cancel();
-			tokenTimer = null;
+			//tokenTimer = null;
 		}
 	}
 	
