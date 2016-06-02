@@ -179,7 +179,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                    //if client gets blocked then inform the client that he's blocked and do nothing till unblocked 
                                   if(client.block == true)
                                   {
-                                      //sendResponse(RTCEMessageType.BLOCK, -1, -1, this.sock);
+                                      sendResponse(RTCEMessageType.BLOCK, -1, -1, this.sock);
                                       while(client.block==true){};
                                   }
                                   
