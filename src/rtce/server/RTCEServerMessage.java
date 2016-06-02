@@ -547,7 +547,7 @@ public class RTCEServerMessage {
                         
 		case BLOCK:
 			control = new ControlMessage();
-			control.getBLOCK(bf, log);
+			control.getBLOCK(bf, log, record);
 			break;           
 
 		case S_COMMIT:
@@ -810,7 +810,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	}
         
         //REQUEST TO BLOCK A  USER-> ONLY CAN BE DONE BY OWNER THREAD IN IMPLEMENTATION 
-	  public void getBLOCK(ByteBuffer bf, ServerLog log)
+	  public void getBLOCK(ByteBuffer bf, ServerLog log, ServerRecordMgmt control)
 	    {
 	           bf.position(40);
 	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
@@ -830,7 +830,10 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	        	   System.out.print(blockFlags[i] + ";");
 	           }
 	           System.out.println();
-	           boolean exists = log.setBlock(getUsername());
+	           boolean exists = log.setBlock(getUsername()); //block the client
+	           
+	           if(log.getBlockedClientId(getUsername())!=null)
+                       control.tokenRevoke(log.getBlockedClientId(getUsername()));//revoke any token if client is blocked
                    
 	    }
 	  
