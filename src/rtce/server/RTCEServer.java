@@ -186,6 +186,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                     		  cancelBlockTimer();
                                     	  }*/
                                       }
+                                      sendResponse(RTCEMessageType.ECHO, -1, -1, sock);
                                       cancelBlockTimer();
                                   }
                                   
