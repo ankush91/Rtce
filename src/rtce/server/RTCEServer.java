@@ -415,6 +415,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 		public void run(){
 			if(tokenWaitTimeout){
 				control.tokenRevoke(client);
+				sendResponse(RTCEMessageType.S_REVOKE, -1, -1, sock);
 				//tokenTimeout = true;
 			}
 			tokenWaitTimeout = false;
