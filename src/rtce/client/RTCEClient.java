@@ -145,8 +145,7 @@ public class RTCEClient {
          
           if((messageSize = serverMessage.lengthBuffer(s))!=0)
           {   
-            ByteBuffer bf = ByteBuffer.allocate(messageSize);
-            System.out.println(bf.capacity());
+            ByteBuffer bf = ByteBuffer.allocate(messageSize);            
             
             bf.put(readbf);
             response = "";

@@ -417,7 +417,7 @@ public class RTCEClientMessage {
 
   		System.out.println("Request in string format: " + request);
   		setRequest(RTCEMessageType.valueOf(request));
-  		System.out.println(bf.position());
+  		//System.out.println(bf.position());
 
   		bf.position(8);
   		setSessionId(bf.getLong());
@@ -512,7 +512,7 @@ public class RTCEClientMessage {
      	  break;    	   
         
        default: validflag = false;
-    	        System.out.println("2");  	
+    	         	
        } //switch (request)
        
        //Message is transmitted over here
@@ -526,7 +526,7 @@ public class RTCEClientMessage {
                         out.write(controlPayload.payload.array());
                         
                     int a = out.size();
-                    System.out.println(a);
+               
                     s.getOutputStream().write(out.toByteArray(), 0, out.size());
                     
                     byte[] test = out.toByteArray();
@@ -616,7 +616,7 @@ public class RTCEClientMessage {
     	  break;
            
           case S_LIST:
-              System.out.println("S_LIST \n");   
+                 
               
               bf.position(40);
               document.clearOrder();
@@ -624,20 +624,19 @@ public class RTCEClientMessage {
               {
             	int temp = bf.getInt();            	
             	document.setOrder(temp);
-            	System.out.print(""+temp+",");
+            	
             	if (temp == 0)
-            	{System.out.println("");break;}              
+            	{break;}              
               }
     	  break;
            
           case S_DATA:
-        	  System.out.println("S_DATA \n");
         	  
         	  bf.position(40);
         	  int sID = bf.getInt();
         	  int txtLen = bf.getInt();
               String sectionTxt = new String(bf.array(), 48, txtLen);
-        	  System.out.println("sID="+sID+" txtLen="+txtLen+ "txt=" + sectionTxt);
+
         	  document.updateSection(sID, sectionTxt);
     	  break;         
        
@@ -751,7 +750,7 @@ class ControlMessage extends RTCEClientMessage
      public ByteBuffer setSTREQST(int section) 
     {
          
-        System.out.println(section);
+        
         
         //static section lengths
         int length = 0;
@@ -774,7 +773,7 @@ class ControlMessage extends RTCEClientMessage
     {   
            bf.position(40);
            
-           System.out.println("token processing..");
+           
            
            bf.position(48);
            if(getSectionId()==bf.getInt())
