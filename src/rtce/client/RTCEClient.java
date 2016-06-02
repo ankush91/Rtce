@@ -172,7 +172,7 @@ public class RTCEClient {
             }
             if(response.equals("BLOCK"))
             {  
-            	token = 0;
+            	token = 0; 
             }
             if(response.equals("LACK"))
             {
