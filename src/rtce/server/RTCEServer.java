@@ -179,7 +179,13 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                   {
                                        control.tokenRevoke(client); //revoke any token if client is blocked	
                                       sendResponse(RTCEMessageType.BLOCK, -1, -1, this.sock); //send block message to client
-                                      while(client.block==true){};
+                                      startBlockTimer();
+                                      while(client.block==true){
+                                    	  if(blockTimeout){
+                                    		  client.block = false;
+                                    		  cancelBlockTimer();
+                                    	  }
+                                      }
                                   }
                                   
                                   //if client requests a token then process it (response or denial)
@@ -428,7 +434,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 		blockTimer.cancel();
 		blockWaitTimeout = false;
 		blockTimeout = false;
-		blockTimer = null;
+		//blockTimer = null;
 	}
 	
 	public class RTCEBlockTimeoutTask extends TimerTask{
@@ -441,7 +447,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 			}
 			blockWaitTimeout = false;
 			blockTimer.cancel();
-			blockTimer = null;
+			//blockTimer = null;
 		}
 	}
   
