@@ -36,9 +36,12 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
     static RTCEDocument doc1 = new RTCEDocument(1); 
     static ServerRecordMgmt control;
     boolean flagConn;
-    private boolean timeout;
-    private boolean waitTimeout;
-    private Timer timer;
+    private boolean tokenTimeout;
+    private boolean tokenWaitTimeout;
+    private Timer tokenTimer;
+    private boolean blockTimeout;
+    private boolean blockWaitTimeout;
+    private Timer blockTimer;
     
     RTCEServer(){}
     
@@ -55,8 +58,10 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
         sendStream = sock.getOutputStream();
         
         flagConn = true;
-        timeout = false;
-        waitTimeout = false;
+        tokenTimeout = false;
+        tokenWaitTimeout = false;
+        blockTimeout = false;
+        blockWaitTimeout = false;
     } 
     
     public void run() // thread run function
@@ -341,55 +346,107 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
   }
   
   // functions for timeouts
-  public boolean isTimeout() {
-		return timeout;
+	public void startTokenTimer(){
+		tokenTimer = new Timer("Token Timeout Timer");
+		tokenWaitTimeout = true;
+		tokenTimeout = false;
+		tokenTimer.schedule(new RTCETokenTimeoutTask(), RTCEServerConfig.getTokenTime());
 	}
 	
-	public void setTimeout(boolean timeout) {
-		this.timeout = timeout;
-	}
-
-	public Timer getTimer() {
-		return timer;
-	}
-
-	public void setTimer(Timer timer) {
-		this.timer = timer;
+	public void startBlockTimer(){
+		blockTimer = new Timer("Block Timeout Timer");
+		blockWaitTimeout = true;
+		blockTimeout = false;
+		blockTimer.schedule(new RTCEBlockTimeoutTask(), RTCEServerConfig.getBlockTime());
 	}
 	
-	public boolean isWaitTimeout() {
-		return waitTimeout;
+	public boolean isTokenTimeout() {
+		return tokenTimeout;
 	}
 
-	public void setWaitTimeout(boolean waitTimeout) {
-		this.waitTimeout = waitTimeout;
+	public void setTokenTimeout(boolean tokenTimeout) {
+		this.tokenTimeout = tokenTimeout;
 	}
 
-	public void startTimer(long time){
-		timer = new Timer("Timeout Timer");
-		waitTimeout = true;
-		timeout = false;
-		timer.schedule(new RTCETimeoutTask(), time);
+	public boolean isTokenWaitTimeout() {
+		return tokenWaitTimeout;
+	}
+
+	public void setTokenWaitTimeout(boolean tokenWaitTimeout) {
+		this.tokenWaitTimeout = tokenWaitTimeout;
+	}
+
+	public Timer getTokenTimer() {
+		return tokenTimer;
+	}
+
+	public void setTokenTimer(Timer tokenTimer) {
+		this.tokenTimer = tokenTimer;
+	}
+
+	public boolean isBlockTimeout() {
+		return blockTimeout;
+	}
+
+	public void setBlockTimeout(boolean blockTimeout) {
+		this.blockTimeout = blockTimeout;
+	}
+
+	public boolean isBlockWaitTimeout() {
+		return blockWaitTimeout;
+	}
+
+	public void setBlockWaitTimeout(boolean blockWaitTimeout) {
+		this.blockWaitTimeout = blockWaitTimeout;
+	}
+
+	public Timer getBlockTimer() {
+		return blockTimer;
+	}
+
+	public void setBlockTimer(Timer blockTimer) {
+		this.blockTimer = blockTimer;
+	}
+
+	public void cancelTokenTimer(){
+		tokenTimer.cancel();
+		tokenWaitTimeout = false;
+		tokenTimeout = false;
+		tokenTimer = null;
 	}
 	
-	public void cancelTimer(){
-		timer.cancel();
-		waitTimeout = false;
-		timeout = false;
-		timer = null;
-	}
-	
-	public class RTCETimeoutTask extends TimerTask{
+	public class RTCETokenTimeoutTask extends TimerTask{
 		@Override
 		public void run(){
-			if(waitTimeout){
-				timeout = true;
+			if(tokenWaitTimeout){
+				tokenTimeout = true;
 			}else{
-				timeout = false;
+				tokenTimeout = false;
 			}
-			waitTimeout = false;
-			timer.cancel();
-			timer = null;
+			tokenWaitTimeout = false;
+			tokenTimer.cancel();
+			tokenTimer = null;
+		}
+	}
+	
+	public void cancelBlockTimer(){
+		blockTimer.cancel();
+		blockWaitTimeout = false;
+		blockTimeout = false;
+		blockTimer = null;
+	}
+	
+	public class RTCEBlockTimeoutTask extends TimerTask{
+		@Override
+		public void run(){
+			if(blockWaitTimeout){
+				blockTimeout = true;
+			}else{
+				blockTimeout = false;
+			}
+			blockWaitTimeout = false;
+			blockTimer.cancel();
+			blockTimer = null;
 		}
 	}
   
