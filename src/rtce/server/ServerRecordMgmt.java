@@ -92,6 +92,16 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
         sectionFree_list.replace(oldToken.sectionId, false, true); //Free the section corresponding to the token
     }  
     
+  
+  public boolean clientHasToken(ServerLog clientId) //function to check if client currently has token
+  {
+      Token token = (Token)clientRecord_list.get(clientId);
+      if(token!=null && token.token > -1) //client has token then return true
+          return true;
+      else
+          return false;  //else return false
+          
+  }
     
     public void deleteClientRecord(ServerLog clientId) //delete an individual client record
     {

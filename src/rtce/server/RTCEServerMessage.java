@@ -471,10 +471,8 @@ public class RTCEServerMessage {
 
        case BLOCK:
         	controlPayload = new ControlMessage(24);
-        	controlPayload.setUsername("");
-        	controlPayload.setFlags(new boolean[4*8]);
-        	//controlPayload.setUsername(username);
-        	//controlPayload.setFlags(flags);
+        	controlPayload.setUsername(username);
+        	controlPayload.setFlags(flags);
        		controlPayload.payload = controlPayload.setS_BLOCK();
         	break;     	   
 
@@ -701,7 +699,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
                     RTCEServer service = new RTCEServer();
                     
                     //if section if free
-                    if(record.checkFreeSection(section)){
+                    if(record.checkFreeSection(section) && record.clientHasToken(client)!=true){
                      token = record.tokenGrant(client, section); //grant client token
                      service.sendResponse(RTCEMessageType.S_TRESPN, token, section, s); //send approval token
                         }
