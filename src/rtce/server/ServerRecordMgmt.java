@@ -86,10 +86,12 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
   public void tokenRevoke(ServerLog clientId) //function to revoke a client token
     {
         int a;
-        Token oldToken = (Token)clientRecord_list.get(clientId); //get old token from client
-        freeToken_list.add(oldToken.token); //put the token Value in free token list
-        clientRecord_list.replace(clientId, null); //map a null token to client
-        sectionFree_list.replace(oldToken.sectionId, false, true); //Free the section corresponding to the token
+        if(clientHasToken(clientId)){
+        	Token oldToken = (Token)clientRecord_list.get(clientId); //get old token from client
+        	freeToken_list.add(oldToken.token); //put the token Value in free token list
+        	clientRecord_list.replace(clientId, null); //map a null token to client
+        	sectionFree_list.replace(oldToken.sectionId, false, true); //Free the section corresponding to the token
+        }
     }  
     
   
