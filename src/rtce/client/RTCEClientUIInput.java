@@ -96,19 +96,27 @@ public class RTCEClientUIInput implements Runnable
     		} //commit
                 
             //test for Request message 
-            else if(s.startsWith("S_TREQST"))
+            else if(s.startsWith("request"))
             {
               if (parent.connect == true)	
               {
-                 RTCEClientMessage clientMessage = new RTCEClientMessage();
+            	 if (parent.token == 0)
+            	 {
+                   RTCEClientMessage clientMessage = new RTCEClientMessage();
+     			   String[] parts = s.split(",");
                      
-                 int a = Integer.parseInt(s.replaceAll("[^0-9]", "")); 
-                 System.out.println(a);
-                 clientMessage.setSectionId(a);
-                 parent.tokenSection = a;
-                 clientMessage.setSessionId(parent.getCliConn().getSessionId());
-                 String reqst = "S_TREQST";
-                 clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(reqst.getBytes(), getRtcecharset())), -1, a);
+                   int a = Integer.parseInt(parts[1]); 
+                   System.out.println(a);
+                   clientMessage.setSectionId(a);
+                   parent.tokenSection = a;
+                   clientMessage.setSessionId(parent.getCliConn().getSessionId());
+                   String reqst = "S_TREQST";
+                   clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(reqst.getBytes(), getRtcecharset())), -1, a);
+            	 }
+            	 else
+            	 {
+            	   System.out.println("Cannot request another token.  Client already has token for Section " + parent.tokenSection);	             	 
+            	 }
               }
               else
               {
