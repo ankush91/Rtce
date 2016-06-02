@@ -179,13 +179,14 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                   {
                                        control.tokenRevoke(client); //revoke any token if client is blocked	
                                       sendResponse(RTCEMessageType.BLOCK, -1, -1, this.sock); //send block message to client
-                                      startBlockTimer();
+                                      startBlockTimer(client);
                                       while(client.block==true){
-                                    	  if(blockTimeout){
+                                    	  /*if(blockTimeout){
                                     		  client.block = false;
                                     		  cancelBlockTimer();
-                                    	  }
+                                    	  }*/
                                       }
+                                      cancelBlockTimer();
                                   }
                                   
                                   //if client requests a token then process it (response or denial)
@@ -358,11 +359,11 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 		tokenTimer.schedule(new RTCETokenTimeoutTask(client), RTCEServerConfig.getTokenTime());
 	}
 	
-	public void startBlockTimer(){
+	public void startBlockTimer(ServerLog client){
 		blockTimer = new Timer("Block Timeout Timer");
 		blockWaitTimeout = true;
 		blockTimeout = false;
-		blockTimer.schedule(new RTCEBlockTimeoutTask(), RTCEServerConfig.getBlockTime());
+		blockTimer.schedule(new RTCEBlockTimeoutTask(client), RTCEServerConfig.getBlockTime());
 	}
 
 	public boolean isTokenWaitTimeout() {
@@ -438,12 +439,18 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	}
 	
 	public class RTCEBlockTimeoutTask extends TimerTask{
+		private ServerLog client;
+		public RTCEBlockTimeoutTask(ServerLog client){
+			this.client = client;
+		}
+		
 		@Override
 		public void run(){
 			if(blockWaitTimeout){
-				blockTimeout = true;
+				client.block = false;
+				//blockTimeout = true;
 			}else{
-				blockTimeout = false;
+				//blockTimeout = false;
 			}
 			blockWaitTimeout = false;
 			blockTimer.cancel();
