@@ -171,9 +171,7 @@ public class RTCEClient {
                 token = serverMessage.getResponseToken();	                 
             }
             if(response.equals("BLOCK") )
-            {  
-            	token = 0;
-            }
+            {  token = 0; }
             if(response.equals("LACK"))
             {
                System.out.println("Logoff acknowledged by server");
