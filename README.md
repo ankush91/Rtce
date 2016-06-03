@@ -1,7 +1,7 @@
 #rtce
 Real Time Collaborative Protocol
 
-## Use
+## 1. Use
 
 The jar files are located in the main rtce folder.  For the current implementation, they must remain in that folder.
 They can be run from that folder on any command prompt.
@@ -10,11 +10,11 @@ Because we used java, the executables should be platform independant.  However, 
 
 64-bit Windows 10
 
-###Server
+### 1.a. Server
 
 Run the jar file RTCEServer.jar (the command is java -jar RTCEServer.jar).  At this point, the only maintenance to be done on the server side is restarting, which should only be done in the event of something breaking.
 
-###Client 
+### 1.b. Client 
 
 Run the jar file RTCEClient.jar (the command is java -jar RTCEClient.jar).
 
@@ -66,25 +66,25 @@ The block time is 2 minutes.
 
 Ends the session, gracefully. Just type LOGOFF
 
-##Robustness Analysis
+## 2. Robustness Analysis
 
-###Encryption
+### 2.a. Encryption
 
 While the system to support encryption exists, currently we do not support any encryption.  However, it would not be too difficult to hook encryption in to the protocol.
 
-###Other options
+### 2.b. Other options
 
 While the system to support "generic options" exists, currently we do not support any of them.  However, it would not be too difficult to hook basic options in to the protocol.
 
-###Actual document loading
+### 2.c. Actual document loading
 
 While the beginnings of the system to load and work with real documents on the disk exists, it would take more time on the application side of implementation to complete that.  However, all protocol level aspects are implemented.  Due to the focus on the protocol, we only allow users to work on a single, hard-coded document.
 
-##Extra Credit
+## 3. Extra Credit
 
 See section Server Discovery under Client in Use.
 
-## Credits
+## 4. Credits
 
 This is the final project for Group 4 in CS544.
 
