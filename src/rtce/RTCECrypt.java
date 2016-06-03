@@ -1,5 +1,12 @@
 package rtce;
 
+/**
+ * RTCECrypt
+ * An interface for encryption/decryption modules
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public interface RTCECrypt {
 
 	/**

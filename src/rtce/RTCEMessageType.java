@@ -1,5 +1,12 @@
 package rtce;
 
+/**
+ * RTCEMessageType
+ * An enumeration of valid message types
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public enum RTCEMessageType {
 
 	CUAUTH,

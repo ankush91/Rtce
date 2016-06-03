@@ -5,6 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * RTCEDocument
+ * An enumeration of valid message types
+ * @author Anthony Emma, Edwin Dauber, Ankush Israney, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEDocument {
 	
     
@@ -26,6 +33,10 @@ public class RTCEDocument {
 	private int S_Itr = 0; 
 	private int orderItr = 0;
 	
+	/**
+	 * Constructor for the hard-coded example document
+	 * @param Example - 1 to create the example document
+	 */
     public RTCEDocument(int Example)
     {
     	docPath = null;
@@ -54,6 +65,7 @@ public class RTCEDocument {
     
     /**
      * Constructor for a file by the filepath
+     * This is not used in our implementation, but would be used as part of a full application
      * @param filepath - the path to the file on the disc
      * @throws IOException - an exception if it cannot read the file
      */
@@ -76,14 +88,24 @@ public class RTCEDocument {
     		line = reader.readLine();
     		i++;
     	}
+    	reader.close();
     }
     
+    /**
+     * Set the document name
+     * @param theName - the name to give the document
+     */
     public void setDocumentName(String theName){
       docName = theName;	
      
     }
     
-    //This procedure adds a sectionID with txt after some other section ID in the document
+    /**
+     * This procedure adds a sectionID with txt after some other section ID in the document
+     * @param afterSectionID - the previous section id
+     * @param sectionID - the current section id
+     * @param txt - the text to place in the section
+     */
     public void addSection(int afterSectionID, int sectionID, String txt)
     {
       int section_itr = 1; //itr to find an available sectionID object
@@ -118,9 +140,13 @@ public class RTCEDocument {
       
     } //addSection()
     
-    //This routine will add or update a section.   Unlike "addSection" this assumes
-    //the section is already in the ordered list of sections.   This routine should
-    //only be used due to receipt of S_DATA
+    /**
+     * This routine will add or update a section.   Unlike "addSection" this assumes
+     * the section is already in the ordered list of sections.   This routine should
+     * only be used due to receipt of S_DATA
+     * @param sectionID - the section to update
+     * @param txt - the new text
+     */
     public void updateSection(int sectionID, String txt)
     {
       //Try and find the section
@@ -144,7 +170,12 @@ public class RTCEDocument {
       return;    
     }
     
-    //This procedure modifies a section if it exists.
+
+    /**
+     * This procedure modifies a section if it exists.
+     * @param SectionID - the section to modify
+     * @param txt - the text to place in the section
+     */
     public void modifySection(int SectionID, String txt)
     {
       for(int i = 0; i < 1000; i++)
@@ -157,7 +188,11 @@ public class RTCEDocument {
     
     } //modifySection()
     
-    //Finds a SectionID object given an ID
+    /**
+     * Finds a SectionID object given an ID
+     * @param ID - the section id
+     * @return - the document section
+     */
     public RTCEDocSection findSection(int ID) 
     {
       for(int i = 0; i < 1000; i++)
@@ -167,7 +202,9 @@ public class RTCEDocument {
       return sections[0];
     } //findSection()
    
-    //Prints out the entire document
+    /**
+     * Prints out the entire document
+     */
     public void printDocument()
     {
       int itr = 1;
@@ -182,7 +219,10 @@ public class RTCEDocument {
       }
     }
     
-    
+    /**
+     * Reset iteration over sections
+     * @return 0, as the first section to iterte through
+     */
     public int resetSectionItr()
     {
       S_Itr = 1;
@@ -193,6 +233,10 @@ public class RTCEDocument {
       return 0;
     } //resetSectionItr
     
+    /**
+     * Get the current section and increment the iterator
+     * @return - the current section
+     */
     public RTCEDocSection getNextSectionItr()
     {
       int sID = sectionOrder[S_Itr++];      
@@ -201,6 +245,11 @@ public class RTCEDocument {
       return findSection(sID);
     } //getNextSectionItr()
     
+    /**
+     * duplicate of the findSection method
+     * @param ID - the section id
+     * @return the document section
+     */
     public RTCEDocSection getDocumentSection(int ID)
     {
       for(int i = 1; i < 1000; i++)
@@ -225,6 +274,10 @@ public class RTCEDocument {
       sectionOrder[orderItr++] = SectionID;      
     }
 
+    /**
+     * Get the document path
+     * @return the document path as a String
+     */
 	public String getDocPath() {
 		return docPath;
 	}
@@ -262,6 +315,11 @@ public class RTCEDocument {
 		return orderItr;
 	}
 
+	/**
+	 * Override equals method for documents using either path or owner and name
+	 * @param - an object to test
+	 * @return - true if equal, false otherwise
+	 */
 	public boolean equals(Object o){
     	if(o instanceof RTCEDocument){
     		RTCEDocument d = (RTCEDocument) o;

@@ -10,7 +10,6 @@ package rtce.server;
 import java.net.*;
 import java.io.*;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -19,8 +18,6 @@ import java.util.logging.Logger;
 import static rtce.RTCEConstants.getRtcecharset;
 import rtce.RTCEMessageType;
 import rtce.RTCEDocument;
-import rtce.RTCEMessageType;
-import static rtce.server.RTCEServerConfig.getPortNumbers;
 
 
 public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRIVER FOR ALL THE CLIENT THREADS WITH CONTROL FLOW OF STATEFUL DFA

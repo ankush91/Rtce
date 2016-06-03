@@ -18,7 +18,13 @@ import java.util.Map;
 
 import rtce.RTCEConstants;
 
-
+/**
+ * RTCEServerConfig
+ * Configures the server with server side constants and static methods
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEServerConfig {
 
 	//The file holding configuration information for the server
@@ -61,13 +67,13 @@ public class RTCEServerConfig {
 	private static long tokenTime;
 	
 	//The version number
-	private static final byte versionMajor = 0;
-	private static final byte versionMinor = 1;
+	private static final byte versionMajor = 1;
+	private static final byte versionMinor = 0;
 	private static final byte versionSub = 0;
 	private static final byte versionExtend = 0;
 	
-	//The list of valid port numbers
-	private static ArrayList<Integer> portNumbers = new ArrayList<Integer>();
+	//The port number
+	private static int portNumber;
 	
 	/**
 	 * Initialize the server from the configuration file
@@ -89,7 +95,6 @@ public class RTCEServerConfig {
 	private static void readConfigFile() throws IOException{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), RTCEConstants.getRtcecharset()));
 		String line = reader.readLine();
-		int minPort = 50000, maxPort = 60000;
 		while(line != null){
 			line = line.trim();
 			if(!line.startsWith("#")){
@@ -106,10 +111,8 @@ public class RTCEServerConfig {
 					readInOpts();
 				}else if(line.startsWith("doc-dir:")){
 					documentDir = new File(line.split("doc-dir:")[1].trim());
-				}else if(line.startsWith("min-port:")){
-					minPort = Integer.parseInt(line.split("min-port:")[1].trim());
-				}else if(line.startsWith("max-port:")){
-					maxPort = Integer.parseInt(line.split("max-port:")[1].trim());
+				}else if(line.startsWith("port-num:")){
+					portNumber = Integer.parseInt(line.split("port-num:")[1].trim());
 				}else if(line.startsWith("doc-ext:")){
 					fileExt = line.split("doc-ext:")[1].trim();
 				}else if(line.startsWith("perm-doc:")){
@@ -121,9 +124,6 @@ public class RTCEServerConfig {
 				}
 			}
 			line = reader.readLine();
-		}
-		for(int i = minPort; i < maxPort; i++){
-			portNumbers.add(i);
 		}
 		reader.close();
 	}
@@ -294,18 +294,34 @@ public class RTCEServerConfig {
 		}
 	}
 
+	/**
+	 * Get the major version number
+	 * @return the byte representing the major version number
+	 */
 	public static byte getVersionmajor() {
 		return versionMajor;
 	}
 
+	/**
+	 * Get the minor version number
+	 * @return the byte representing the minor version number
+	 */
 	public static byte getVersionminor() {
 		return versionMinor;
 	}
 
+	/**
+	 * Get the sub-version number
+	 * @return the byte representing the sub-version number
+	 */
 	public static byte getVersionsub() {
 		return versionSub;
 	}
 
+	/**
+	 * Get the version extension number
+	 * @return the byte representing the version extension number
+	 */
 	public static byte getVersionextend() {
 		return versionExtend;
 	}
@@ -323,14 +339,26 @@ public class RTCEServerConfig {
 		return version;
 	}
 
-	public static ArrayList<Integer> getPortNumbers() {
-		return portNumbers;
+	/**
+	 * Get the port number, as defined in the configuration file
+	 * @return the port number
+	 */
+	public static int getPortNumber() {
+		return portNumber;
 	}
 
+	/**
+	 * Get the block time
+	 * @return the block time
+	 */
 	public static long getBlockTime() {
 		return blockTime;
 	}
 
+	/**
+	 * Get the token timeout
+	 * @return the token timeout
+	 */
 	public static long getTokenTime() {
 		return tokenTime;
 	}

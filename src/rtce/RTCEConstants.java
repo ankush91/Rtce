@@ -3,6 +3,13 @@ package rtce;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * RTCEConstants
+ * A class containing universal constants and static methods for both client and server
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEConstants {
 	
 	//The character set to be used for all char and string variables
