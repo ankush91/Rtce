@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package rtce.server;
 
 import java.net.InetAddress;
@@ -11,9 +7,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ /**
  *
- * @author ankus
+ * 
+ * RTCEServerLog - This class contains a log of all active client connection objects on the server with their port numbers. The session Id, username,
+ * ip address, socket for the thread and block field are stored for a connection in the log. The function to block a client is also
+ * a part of this class.
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
  */
+ 
 public class RTCEServerLog
 {
     static HashMap connection_list; 
@@ -56,7 +60,7 @@ public class RTCEServerLog
       
     }     
     
-     public RTCEServerLog getBlockedClientId(String username) //FUNCTION TO BLOCK A USER
+     public RTCEServerLog getBlockedClientId(String username) //Funtion to get Blocked client Id by username
     {
         RTCEServerLog l;
         boolean debug=false;
@@ -75,7 +79,7 @@ public class RTCEServerLog
     }     
     
     
-     public boolean checkBlock(String username) //FUNCTION TO BLOCK A USER
+     public boolean checkBlock(String username) //Function to check if a user is blocked
     {
         RTCEServerLog l;
         boolean debug=false;
