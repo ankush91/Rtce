@@ -289,7 +289,7 @@ public class RTCEClient {
     public static void main(String[] args) throws IOException
     {
     	RTCEClientConfig.init("config/client/clientConfig.conf");
-        final int servPort = 25351; //Server Port       
+        final int servPort = 50000; //Server Port       
          
         RTCEClient client = new RTCEClient(servPort);
         

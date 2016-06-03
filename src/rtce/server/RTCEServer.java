@@ -477,7 +477,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
       RTCEDiscoveryServer discServer = new RTCEDiscoveryServer();
       Thread discThread = new Thread(discServer);      
       discThread.start();
-      ServerSocket listenSock = new ServerSocket(25351);
+      ServerSocket listenSock = new ServerSocket(50000);
      
       while(true)  // Server runs indefinitely
       {
