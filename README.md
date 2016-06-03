@@ -17,7 +17,7 @@ For all commands listed below, replace values in {} (such as {username}) with ap
 
 Do not abort the client except through logoff.  In the current state, the server is not prepared to recover from poor termination, and 
 
-###Server discovery
+####Server Discovery
 
 The server discovery is implemented by having the server create a seperate thread to respond with a 
 "HI" to any client who sends a message.    When a client starts he will make a call to Java's routine
@@ -55,13 +55,27 @@ If you are the owner of a document, you can block another user for a period of t
 
 The block time is 2 minutes.
 
-####logoff
+####LOGOFF
 
-Ends the session, gracefully.
+Ends the session, gracefully. Just type LOGOFF
 
 ##Robustness Analysis
 
+###Encryption
+
+While the system to support encryption exists, currently we do not support any encryption.  However, it would not be too difficult to hook encryption in to the protocol.
+
+###Other options
+
+While the system to support "generic options" exists, currently we do not support any of them.  However, it would not be too difficult to hook basic options in to the protocol.
+
+###Actual document loading
+
+While the beginnings of the system to load and work with real documents on the disk exists, it would take more time on the application side of implementation to complete that.  However, all protocol level aspects are implemented.  Due to the focus on the protocol, we only allow users to work on a single, hard-coded document.
+
 ##Extra Credit
+
+See section Server Discovery under Client in Use.
 
 ## Credits
 This is the final project for Group 4 in CS544.
