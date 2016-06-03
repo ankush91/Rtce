@@ -19,6 +19,7 @@ public class RTCEClientUIInput implements Runnable
 		   parent = c;
 	   }
 	
+	   //STATEFUL
        public void run()
 	   {
     	  String s = null;
