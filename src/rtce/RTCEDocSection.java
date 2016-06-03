@@ -10,28 +10,28 @@ package rtce;
 public class RTCEDocSection {
 
 	private int ID;     //The Section ID
-    private String txt; //The text for this section 
+	private String txt; //The text for this section 
 
-    /**
-     * Create a new document section
-     */
-    public RTCEDocSection()
-    { ID = 0;}
-    
-    /**
-     * Set a section to have specific id and text
-     * @param inID - the new section id
-     * @param inTxt - the new section text
-     */
-    public void setSection(int inID, String inTxt)
-    { ID = inID;
-      txt = inTxt; 
-    }
+	/**
+	 * Create a new document section
+	 */
+	public RTCEDocSection()
+	{ ID = 0;}
 
-    /**
-     * Get the section id
-     * @return the section id
-     */
+	/**
+	 * Set a section to have specific id and text
+	 * @param inID - the new section id
+	 * @param inTxt - the new section text
+	 */
+	public void setSection(int inID, String inTxt)
+	{ ID = inID;
+	txt = inTxt; 
+	}
+
+	/**
+	 * Get the section id
+	 * @return the section id
+	 */
 	public int getID() {
 		return ID;
 	}
@@ -59,5 +59,5 @@ public class RTCEDocSection {
 	public void setTxt(String txt) {
 		this.txt = txt;
 	}
- 
+
 }

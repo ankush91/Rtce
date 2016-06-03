@@ -11,28 +11,28 @@ import java.nio.charset.StandardCharsets;
  * @version 1
  */
 public class RTCEConstants {
-	
+
 	//The character set to be used for all char and string variables
 	private static final Charset RTCECHARSET = StandardCharsets.US_ASCII;
-	
+
 	//The number of characters maximum in a request name
 	private static final int REQUESTLENGTH = 8;
-	
+
 	//The number of characters maximum in a username
 	private static final int USERNAMELENGTH = 20;
-	
+
 	//The number of characters maximum in a document title
 	private static final int DOCTITLELENGTH = 20;
-	
+
 	//The number of characters maximum in an authentication string (password)
 	private static final int AUTHSTRINGLENGTH = 16;
-	
+
 	//The number of characters maximum in an option name
 	private static final int OPTLENGTH = 8;
-	
+
 	//The number of characters maximum in a shared secret
 	private static final int SECRETLENGTH = 16;
-	
+
 	/**
 	 * Returns the character set
 	 * @return the character set (ASCII)
@@ -56,7 +56,7 @@ public class RTCEConstants {
 	public static int getUsernameLength() {
 		return USERNAMELENGTH;
 	}
-	
+
 	/**
 	 * Returns the length of the document title
 	 * @return the number of characters in the document Title (20)
@@ -64,7 +64,7 @@ public class RTCEConstants {
 	public static int getDocTitleLength() {
 		return DOCTITLELENGTH;
 	}
-	
+
 	/**
 	 * Returns the length of the authentication string (password)
 	 * @return the number of characters in the authentication string or password (16)
@@ -72,7 +72,7 @@ public class RTCEConstants {
 	public static int getAuthStringLength() {
 		return AUTHSTRINGLENGTH;
 	}
-	
+
 	/**
 	 * Returns the length of the shared secrets
 	 * @return the number of characters in the shared secrets (16)
@@ -80,7 +80,7 @@ public class RTCEConstants {
 	public static int getSecretLength() {
 		return SECRETLENGTH;
 	}
-	
+
 	/**
 	 * Returns the length of the option names
 	 * @return the number of characters in the request (8)
@@ -88,7 +88,7 @@ public class RTCEConstants {
 	public static int getOptLength(){
 		return OPTLENGTH;
 	}
-	
+
 	/**
 	 * Take a string and return it as an array of bytes
 	 * @param s - the string
@@ -100,7 +100,7 @@ public class RTCEConstants {
 		byte[] result = new byte[length];
 		if(stringRep.length == length){
 			result = stringRep;
-			
+
 		}else if(stringRep.length < length){
 			for(int i = 0; i < stringRep.length; i++){
 				result[i] = stringRep[i];
@@ -113,7 +113,7 @@ public class RTCEConstants {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Take an array of strings and return it as a 2D array of bytes
 	 * @param s - the string array
@@ -127,7 +127,7 @@ public class RTCEConstants {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Take a raw string with null characters and clip it to end prior to first null character
 	 * @param s - raw string

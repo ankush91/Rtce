@@ -21,28 +21,28 @@ public class RTCEClientConfig {
 
 	//The file holding configuration information for the client
 	private static File configFile;
-		
+
 	//The file containing the ordered list of desired encryption options
 	private static File encryptFile;
-		
+
 	//The file containing the list of desired generic options
 	private static File optionFile;
-	
+
 	//The ordered list of desired encryption options
 	private static ArrayList<String> desiredEncrypts;
-		
+
 	//The list of desired generic options
 	private static ArrayList<String> desiredOpts;
-	
+
 	//The port number
 	private static int portNumber;
-	
+
 	//The version number
 	private static final byte versionMajor = 0;
 	private static final byte versionMinor = 1;
 	private static final byte versionSub = 0;
 	private static final byte versionExtend = 0;
-	
+
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -54,7 +54,7 @@ public class RTCEClientConfig {
 		desiredOpts = new ArrayList<String>();
 		readConfigFile();
 	}
-	
+
 	/**
 	 * Read the configuration file and extract values
 	 * @throws IOException - if the configuration file cannot be read
@@ -79,7 +79,7 @@ public class RTCEClientConfig {
 		}
 		reader.close();
 	}
-	
+
 	/**
 	 * Read the encryption file and extract values
 	 * @throws IOException - if the encryption file cannot be read
@@ -95,7 +95,7 @@ public class RTCEClientConfig {
 		}
 		reader.close();
 	}
-	
+
 	/**
 	 * Read the option file and extract values
 	 * @throws IOException - if the option file cannot be read
@@ -111,7 +111,7 @@ public class RTCEClientConfig {
 		}
 		reader.close();
 	}
-	
+
 	/**
 	 * Get the server configuration file
 	 * @return the configuration file
@@ -119,7 +119,7 @@ public class RTCEClientConfig {
 	public static File getConfigFile() {
 		return configFile;
 	}
-	
+
 	/**
 	 * Get the file indicating desired encryption options, in preference order
 	 * @return the file listing desired encryption options
@@ -183,7 +183,7 @@ public class RTCEClientConfig {
 	public static byte getVersionextend() {
 		return versionExtend;
 	}
-	
+
 	/**
 	 * Get the version 
 	 * @return 4 bytes representing the version
@@ -204,6 +204,6 @@ public class RTCEClientConfig {
 	public static int getPortNumber() {
 		return portNumber;
 	}
-	
-	
+
+
 }

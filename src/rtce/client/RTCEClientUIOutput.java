@@ -13,70 +13,70 @@ import java.io.IOException;
 import rtce.RTCEDocument;
 
 public class RTCEClientUIOutput implements Runnable
-	{
+{
 	//The document
-	   private RTCEDocument document;
-	   
-	   //Objects to handle requests to refresh the GUI
-	   private Object lock = new Object();
-	   private boolean refreshUI = false;
-	   
-	   /**
-	    * Create ui output
-	    * @throws IOException
-	    */
-	   RTCEClientUIOutput() throws IOException
-	   {}
-	   
-	   /**
-	    * Set the document
-	    * @param doc
-	    */
-	   public void setDocument(RTCEDocument doc)
-	   {  this.document = doc;   }
-	
-	   //UI
-	   /**
-	    * Run the output thread
-	    */
-       public void run()
-	   {
-   	  
-    	  redrawUI();
-    	  
-    	  while(true)
-    	  {    		
-    		  synchronized (lock) {
-    			if (refreshUI)
-    			{ redrawUI();
-    			  refreshUI = false;}    			  
-    		  }    		  
-    		  try{Thread.sleep(500);} catch (Exception e){}
-    	  }
-	   } //run
-       
-       /**
-        * Redraw the ui
-        */
-	   private void redrawUI()
-	   {
-		   synchronized (lock) {
-              System.out.println("--------------------------------------------");
-              document.printDocument();
-              System.out.println("");
-              System.out.println("Enter Command>>");
-		   }		   
-	   }
-       
-	   //After creation this is the only routine expected to be called.
-	   /**
-	    * Identify that the ui needs to be refreshed
-	    */
-	   public void refreshUI()
-	   {
-		 synchronized (lock) {
-		   refreshUI = true;
-		 }	   
-	   }
-	   
-	} //RTCEClientUIOutput
+	private RTCEDocument document;
+
+	//Objects to handle requests to refresh the GUI
+	private Object lock = new Object();
+	private boolean refreshUI = false;
+
+	/**
+	 * Create ui output
+	 * @throws IOException
+	 */
+	RTCEClientUIOutput() throws IOException
+	{}
+
+	/**
+	 * Set the document
+	 * @param doc
+	 */
+	public void setDocument(RTCEDocument doc)
+	{  this.document = doc;   }
+
+	//UI
+	/**
+	 * Run the output thread
+	 */
+	public void run()
+	{
+
+		redrawUI();
+
+		while(true)
+		{    		
+			synchronized (lock) {
+				if (refreshUI)
+				{ redrawUI();
+				refreshUI = false;}    			  
+			}    		  
+			try{Thread.sleep(500);} catch (Exception e){}
+		}
+	} //run
+
+	/**
+	 * Redraw the ui
+	 */
+	private void redrawUI()
+	{
+		synchronized (lock) {
+			System.out.println("--------------------------------------------");
+			document.printDocument();
+			System.out.println("");
+			System.out.println("Enter Command>>");
+		}		   
+	}
+
+	//After creation this is the only routine expected to be called.
+	/**
+	 * Identify that the ui needs to be refreshed
+	 */
+	public void refreshUI()
+	{
+		synchronized (lock) {
+			refreshUI = true;
+		}	   
+	}
+
+} //RTCEClientUIOutput

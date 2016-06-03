@@ -12,5 +12,5 @@ public enum RTCEPermission {
 	OWNER,
 	EDITOR,
 	BLOCKED;
-	
+
 }

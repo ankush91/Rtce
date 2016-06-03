@@ -11,7 +11,7 @@ import rtce.RTCEDocument;
  * @version 1
  */
 public class RTCEClientConnection {
-	
+
 	//The encryption module
 	private RTCEClientEncrypt encryptModule;
 
@@ -20,13 +20,13 @@ public class RTCEClientConnection {
 
 	//The document
 	private RTCEDocument document;
-	
+
 	//The session ID
 	private long sessionId;
 
 	//The version number
 	private byte version[];
-		
+
 	/**
 	 * Create the connection
 	 * @param encrypt - the name of the encryption technique
@@ -67,7 +67,7 @@ public class RTCEClientConnection {
 	public RTCEDocument getDocument() {
 		return document;
 	}
-	
+
 	/**
 	 * Get the session id
 	 * @return the session id as a long
@@ -75,7 +75,7 @@ public class RTCEClientConnection {
 	public long getSessionId() {
 		return sessionId;
 	}
-	
+
 	/**
 	 * Extract the secrets to the appropriate modules
 	 * @param sec - the set of shared secrets
@@ -95,6 +95,6 @@ public class RTCEClientConnection {
 	public byte[] getVersion() {
 		return version;
 	}
-	
-	
+
+
 }

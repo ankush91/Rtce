@@ -12,7 +12,7 @@ public class RTCEClientOpt {
 
 	//The name of the option module
 	private String opt;
-		
+
 	/**
 	 * Create the option module
 	 * @param o - the name of the option
@@ -20,7 +20,7 @@ public class RTCEClientOpt {
 	public RTCEClientOpt(String o){
 		opt = o;
 	}
-	
+
 	/**
 	 * Take the parts of the list of secrets applicable to this option and return the remainder
 	 * @param sec - the set of secrets
@@ -29,7 +29,7 @@ public class RTCEClientOpt {
 	public String[] extractSecrets(String[] sec){
 		return sec;
 	}
-	
+
 	/**
 	 * Get the option name
 	 * @return the option name

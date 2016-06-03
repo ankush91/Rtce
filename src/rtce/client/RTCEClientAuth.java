@@ -18,12 +18,12 @@ public class RTCEClientAuth {
 	private String password;
 	private String documentOwner;
 	private String documentTitle;
-	
+
 	//involved messages
 	private RTCEClientMessage clientMessage;
 	private RTCEClientMessage serverMessage;
 	private RTCEClientMessage cack;
-	
+
 	/**
 	 * Create the authentication module from user input
 	 * @param uname - the username
@@ -54,7 +54,7 @@ public class RTCEClientAuth {
 		clientMessage.setVersion(RTCEClientConfig.getVersion());
 		clientMessage.setSessionId(0);
 	}
-	
+
 	/**
 	 * Get the client authentication message
 	 * @return the client authentication message
@@ -70,7 +70,7 @@ public class RTCEClientAuth {
 	public RTCEClientMessage getServerMessage() {
 		return serverMessage;
 	}
-	
+
 	/**
 	 * Get the client acknowledgement message
 	 * @return the client acknowledgement message
@@ -78,7 +78,7 @@ public class RTCEClientAuth {
 	public RTCEClientMessage getCack() {
 		return cack;
 	}
-	
+
 	/**
 	 * Set the server connection response
 	 * @param serverMessage = the server connection response
@@ -95,7 +95,7 @@ public class RTCEClientAuth {
 		List<String> encrypt = RTCEClientConfig.getDesiredEncrypts();
 		return encrypt.toArray(new String[encrypt.size()]);
 	}
-	
+
 	/**
 	 * Get the array of desired generic options
 	 * @return a string array
@@ -104,7 +104,7 @@ public class RTCEClientAuth {
 		List<String> opts = RTCEClientConfig.getDesiredOpts();
 		return opts.toArray(new String[opts.size()]);
 	}
-	
+
 	/**
 	 * Generate and return the client connection object
 	 * @return the client connection object
