@@ -3,6 +3,13 @@ Real Time Collaborative Protocol
 
 ## Use
 
+The jar files are located in the main rtce folder.  For the current implementation, they must remain in that folder.
+They can be run from that folder on any command prompt.
+
+Because we used java, the executables should be platform independant.  However, for convienience we list the platforms on which they have been tested below:
+
+64-bit Windows 10
+
 ###Server
 
 Run the jar file RTCEServer.jar (the command is java -jar RTCEServer.jar).  At this point, the only maintenance to be done on the server side is restarting, which should only be done in the event of something breaking.
