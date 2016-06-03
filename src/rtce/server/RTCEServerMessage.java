@@ -519,7 +519,7 @@ public class RTCEServerMessage {
 	}  
 
 	// This function receives messages from the client on the socket, server can receive only specific messages
-	public void recvMessage(Socket s, RTCEMessageType request, ByteBuffer bf, ServerLog log, ServerRecordMgmt record, ServerLog client)
+	public void recvMessage(Socket s, RTCEMessageType request, ByteBuffer bf, RTCEServerLog log, RTCEServerRecordMgmt record, RTCEServerLog client)
 	{
 		//Extract header contents first, needed to make a function out of this
 		getHeader(bf);
@@ -695,7 +695,7 @@ class ControlMessage extends RTCEServerMessage
 	}
 
         //get request from client for token
-public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt record, ServerLog client)
+public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRecordMgmt record, RTCEServerLog client)
 	{   
                
                 double token = -1;
@@ -721,7 +721,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 
 	
         //get the commit of data from client
-	public void getS_COMMIT(ByteBuffer bf, Socket s, ServerRecordMgmt control, ServerLog client) 
+	public void getS_COMMIT(ByteBuffer bf, Socket s, RTCEServerRecordMgmt control, RTCEServerLog client) 
 	{
 		bf.position(40);
 				
@@ -810,7 +810,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, ServerLog log, ServerRecordMgmt
 	}
         
         //REQUEST TO BLOCK A  USER-> ONLY CAN BE DONE BY OWNER THREAD IN IMPLEMENTATION 
-	  public void getBLOCK(ByteBuffer bf, ServerLog log, ServerRecordMgmt control)
+	  public void getBLOCK(ByteBuffer bf, RTCEServerLog log, RTCEServerRecordMgmt control)
 	    {
 	           bf.position(40);
 	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));

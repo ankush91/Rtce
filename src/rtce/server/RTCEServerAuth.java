@@ -234,14 +234,21 @@ public class RTCEServerAuth {
 			String line = reader.readLine();
 			while(line != null){
 				line = line.trim();
-				if(line.equals(docTitle + RTCEServerConfig.getFileExt() + " PermissionsMetadata{")){
+				if(line.contains(docTitle + RTCEServerConfig.getFileExt() + " PermissionsMetadata{")){
 					line = reader.readLine();
+					if(line == null){
+						break;
+					}
+					line = line.trim();
 					while(!line.equals("} " + docTitle + RTCEServerConfig.getFileExt() + " PermissionsMetadata")){
-						line = line.trim();
-						if(line.equals(username)){
+						if(line.contains(username)){
 							return true;
 						}
 						line = reader.readLine();
+						if(line == null){
+							break;
+						}
+						line = line.trim();
 					}
 					break;
 				}

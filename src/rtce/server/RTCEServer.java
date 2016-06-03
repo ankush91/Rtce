@@ -31,10 +31,10 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
     OutputStream sendStream; 
     String request;  
     String response;
-    static ServerLog log;
+    static RTCEServerLog log;
     RTCEServerAuth sauth;
     static RTCEDocument doc1 = new RTCEDocument(1); 
-    static ServerRecordMgmt control;
+    static RTCEServerRecordMgmt control;
     boolean flagConn;
     private boolean tokenWaitTimeout;
     private Timer tokenTimer;
@@ -46,8 +46,8 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
     
     RTCEServer(int init){
        //initialize the log and client record information for tokens
-    	log = new ServerLog();        
-        control = new ServerRecordMgmt(); 
+    	log = new RTCEServerLog();        
+        control = new RTCEServerRecordMgmt(); 
     }
     
     RTCEServer (Socket s) throws IOException // initalize the socket for a thread
@@ -106,7 +106,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
              
                 else //else user is not previously blocked 
                 {
-                 connectMessage.sendMessage(sock, RTCEMessageType.CONNECT, -1, -1);
+                 connectMessage.sendMessage(sock, connectMessage.getRequest(), -1, -1);
              
                 System.out.println("CONNECT Done");
                 
@@ -124,7 +124,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                 if(cuauth && cack)
                                         {  
                                          sauth.getClientMessage().getUsername();
-                                        ServerLog client = new ServerLog(connectMessage.getSessionId(), sock.getInetAddress(), sauth.getClientMessage().getUsername(), this.sock);                                        
+                                        RTCEServerLog client = new RTCEServerLog(connectMessage.getSessionId(), sock.getInetAddress(), sauth.getClientMessage().getUsername(), this.sock);                                        
                                         boolean owner = log.checkOwner();
                                         log.addActiveConnection(client, port);
                                         sessionDriver(connectMessage.getSessionId(), port, client, curr, owner);
@@ -153,7 +153,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
     
     //STATEFUL part 2
     //A SESSION DRIVER RUNS FOR EACH CLIENT SESSION
-    void sessionDriver(long session, int port, ServerLog client, String curr, boolean owner) throws IOException
+    void sessionDriver(long session, int port, RTCEServerLog client, String curr, boolean owner) throws IOException
     {
        
         //flags for various states
@@ -207,7 +207,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                     	cancelTokenTimer();
                                             for(Object key : log.connection_list.keySet())
                                             {
-                                                ServerLog l = (ServerLog)key;
+                                                RTCEServerLog l = (RTCEServerLog)key;
                                                 sendDocument(l.socket,doc1);  
                                             }
                                     	
@@ -285,7 +285,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
   }
   
   //allocate resources and buffers of specific pdu size if request is valid and process it
-  void process(String s, Socket sock, byte[] read, ServerLog log, ServerRecordMgmt Control, ServerLog client)
+  void process(String s, Socket sock, byte[] read, RTCEServerLog log, RTCEServerRecordMgmt Control, RTCEServerLog client)
   {
       int messageSize;
       RTCEServerMessage clientMessage = new RTCEServerMessage();
@@ -358,13 +358,13 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
   }
   
   // functions for timeouts
-	public void startTokenTimer(ServerLog client){
+	public void startTokenTimer(RTCEServerLog client){
 		tokenTimer = new Timer("Token Timeout Timer");
 		tokenWaitTimeout = true;
 		tokenTimer.schedule(new RTCETokenTimeoutTask(client), RTCEServerConfig.getTokenTime());
 	}
 	
-	public void startBlockTimer(ServerLog client){
+	public void startBlockTimer(RTCEServerLog client){
 		blockTimer = new Timer("Block Timeout Timer");
 		blockWaitTimeout = true;
 		blockTimeout = false;
@@ -418,8 +418,8 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	}
 	
 	public class RTCETokenTimeoutTask extends TimerTask{
-		private ServerLog client;
-		public RTCETokenTimeoutTask(ServerLog client){
+		private RTCEServerLog client;
+		public RTCETokenTimeoutTask(RTCEServerLog client){
 			this.client = client;
 		}
 		
@@ -444,8 +444,8 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	}
 	
 	public class RTCEBlockTimeoutTask extends TimerTask{
-		private ServerLog client;
-		public RTCEBlockTimeoutTask(ServerLog client){
+		private RTCEServerLog client;
+		public RTCEBlockTimeoutTask(RTCEServerLog client){
 			this.client = client;
 		}
 		

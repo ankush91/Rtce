@@ -14,7 +14,7 @@ import java.util.HashMap;
  *
  * @author ankus
  */
-public class ServerLog
+public class RTCEServerLog
 {
     static HashMap connection_list; 
     private InetAddress clientIp;
@@ -24,12 +24,12 @@ public class ServerLog
     boolean block;
     Socket socket;
     
-    ServerLog() //LOG OF ACTIVE CONNECTIONS
+    RTCEServerLog() //LOG OF ACTIVE CONNECTIONS
     {
-        connection_list = new HashMap<Integer, ServerLog>(); //initialize Hashmap from port -> client session
+        connection_list = new HashMap<Integer, RTCEServerLog>(); //initialize Hashmap from port -> client session
     }
     
-    ServerLog(long sessionId, InetAddress ip, String user, Socket sock) //initalize an inidividual client in Server Log
+    RTCEServerLog(long sessionId, InetAddress ip, String user, Socket sock) //initalize an inidividual client in Server Log
     {
         this.sessionId = sessionId;
         clientIp = ip;
@@ -40,10 +40,10 @@ public class ServerLog
     
     public boolean setBlock(String username) //FUNCTION TO BLOCK A USER
     {
-        ServerLog l;
+        RTCEServerLog l;
         boolean debug=false;
           for (Object key : connection_list.keySet()) {
-            l = (ServerLog)key;
+            l = (RTCEServerLog)key;
                 if(l.userName.matches(username)){
                     l.block = true;
                     debug = true;
@@ -56,12 +56,12 @@ public class ServerLog
       
     }     
     
-     public ServerLog getBlockedClientId(String username) //FUNCTION TO BLOCK A USER
+     public RTCEServerLog getBlockedClientId(String username) //FUNCTION TO BLOCK A USER
     {
-        ServerLog l;
+        RTCEServerLog l;
         boolean debug=false;
           for (Object key : connection_list.keySet()) {
-            l = (ServerLog)key;
+            l = (RTCEServerLog)key;
                 if(l.userName.matches(username)){
                     l.block = true;
                     debug = true;
@@ -77,10 +77,10 @@ public class ServerLog
     
      public boolean checkBlock(String username) //FUNCTION TO BLOCK A USER
     {
-        ServerLog l;
+        RTCEServerLog l;
         boolean debug=false;
           for (Object key : connection_list.keySet()) {
-            l = (ServerLog)key;
+            l = (RTCEServerLog)key;
                 if(l.userName.matches(username)){
                     l.block = true;
                     debug = true;
@@ -93,19 +93,19 @@ public class ServerLog
       
     }   
     
-    public boolean getBlock(ServerLog client) //return the block flag of a user
+    public boolean getBlock(RTCEServerLog client) //return the block flag of a user
     {
         return client.block;
     }
     
-    public void addActiveConnection(ServerLog clientObject, int port) //ADD CONNECTION - PORT MAPPING IN LOG
+    public void addActiveConnection(RTCEServerLog clientObject, int port) //ADD CONNECTION - PORT MAPPING IN LOG
     {
         connection_list.put(clientObject, port);
     }
     
-    public boolean checkConnection(ServerLog clientObject) //check for connection on client in log
+    public boolean checkConnection(RTCEServerLog clientObject) //check for connection on client in log
     {
-        ServerLog status = (ServerLog) connection_list.get(clientObject); 
+        RTCEServerLog status = (RTCEServerLog) connection_list.get(clientObject); 
         if(status == null)
         {
             return true;
@@ -121,7 +121,7 @@ public class ServerLog
     }
     
     
-    public void removeActiveConnection(ServerLog clientObject) //REMOVE FROM LIST OF ACTIVE CONNECTIONS
+    public void removeActiveConnection(RTCEServerLog clientObject) //REMOVE FROM LIST OF ACTIVE CONNECTIONS
     {
         connection_list.remove(clientObject);
     }

@@ -1,3 +1,3 @@
-example1.txt PermissionsMetadata {
+example1.txt PermissionsMetadata{
 	group4
 } example1.txt PermissionsMetadata

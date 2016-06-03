@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author GROUP 4 
  */
-public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESPECT TO TOKENS AND SECTIONS CORRESPONDING TO THOSE TOKENS
+public class RTCEServerRecordMgmt
 {
     
     static ArrayList freeToken_list; //list of free token values
@@ -18,7 +18,7 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
     static HashMap clientRecord_list; // list of client records - Mapping to section-token object
     static HashMap sectionToken_list; // list of section-token objects
     
-    ServerRecordMgmt()
+    RTCEServerRecordMgmt()
     {
        freeToken_list = tokenInitialize(); //initialize a list of free tokens
        clientRecord_list = new HashMap<>(); //HashMap for client records
@@ -59,12 +59,12 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
             return false;
     }
     
-    public void insertClientRecord(ServerLog clientId, Token token) //insert client - token mapping in clientRecord List
+    public void insertClientRecord(RTCEServerLog clientId, Token token) //insert client - token mapping in clientRecord List
     {
         clientRecord_list.put(clientId, token); 
     }
     
-    public double tokenGrant(ServerLog clientId, int sectionId) //grant tokens to clients, replace mapping
+    public double tokenGrant(RTCEServerLog clientId, int sectionId) //grant tokens to clients, replace mapping
     {
         Token newToken = allocateToken(sectionId); //allocate a token-section object; remove token from free token list
         sectionToken_list.put(newToken.sectionId, newToken.token); //insert the token in section token mapping
@@ -83,7 +83,7 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
   
     }
       
-  public void tokenRevoke(ServerLog clientId) //function to revoke a client token
+  public void tokenRevoke(RTCEServerLog clientId) //function to revoke a client token
     {
         int a;
         if(clientHasToken(clientId)){
@@ -95,7 +95,7 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
     }  
     
   
-  public boolean clientHasToken(ServerLog clientId) //function to check if client currently has token
+  public boolean clientHasToken(RTCEServerLog clientId) //function to check if client currently has token
   {
       Token token = (Token)clientRecord_list.get(clientId);
       if(token!=null && token.token > -1) //client has token then return true
@@ -105,7 +105,7 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
           
   }
     
-    public void deleteClientRecord(ServerLog clientId) //delete an individual client record
+    public void deleteClientRecord(RTCEServerLog clientId) //delete an individual client record
     {
         boolean sectionTest = checkClientTokenTest(clientId);
         if(sectionTest)
@@ -120,7 +120,7 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
         
     }
     
-    public double checkClientToken(ServerLog clientId) //check if client has a token and return the token
+    public double checkClientToken(RTCEServerLog clientId) //check if client has a token and return the token
     {
         Token tok = (Token)clientRecord_list.get(clientId);
         
@@ -135,7 +135,7 @@ public class ServerRecordMgmt //THIS CLASS MANAGES RECORDS FOR CLIENTS WITH RESP
           return -1;
     }
     
-    public boolean checkClientTokenTest(ServerLog clientId) //only check if client has the token
+    public boolean checkClientTokenTest(RTCEServerLog clientId) //only check if client has the token
     {
         Token tok = (Token)clientRecord_list.get(clientId);
        
