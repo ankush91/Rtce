@@ -158,7 +158,7 @@ public class RTCEClient {
             	}
             	response += s.charAt(i);
             }
-            System.out.println("INCOMING RESPONSE:  "+response+"\n");
+            //System.out.println("INCOMING RESPONSE:  "+response+"\n");
             serverMessage.recvMessage(sock, RTCEMessageType.valueOf(response), bf);
             if(response.equals("CONNECT")){
             	cAuthModule.setServerMessage(serverMessage);
@@ -198,7 +198,7 @@ public class RTCEClient {
         void useResponse()
         {
             //Add code to use the response string here.
-            System.out.println(response+"\n");
+            //System.out.println(response+"\n");
         }
         
         void close()
