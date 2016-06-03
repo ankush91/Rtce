@@ -522,7 +522,11 @@ public class RTCEServerMessage {
 		return RTCEConstants.getBytesFromStrings(sharedSecrets, RTCEConstants.getSecretLength());
 	}
         
-        //set the message pdu header
+        /**
+         * set the message pdu header
+         * @param request
+         * @return the byte buffer with the header
+         */
 	public ByteBuffer setHeader(RTCEMessageType request)
 	{
 		setRequest(request);
@@ -539,7 +543,10 @@ public class RTCEServerMessage {
 
 	}  
 
-        //process the header information
+        /**
+         * process the header information
+         * @param bf - byte buffer with header
+         */
 	public void getHeader(ByteBuffer bf){
 		String requestFull = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
 		String request = "";
@@ -585,14 +592,19 @@ public class RTCEServerMessage {
     	bbuf.putInt(getHeaderReserved3());
     	return bbuf;
     }
-	//allocate length of buffer according to request
+    
+	/**
+	 * allocate length of buffer according to request
+	 * @param s
+	 * @return the length of the request
+	 */
 	public int lengthBuffer(String s)
 	{
 		//Allocate buffer length according to request
 		switch (s) 
 		{
 		case "CUAUTH":
-			return 130;
+			return 144;
 
 		case "S_TREQST":
 			return 52;  
