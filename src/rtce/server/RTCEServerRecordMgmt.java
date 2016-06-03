@@ -1,21 +1,20 @@
-
+/**
+ *
+ * @cs544
+ * @author GROUP 4 Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ *
+ * RTCEServerRecordMgmt - This class is the core backend of the protocol. 
+ * All The token management functions with binding of tokens to clients are performed by this class.
+ * Token - This class just binds tokens to sections as Token objects which are assigned to client records in client record mgmt
+ */
 
 package rtce.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
-/**
- *
- * 
- * RTCEServerRecordMgmt - This class is the core backend of the protocol. 
- * All The token management functions with binding of tokens to clients are performed by this class.
- * Token - This class just binds tokens to sections as Token objects which are assigned to client records in client record mgmt
- * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
- * @date Friday, June 3, 2016
- * @version 1
- */
  
 public class RTCEServerRecordMgmt
 {
