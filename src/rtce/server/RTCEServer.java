@@ -81,6 +81,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
         
     }       
     
+    //STATEFUL - PART 1
     //A DRIVER RUNS FOR EACH CLIENT
     void driver(int port) throws IOException 
     {       
@@ -150,6 +151,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                     
     }
     
+    //STATEFUL part 2
     //A SESSION DRIVER RUNS FOR EACH CLIENT SESSION
     void sessionDriver(long session, int port, ServerLog client, String curr, boolean owner) throws IOException
     {
