@@ -21,61 +21,61 @@ import java.net.DatagramSocket;
  * with the "secret handshake" of "HI" to clients 
  */
 public class RTCEDiscoveryServer implements Runnable
-	{
+{
 
 	/**
 	 * Create discover server thread
 	 * @throws IOException
 	 */
-    RTCEDiscoveryServer() throws IOException
-	   {	   }
+	RTCEDiscoveryServer() throws IOException
+	{	   }
 
-    /**
-     * Run discovery server thread
-     */
-    public void run()
-	   {
-		   		  
-		  try{
-           //Create the socket and join the Multicast Group for Discovery
- 	       DatagramSocket socket = new DatagramSocket(4446);
- 	       socket.setReuseAddress(true);
- 	     
-           //Configure the incoming message
-           byte[] incomingBuf = new byte[40];
-           DatagramPacket incomingPacket;
-           incomingPacket = new DatagramPacket(
-           		incomingBuf,
-           		incomingBuf.length);
-           
-           System.out.println("Discovery Thread Starting");           
-           while (true)
-           {  socket.receive(incomingPacket);
-              
-              if (incomingPacket.getLength() == 4)
-              {
-                  //Create the Response Datagram - "HI"
-                  DatagramPacket responsePacket;
-                  byte[] responseBuf = new byte[2];
-                  responseBuf[0] = 'H';
-                  responseBuf[1] = 'I';
-                  responsePacket = new DatagramPacket(
-                  		responseBuf,
-                  		responseBuf.length,
-                  		incomingPacket.getAddress(),
-                  		4447);
-                                       
+	/**
+	 * Run discovery server thread
+	 */
+	public void run()
+	{
 
-                socket.send(responsePacket);
-              }
-           }
-           
-       	} //try block
-           catch (IOException e) {
-           	e.printStackTrace(); }
+		try{
+			//Create the socket and join the Multicast Group for Discovery
+			DatagramSocket socket = new DatagramSocket(4446);
+			socket.setReuseAddress(true);
 
-		  
-	   } //run()
-    
-	} //class RTCEDiscoveryServer
+			//Configure the incoming message
+			byte[] incomingBuf = new byte[40];
+			DatagramPacket incomingPacket;
+			incomingPacket = new DatagramPacket(
+					incomingBuf,
+					incomingBuf.length);
+
+			System.out.println("Discovery Thread Starting");           
+			while (true)
+			{  socket.receive(incomingPacket);
+
+			if (incomingPacket.getLength() == 4)
+			{
+				//Create the Response Datagram - "HI"
+				DatagramPacket responsePacket;
+				byte[] responseBuf = new byte[2];
+				responseBuf[0] = 'H';
+				responseBuf[1] = 'I';
+				responsePacket = new DatagramPacket(
+						responseBuf,
+						responseBuf.length,
+						incomingPacket.getAddress(),
+						4447);
+
+
+				socket.send(responsePacket);
+			}
+			}
+
+		} //try block
+		catch (IOException e) {
+			e.printStackTrace(); }
+
+
+	} //run()
+
+} //class RTCEDiscoveryServer
 
