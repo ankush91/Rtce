@@ -262,6 +262,9 @@ public class RTCEDocument {
     } //getDocumentSection()
     
    
+    /**
+     * Unorder the sections
+     */
     public void clearOrder ()
     {
         for(int i =0; i < 1000; i++)
@@ -269,6 +272,10 @@ public class RTCEDocument {
         orderItr = 1;          
     }
     
+    /**
+     * Put the given section id in the next section spot
+     * @param SectionID - the id of the next section
+     */
     public void setOrder(int SectionID)
     {
       sectionOrder[orderItr++] = SectionID;      
@@ -282,6 +289,12 @@ public class RTCEDocument {
 		return docPath;
 	}
     
+	/**
+	 * Edit the document after receiving a commit
+	 * @param prevID - the previous section id
+	 * @param sID - the modified section id
+	 * @param txt - the text to put in the section
+	 */
 	public void processCommit(int prevID, int sID, String txt)
 	{
        //First see if the section exists already
@@ -291,28 +304,60 @@ public class RTCEDocument {
 	   { addSection(prevID,sID,txt); }
 	}
 	
+	/**
+	 * Get the sections
+	 * @return the sections of the document
+	 */
     public RTCEDocSection[] getSections() {
 		return sections;
 	}
 
+    /**
+     * Get the section order
+     * @return the section order
+     */
 	public int[] getSectionOrder() {
 		return sectionOrder;
 	}
 
+	/**
+	 * Get the document name
+	 * @return the document name
+	 */
 	public String getDocName() {
 		return docName;
 	}
 
+	/**
+	 * Get the document owner
+	 * @return the document owner
+	 */
 	public String getDocOwn() {
 		return docOwn;
 	}
 
+	/**
+	 * Get the section iterator
+	 * @return the section iterator
+	 */
 	public int getS_Itr() {
 		return S_Itr;
 	}
 
+	/**
+	 * Get the order iterator
+	 * @return the order iterator
+	 */
 	public int getOrderItr() {
 		return orderItr;
+	}
+
+	/**
+	 * Get the document extension
+	 * @return the document extension
+	 */
+	public String getDocExt() {
+		return docExt;
 	}
 
 	/**
