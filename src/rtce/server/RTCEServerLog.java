@@ -134,7 +134,19 @@ public class RTCEServerLog
             return false;
     }
     
-    
+    /**
+     * List all of the currently used session ids
+     * @return the list of currently used session ids
+     */
+   public static ArrayList<Long> usedSessionIds(){
+	   RTCEServerLog l;
+	   ArrayList<Long> sessionList = new ArrayList<Long>();
+	   for(Object key : connection_list.keySet()){
+		   l = (RTCEServerLog)key;
+		   sessionList.add(l.getSessionId());
+	   }
+	   return sessionList;
+   }
     
     
 }

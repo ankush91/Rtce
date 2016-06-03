@@ -3,15 +3,23 @@ package rtce.client;
 import java.util.List;
 
 import rtce.RTCEMessageType;
-import rtce.server.RTCEServerMessage;
 
+/**
+ * RTCEClientAuth
+ * The client authentication module for the initial handshake
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEClientAuth {
 
+	//Authentication information
 	private String username;
 	private String password;
 	private String documentOwner;
 	private String documentTitle;
 	
+	//involved messages
 	private RTCEClientMessage clientMessage;
 	private RTCEClientMessage serverMessage;
 	private RTCEClientMessage cack;

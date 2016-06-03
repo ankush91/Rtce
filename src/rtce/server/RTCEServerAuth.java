@@ -19,6 +19,13 @@ import rtce.RTCEMessageType;
 import rtce.RTCEPermission;
 import rtce.client.RTCEClientMessage;
 
+/**
+ * RTCEServerAuth
+ * The server authentication module for the initial handshake
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEServerAuth {
 
 	//The client message used to construct the module
@@ -27,8 +34,10 @@ public class RTCEServerAuth {
 	//The server message constructed by the module
 	private RTCEServerMessage serverMessage;
 	
+	//The session ID
 	private long sessionId;
 	
+	//A server connection object
 	private RTCEServerConnection connection;
 	
 	/**
@@ -60,16 +69,12 @@ public class RTCEServerAuth {
 				connection = new RTCEServerConnection(encrypts[0], opts, doc, perm, sessionId, serverMessage.getVersion());
 				String secrets[] = chooseSecrets(connection.getEncryptModule(), connection.getOptionModules());
 				serverMessage.setSharedSecrets(secrets);
-				
-				// TODO add connection to list of current connections
 			} catch (IOException e) {
 				serverMessage = new RTCEServerMessage();
 				serverMessage.setRequest(RTCEMessageType.S_DENIED);
 				serverMessage.setSessionId(0);
-				// TODO send some sort of denial message because cannot open document
 			}
 		}else{
-			//TODO send some sort of denial message because invalid credentials/message
 			serverMessage = new RTCEServerMessage();
 			serverMessage.setRequest(RTCEMessageType.S_DENIED);
 			serverMessage.setSessionId(0);
@@ -81,13 +86,17 @@ public class RTCEServerAuth {
 	 * @return the session id
 	 */
 	private long generateSessionId(){
-		//TODO decide on proper randomization
 		Random rand = new Random();
 		long value = 0;
-		//TODO also check current session ids
-		while(value == 0){
+		ArrayList<Long> sessionList = RTCEServerLog.usedSessionIds();
+		boolean usedSessionId = false;
+		while(value == 0 || usedSessionId){
 			value = rand.nextLong();
-			//value = Integer.toUnsignedLong(rand.nextInt());
+			if(sessionList == null || !sessionList.contains(value)){
+				usedSessionId = false;
+			}else{
+				usedSessionId = true;
+			}
 		}
 		return value;
 	}
@@ -299,10 +308,18 @@ public class RTCEServerAuth {
 		return result;
 	}
 
+	/**
+	 * Get the session id
+	 * @return the session id as a long
+	 */
 	public long getSessionId() {
 		return sessionId;
 	}
 
+	/**
+	 * Get the session connection object storing various information
+	 * @return the session connection object
+	 */
 	public RTCEServerConnection getConnection() {
 		return connection;
 	}
