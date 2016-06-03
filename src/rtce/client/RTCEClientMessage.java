@@ -802,7 +802,7 @@ class ControlMessage extends RTCEClientMessage
     
       public void getS_REVOKE(ByteBuffer bf)
     {   
-    	   System.out.println("token is Revoked due to timeout. You need make a new request again");
+    	   System.out.println("Access to update is revoked due to timeout. You need to make a new request again");
            bf.position(40);
           // System.out.println("Status Code:" + bf.getInt());
           //System.out.println("Error Code:" + bf.getInt());
