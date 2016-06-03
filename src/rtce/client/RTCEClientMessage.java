@@ -415,7 +415,7 @@ public class RTCEClientMessage {
  			}
  		}
 
-  		System.out.println("Request in string format: " + request);
+  		//System.out.println("Request in string format: " + request);
   		setRequest(RTCEMessageType.valueOf(request));
   		//System.out.println(bf.position());
 
@@ -531,7 +531,7 @@ public class RTCEClientMessage {
                     
                     byte[] test = out.toByteArray();
                      String s1 = new String(test, 0, 8, RTCEConstants.getRtcecharset());
-                     System.out.println("OUTGOING REQUEST:  " + s1 + "\n");
+                     //System.out.println("OUTGOING REQUEST:  " + s1 + "\n");
                     
                     }
                 catch(IOException ex) 
@@ -664,12 +664,12 @@ public class RTCEClientMessage {
      	  break; 
           
        case ECHO:
-           System.out.println("ECHO \n");
+           System.out.println("echo received back.. \n");
             {}
      	  break;    	
           
        case LACK:
-            System.out.println("LACK \n");
+            //System.out.println("LACK \n");
              {}
      	  break;  
 
@@ -771,6 +771,7 @@ class ControlMessage extends RTCEClientMessage
        //ALL RECEIVED MESSAGES FROM SERVER SIDE
        public void getS_TRESPN(ByteBuffer bf)
     {   
+    	   System.out.println("Got Access to update the requested section!");
            bf.position(40);
            
            
@@ -793,13 +794,15 @@ class ControlMessage extends RTCEClientMessage
        
       public void getS_DENIED(ByteBuffer bf)
     {   
+    	   System.out.println("Sorry the section is not free right now..");
            bf.position(40);
-           System.out.println("Status Code:" + bf.getInt());
-           System.out.println("Error Code:" + bf.getInt());
+          // System.out.println("Status Code:" + bf.getInt());
+           //System.out.println("Error Code:" + bf.getInt());
     }
     
       public void getS_REVOKE(ByteBuffer bf)
     {   
+    	   System.out.println("token is Revoked due to timeout. You need make a new request again");
            bf.position(40);
            System.out.println("Status Code:" + bf.getInt());
            System.out.println("Error Code:" + bf.getInt());
@@ -807,9 +810,10 @@ class ControlMessage extends RTCEClientMessage
       
     public void getBLOCK(ByteBuffer bf)
     {
+           System.out.println("Sorry you are blocked temporarily..");
            bf.position(40);
            setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
-           System.out.println("Username: " + getUsername());
+           //System.out.println("Username: " + getUsername());
            bf.position(40+RTCEConstants.getUsernameLength());
            boolean blockFlags[] = new boolean[4*8];
            byte readFlags[] = new byte[4];
@@ -820,9 +824,9 @@ class ControlMessage extends RTCEClientMessage
            //bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
            blockFlags = readBits(readFlags);
            setFlags(blockFlags);
-           System.out.println("Flags processing..");
+           //System.out.println("Flags processing..");
            for(int i = 0; i < blockFlags.length; i++){
-        	   System.out.print(blockFlags[i] + ";");
+        	  // System.out.print(blockFlags[i] + ";");
            }
            System.out.println();
     }
@@ -854,17 +858,17 @@ class ControlMessage extends RTCEClientMessage
            
            bf.position(44);
            setUsername(RTCEConstants.clipString(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
-           System.out.println("Server Authentication: " + getUsername());
+          // System.out.println("Server Authentication: " + getUsername());
            
            bf.position(44+RTCEConstants.getUsernameLength());
            String enc[] = new String[1];
            enc[0] = RTCEConstants.clipString(new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
            setEncryptOpts(enc);
-           System.out.println("Encrypt Option: " + getEncryptOpts()[0]);
+          // System.out.println("Encrypt Option: " + getEncryptOpts()[0]);
            
            bf.position(44+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength());
            int numGenOpts = bf.getInt();
-           System.out.println("Number of other options: "+ numGenOpts);
+          // System.out.println("Number of other options: "+ numGenOpts);
            String gen[] = new String[numGenOpts];
            for(int i = 0; i < numGenOpts; i++){
         	   gen[i] = RTCEConstants.clipString(new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
@@ -876,7 +880,7 @@ class ControlMessage extends RTCEClientMessage
            
            bf.position(48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(numGenOpts*RTCEConstants.getOptLength()));
            int numSecrets = bf.getInt();
-           System.out.println("Number of shared secrets: "+ numSecrets);
+          // System.out.println("Number of shared secrets: "+ numSecrets);
            String sec[] = new String[numSecrets];
            for(int i = 0; i < numSecrets; i++){
         	   sec[i] = RTCEConstants.clipString(new String(bf.array(), 48+RTCEConstants.getUsernameLength()+RTCEConstants.getOptLength()+(numGenOpts*RTCEConstants.getOptLength())+(i*RTCEConstants.getSecretLength()), RTCEConstants.getSecretLength(), RTCEConstants.getRtcecharset()));
@@ -918,6 +922,7 @@ class ControlMessage extends RTCEClientMessage
     public void getS_DONE(ByteBuffer bf, Socket s)
 
 	{       
+		System.out.println("document updated..");
 		bf.position(40);
                 //default status and error message
 		int status = bf.getInt();
