@@ -29,52 +29,52 @@ public class RTCEServerConfig {
 
 	//The file holding configuration information for the server
 	private static File configFile;
-	
+
 	//The file containing authentication information
 	private static File authFile;
-	
+
 	//The map of usernames to authentication strings
 	private static HashMap<String, String> authMap;
-	
+
 	//The identifier of the server host
 	private static String hostKey;
-	
+
 	//The file containing the list of valid encryption options
 	private static File encryptFile;
-	
+
 	//The file containing the list of valid generic options
 	private static File optionFile;
-	
+
 	//The list of valid encryption options
 	private static ArrayList<String> validEncrypts;
-	
+
 	//The list of valid generic options
 	private static ArrayList<String> validOpts;
-	
+
 	//The directory storing all of the documents
 	private static File documentDir;
-	
+
 	//The filename extension for documents
 	private static String fileExt;
-	
+
 	//The filename for the permissions document
 	private static String permissions;
-	
+
 	//The length of time to block users (in milliseconds)
 	private static long blockTime;
-	
+
 	//The length of time to grant tokens (in milliseconds)
 	private static long tokenTime;
-	
+
 	//The version number
 	private static final byte versionMajor = 1;
 	private static final byte versionMinor = 0;
 	private static final byte versionSub = 0;
 	private static final byte versionExtend = 0;
-	
+
 	//The port number
 	private static int portNumber;
-	
+
 	/**
 	 * Initialize the server from the configuration file
 	 * @param configPath - the path to the configuration file
@@ -87,7 +87,7 @@ public class RTCEServerConfig {
 		validOpts = new ArrayList<String>();
 		readConfigFile();
 	}
-	
+
 	/**
 	 * Read the configuration file and extract values
 	 * @throws IOException - if the configuration file cannot be read
@@ -127,7 +127,7 @@ public class RTCEServerConfig {
 		}
 		reader.close();
 	}
-	
+
 	/**
 	 * Read the encryption file and extract values
 	 * @throws IOException - if the encryption file cannot be read
@@ -143,7 +143,7 @@ public class RTCEServerConfig {
 		}
 		reader.close();
 	}
-	
+
 	/**
 	 * Read the option file and extract values
 	 * @throws IOException - if the option file cannot be read
@@ -159,7 +159,7 @@ public class RTCEServerConfig {
 		}
 		reader.close();
 	}
-	
+
 	/**
 	 * Get the server configuration file
 	 * @return the configuration file
@@ -167,7 +167,7 @@ public class RTCEServerConfig {
 	public static File getConfigFile() {
 		return configFile;
 	}
-	
+
 	/**
 	 * Get the authentication file
 	 * @return the file containing user authentications
@@ -183,7 +183,7 @@ public class RTCEServerConfig {
 	public static Map<String, String> getAuthMap() {
 		return authMap;
 	}
-	
+
 	/**
 	 * Read in the authentication data, populating the authentication map
 	 * @throws IOException if cannot read the authentication file
@@ -236,7 +236,7 @@ public class RTCEServerConfig {
 	public static File getDocumentDir() {
 		return documentDir;
 	}
-	
+
 	/**
 	 * Get the list of allowable encryption options
 	 * @return the list of encryption options supported by the server
@@ -268,7 +268,7 @@ public class RTCEServerConfig {
 	public static String getPermissions() {
 		return permissions;
 	}
-	
+
 	/**
 	 * Create a new user
 	 * @param username - the new username
@@ -278,7 +278,7 @@ public class RTCEServerConfig {
 	public static boolean createAuthor(String username, String password){
 		if(username == null || username.trim().length() == 0 || authMap.containsKey(username)){
 			return false;
-		}else if(password != null || password.trim().length() == 0){
+		}else if(password == null || password.trim().length() == 0){
 			return false;
 		}else{
 			try {
@@ -325,7 +325,7 @@ public class RTCEServerConfig {
 	public static byte getVersionextend() {
 		return versionExtend;
 	}
-	
+
 	/**
 	 * Get the version 
 	 * @return 4 bytes representing the version

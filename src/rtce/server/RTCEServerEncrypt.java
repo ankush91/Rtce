@@ -11,13 +11,13 @@ import rtce.RTCECrypt;
  * @version 1
  */
 public class RTCEServerEncrypt implements RTCECrypt{
-	
+
 	//The name of the encryption module
 	private String method;
-	
+
 	//The underlying cryptographer
 	private RTCECrypt crypto;
-	
+
 	/**
 	 * Create the encryption module
 	 * @param m - the name of the module
@@ -25,15 +25,15 @@ public class RTCEServerEncrypt implements RTCECrypt{
 	public RTCEServerEncrypt(String m){
 		method = m;
 		switch(method){
-			case "NONE":
-				crypto = null;
-				break;
-			default:
-				crypto = null;
-				break;
+		case "NONE":
+			crypto = null;
+			break;
+		default:
+			crypto = null;
+			break;
 		}
 	}
-	
+
 	/**
 	 * Get the secrets to be sent to the client
 	 * @return the array of secrets to send to the client
@@ -45,7 +45,7 @@ public class RTCEServerEncrypt implements RTCECrypt{
 			return crypto.getSecrets();
 		}
 	}
-	
+
 	/**
 	 * Encrypt the plaintext by passing to the underlying cryptographer
 	 * @param the plaintext to encrypt

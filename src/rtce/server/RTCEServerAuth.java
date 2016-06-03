@@ -30,16 +30,16 @@ public class RTCEServerAuth {
 
 	//The client message used to construct the module
 	private RTCEServerMessage clientMessage;
-	
+
 	//The server message constructed by the module
 	private RTCEServerMessage serverMessage;
-	
+
 	//The session ID
 	private long sessionId;
-	
+
 	//A server connection object
 	private RTCEServerConnection connection;
-	
+
 	/**
 	 * Create the server authentication module from the CUAUTH message
 	 * @param m - a CUAUTH message
@@ -80,7 +80,7 @@ public class RTCEServerAuth {
 			serverMessage.setSessionId(0);
 		}
 	}
-	
+
 	/**
 	 * Generate the session id for the connection
 	 * @return the session id
@@ -100,7 +100,7 @@ public class RTCEServerAuth {
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Determine if this is a valid authentication module
 	 * @return true if the message is CUAUTH, false otherwise
@@ -112,7 +112,7 @@ public class RTCEServerAuth {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Determine if the authentication credentials are valid
 	 * @return true if valid authentication, false otherwise
@@ -151,7 +151,7 @@ public class RTCEServerAuth {
 	public RTCEServerMessage getServerMessage() {
 		return serverMessage;
 	}
-	
+
 	/**
 	 * Choose the encryption method for the session
 	 * @return the encryption option as a string
@@ -169,7 +169,7 @@ public class RTCEServerAuth {
 		}
 		return "NONE";
 	}
-	
+
 	/**
 	 * Choose shared secrets for the client
 	 * @return the shared secrets to send to the client
@@ -198,7 +198,7 @@ public class RTCEServerAuth {
 		}
 		return secrets;
 	}
-	
+
 	/**
 	 * Select options for the session
 	 * @return the chosen options as an array of strings
@@ -223,7 +223,7 @@ public class RTCEServerAuth {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * Determine if the user is allowed to edit the document
 	 * @return true if user permitted, false otherwise
@@ -268,7 +268,7 @@ public class RTCEServerAuth {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Takes the document information from the message to return the document
 	 * @return the document itself
@@ -289,7 +289,7 @@ public class RTCEServerAuth {
 			throw new IOException("The document does not exist: " + docOwner + "/" + docTitle);
 		}
 	}
-	
+
 	/**
 	 * Match server version to client version, and return the lowest supported version
 	 * @param cVersion - the client version
@@ -323,6 +323,6 @@ public class RTCEServerAuth {
 	public RTCEServerConnection getConnection() {
 		return connection;
 	}
-	
-	
+
+
 }

@@ -3,29 +3,37 @@ package rtce.server;
 import rtce.RTCEDocument;
 import rtce.RTCEPermission;
 
+/**
+ * RTCEServerConnect
+ * Stores connection information for the server, including session id.
+ * Minimally used in current implementation
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEServerConnection {
-	
+
 	//The encryption module
 	private RTCEServerEncrypt encryptModule;
-	
+
 	//The option modules
 	private RTCEServerOpt optionModules[];
-	
+
 	//The document
 	private RTCEDocument document;
-	
+
 	//The permission level
 	private RTCEPermission permission;
-	
+
 	//The session id
 	private long sessionId;
-	
+
 	//The version number
 	private byte version[];
-	
+
 	//The port number
 	private int portNumber;
-	
+
 	/**
 	 * Create the connection
 	 * @param encrypt - the name of the encryption technique
@@ -87,13 +95,21 @@ public class RTCEServerConnection {
 		return sessionId;
 	}
 
+	/**
+	 * Get the version
+	 * @return version
+	 */
 	public byte[] getVersion() {
 		return version;
 	}
 
+	/**
+	 * Get the port number
+	 * @return port number
+	 */
 	public int getPortNumber() {
 		return portNumber;
 	}
-	
-	
+
+
 }
