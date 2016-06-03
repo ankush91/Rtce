@@ -1,9 +1,9 @@
 /**
  * @cs544
- * @author GROUP 4
+ * @author GROUP 4 Anthony Emma, Ankush Israney, Edwin Dauber, Francis Obiagwu
  * @version 1
- * @6/3/2016
- * @This file is responsible for establishing the input portion of the UI and handle commands from
+ * @date 6/3/2016
+ * 	  This file is responsible for establishing the input portion of the UI and handle commands from
  *    user using the PDU.   This file contains some of the statefulness restrictions on the client side
  *    to ensure the DFA is adhered to.
  */
@@ -43,7 +43,7 @@ public class RTCEClientUIInput implements Runnable
     		//User wants to login 
     		//example: login,username,password,documentowner,documentname
     		if (s.startsWith("login"))
-    		{   if (parent.connect == false)
+    		{   if (parent.isConnect() == false)
        		    {
     			  String[] parts = s.split(",");
     			  if (parts.length != 5)
@@ -53,7 +53,7 @@ public class RTCEClientUIInput implements Runnable
     			    System.out.println("Logging in as " + parts[1] + " to edit document " + parts[3] + "/" + parts[4]);
     			    parent.setcAuthModule(new RTCEClientAuth(parts[1], parts[2], parts[3], parts[4]));
     			    parent.getcAuthModule().getClientMessage().sendMessage(socket, RTCEMessageType.CUAUTH, -1, -1);
-    			    parent.cuauth = true;
+    			    parent.setCuauth(true);
     			  }
     		    }
     		    else
@@ -65,7 +65,7 @@ public class RTCEClientUIInput implements Runnable
     		//example:   commit,1,2
     		else if (s.startsWith("commit"))
     		{
-    			if (parent.connect == true && parent.token > 0)
+    			if (parent.isConnect() == true && parent.getToken() > 0)
     			{
     			  String[] parts = s.split(",");
     			  System.out.println("Enter new text");
@@ -77,32 +77,32 @@ public class RTCEClientUIInput implements Runnable
       			  }
       			  else
       			  {
-    			    parent.commitPrevSectionID = Integer.parseInt(parts[1]);
-       			    parent.commitSectionID     = Integer.parseInt(parts[2]);
-    			    parent.commitTxt           = newText;
+    			    parent.setCommitPrevSectionID(Integer.parseInt(parts[1]));
+       			    parent.setCommitSectionID(Integer.parseInt(parts[2]));
+    			    parent.setCommitTxt(newText);
     			
-    			    if (parent.commitSectionID != parent.tokenSection)
-    			    {  System.out.println("INVALID: Token is only for section " + parent.tokenSection); }
+    			    if (parent.getCommitSectionID() != parent.getTokenSection())
+    			    {  System.out.println("INVALID: Token is only for section " + parent.getTokenSection()); }
     			    else
     			    {
     			      RTCEClientMessage Message = new RTCEClientMessage();
     			      Message.setRequest(RTCEMessageType.S_COMMIT);
     			      Message.setCommitData(
-    			  		parent.token,  
-    					parent.commitPrevSectionID, 
-    					parent.commitSectionID, 
-    					parent.commitTxt);
+    			  		parent.getToken(),  
+    					parent.getCommitPrevSectionID(), 
+    					parent.getCommitSectionID(), 
+    					parent.getCommitTxt());
     			      Message.setSessionId(parent.getCliConn().getSessionId());
     			      Message.sendMessage(socket, RTCEMessageType.S_COMMIT, -1, -1);
-    			      parent.token = 0;
-    			      parent.commitSectionID = 0;
+    			      parent.setToken(0);
+    			      parent.setCommitSectionID(0);
     			    }
       			  }
     			}
     			else
     			{
-    			  if (parent.connect == false) {System.out.println("INVALID: Not logged in");}
-    			  if (parent.token   == 0)     {System.out.println("INVALID: No token aquired");}    			      				
+    			  if (parent.isConnect() == false) {System.out.println("INVALID: Not logged in");}
+    			  if (parent.getToken()   == 0)     {System.out.println("INVALID: No token aquired");}    			      				
     			}
     			
     		} //commit
@@ -110,9 +110,9 @@ public class RTCEClientUIInput implements Runnable
             //test for Request message 
             else if(s.startsWith("request"))
             {
-              if (parent.connect == true)	
+              if (parent.isConnect() == true)	
               {
-            	 if (parent.token == 0)
+            	 if (parent.getToken() == 0)
             	 {
                    RTCEClientMessage clientMessage = new RTCEClientMessage();
      			   String[] parts = s.split(",");
@@ -120,14 +120,14 @@ public class RTCEClientUIInput implements Runnable
                    int a = Integer.parseInt(parts[1]); 
                    System.out.println("Requested for: "+a);
                    clientMessage.setSectionId(a);
-                   parent.tokenSection = a;
+                   parent.setTokenSection(a);
                    clientMessage.setSessionId(parent.getCliConn().getSessionId());
                    String reqst = "S_TREQST";
                    clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(reqst.getBytes(), getRtcecharset())), -1, a);
             	 }
             	 else
             	 {
-            	   System.out.println("Cannot request another token.  Client already has token for Section " + parent.tokenSection);	             	 
+            	   System.out.println("Cannot request another token.  Client already has token for Section " + parent.getTokenSection());	             	 
             	 }
               }
               else
@@ -137,7 +137,7 @@ public class RTCEClientUIInput implements Runnable
             }
             else if (s.startsWith("block"))
             {
-              if (parent.connect == true)	
+              if (parent.isConnect() == true)	
               {  String[] parts = s.split(",");
 		         RTCEClientMessage Message = new RTCEClientMessage();
 			     Message.setRequest(RTCEMessageType.BLOCK);
@@ -158,7 +158,7 @@ public class RTCEClientUIInput implements Runnable
     			     s.startsWith("CACK") 
     			    )
     		{
-    		  if (parent.connect == true)
+    		  if (parent.isConnect() == true)
     		  {
                 RTCEClientMessage clientMessage = new RTCEClientMessage();
                 clientMessage.sendMessage(socket, RTCEMessageType.valueOf(new String(s.getBytes(), getRtcecharset())), -1, -1);
@@ -170,8 +170,8 @@ public class RTCEClientUIInput implements Runnable
     		  
     		  if (s.startsWith("ABORT"))
     		  {
-    		    parent.connect = false;
-    		    parent.cuauth  = false;
+    		    parent.setConnect(false);
+    		    parent.setCuauth(false);
     		    System.exit(0);
     		  }
     		  

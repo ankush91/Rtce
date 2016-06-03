@@ -2,6 +2,14 @@ package rtce.client;
 
 import rtce.RTCECrypt;
 
+/**
+ * RTCEClientEncrypt
+ * The client encryption module
+ * Minimally used in current implementation, as we have only the "NONE" encrypter
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEClientEncrypt implements RTCECrypt{
 	
 	//The name of the encryption module

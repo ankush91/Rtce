@@ -2,6 +2,14 @@ package rtce.client;
 
 import rtce.RTCEDocument;
 
+/**
+ * RTCEClientConnect
+ * Stores connection information for the client, including session id.
+ * Minimally used in current implementation
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEClientConnection {
 	
 	//The encryption module
@@ -80,6 +88,10 @@ public class RTCEClientConnection {
 		}
 	}
 
+	/**
+	 * Get the version number
+	 * @return the version number
+	 */
 	public byte[] getVersion() {
 		return version;
 	}

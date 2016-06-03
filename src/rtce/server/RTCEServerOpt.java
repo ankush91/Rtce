@@ -1,5 +1,13 @@
 package rtce.server;
 
+/**
+ * RTCEClientOpt
+ * The client option module
+ * Minimally used in current implementation, as we have no options
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEServerOpt {
 	
 	//The name of the option module
@@ -20,4 +28,13 @@ public class RTCEServerOpt {
 	public String[] getSecrets(){
 		return null;
 	}
+
+	/**
+	 * Get the option name
+	 * @return the option name
+	 */
+	public String getOpt() {
+		return opt;
+	}
+	
 }

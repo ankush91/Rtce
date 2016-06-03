@@ -11,7 +11,13 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.ByteBuffer;
 
-
+/**
+ * RTCEClientMessage
+ * The message object for the client.  Implements recieving server messages and sending client messages
+ * @author Ankush Israney, Edwin Dauber, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEClientMessage {
 
 	//The request type
@@ -77,46 +83,90 @@ public class RTCEClientMessage {
 		return request;
 	}
 
+	/**
+	 * Get the username
+	 * @return the username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Get the password
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Set the request type
+	 * @param request
+	 */
 	public void setRequest(RTCEMessageType request) {
 		this.request = request;
 	}
 
+	/**
+	 * Set the username
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Set the password
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Get the encryption options
+	 * @return the encryption options
+	 */
 	public String[] getEncryptOpts() {
 		return encryptOpts;
 	}
 
+	/**
+	 * Set the encryption options
+	 * @param encryptOpts
+	 */
 	public void setEncryptOpts(String[] encryptOpts) {
 		this.encryptOpts = encryptOpts;
 	}
 
+	/**
+	 * Get the generic options
+	 * @return the generic options
+	 */
 	public String[] getGenericOpts() {
 		return genericOpts;
 	}
          
+	/**
+	 * Set the generic options
+	 * @param genericOpts
+	 */
 	public void setGenericOpts(String[] genericOpts) {
 		this.genericOpts = genericOpts;
 	}
 	
+	/**
+	 * Get the shared secrets
+	 * @return the shared secrets
+	 */
 	public String[] getSharedSecrets() {
 		return sharedSecrets;
 	}
 
+	/**
+	 * Set the shared secrets
+	 * @param sharedSecrets
+	 */
 	public void setSharedSecrets(String[] sharedSecrets) {
 		this.sharedSecrets = sharedSecrets;
 	}

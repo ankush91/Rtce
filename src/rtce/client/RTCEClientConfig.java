@@ -6,11 +6,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import rtce.RTCEConstants;
 
+/**
+ * RTCEClientConfig
+ * Configures the client with client side constants and static methods
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
 public class RTCEClientConfig {
 
 	//The file holding configuration information for the client
@@ -146,18 +152,34 @@ public class RTCEClientConfig {
 		return desiredOpts;
 	}
 
+	/**
+	 * Get the major version number
+	 * @return the byte representing the major version number
+	 */
 	public static byte getVersionmajor() {
 		return versionMajor;
 	}
 
+	/**
+	 * Get the minor version number
+	 * @return the byte representing the minor version number
+	 */
 	public static byte getVersionminor() {
 		return versionMinor;
 	}
 
+	/**
+	 * Get the sub-version number
+	 * @return the byte representing the sub-version number
+	 */
 	public static byte getVersionsub() {
 		return versionSub;
 	}
 
+	/**
+	 * Get the version extension number
+	 * @return the byte representing the version extension number
+	 */
 	public static byte getVersionextend() {
 		return versionExtend;
 	}
