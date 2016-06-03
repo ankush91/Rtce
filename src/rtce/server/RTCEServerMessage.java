@@ -16,6 +16,15 @@ import java.util.logging.Logger;
 import com.sun.corba.se.impl.util.Version;
 //import com.sun.xml.internal.txw2.Document;
 
+/**
+ * RTCEServerMessage - This class contains all parsing and processing functions to get and set the pdu's for messages.
+ * Before receiving a message, a byte buffer is allocated as per the header pdu and only those many bytes are interpreted in the recv message
+ *The sendmessage is used to package the pdu and send it across to the client. 
+ * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ */
+
 
 import static rtce.RTCEConstants.getRtcecharset;
 
