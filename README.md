@@ -88,8 +88,13 @@ See section Server Discovery under Client in Use.
 
 This is the final project for Group 4 in CS544.
 
+
 Our team members are:
+
 Edwin Dauber
+
 Ankush Israney
+
 Anthony Emma
+
 Francis Obiagwu
