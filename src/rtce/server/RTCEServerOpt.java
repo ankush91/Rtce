@@ -9,10 +9,10 @@ package rtce.server;
  * @version 1
  */
 public class RTCEServerOpt {
-	
+
 	//The name of the option module
 	private String opt;
-	
+
 	/**
 	 * Create the option module
 	 * @param o - the name of the option
@@ -20,7 +20,7 @@ public class RTCEServerOpt {
 	public RTCEServerOpt(String o){
 		opt = o;
 	}
-	
+
 	/**
 	 * Get the secrets to be sent to the client
 	 * @return the array of secrets to send to the client
@@ -36,5 +36,5 @@ public class RTCEServerOpt {
 	public String getOpt() {
 		return opt;
 	}
-	
+
 }
