@@ -50,8 +50,8 @@ public class RTCEServerRecordMgmt
     {
         if(section > -1)
         {
-            System.out.println(section);
-            System.out.println(sectionFree_list.get(section));
+           // System.out.println(section);
+            //System.out.println(sectionFree_list.get(section));
             return (boolean) sectionFree_list.get(section);
             
         }    
@@ -70,7 +70,7 @@ public class RTCEServerRecordMgmt
         sectionToken_list.put(newToken.sectionId, newToken.token); //insert the token in section token mapping
         sectionFree_list.replace(sectionId, true, false); //change section availability to false -> section availability independent of Token Grant
         clientRecord_list.replace(clientId, newToken); //give the token to the client
-        System.out.println(sectionFree_list.get(sectionId));
+        //System.out.println(sectionFree_list.get(sectionId));
         return newToken.token;
     }
     
