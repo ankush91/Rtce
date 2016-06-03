@@ -85,4 +85,11 @@ While the beginnings of the system to load and work with real documents on the d
 See section Server Discovery under Client in Use.
 
 ## Credits
+
 This is the final project for Group 4 in CS544.
+
+Our team members are:
+Edwin Dauber
+Ankush Israney
+Anthony Emma
+Francis Obiagwu
