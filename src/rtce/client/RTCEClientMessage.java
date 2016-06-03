@@ -171,100 +171,195 @@ public class RTCEClientMessage {
 		this.sharedSecrets = sharedSecrets;
 	}
 
+	/**
+	 * Set the document
+	 * @param doc
+	 */
 	public void setDocument(RTCEDocument doc) {
 		this.document = doc;
 	}	
 	
+	/**
+	 * Get the server response
+	 * @return the server response
+	 */
 	public RTCEMessageType getServerResponse() {
 		return serverResponse;
 	}
 
+	/**
+	 * Set the server response
+	 * @param serverResponse
+	 */
 	public void setServerResponse(RTCEMessageType serverResponse) {
 		this.serverResponse = serverResponse;
 	}
 
+	/**
+	 * Get the document owner
+	 * @return the document owner
+	 */
 	public String getDocumentOwner() {
 		return documentOwner;
 	}
 
+	/**
+	 * Set the document owner
+	 * @param documentOwner
+	 */
 	public void setDocumentOwner(String documentOwner) {
 		this.documentOwner = documentOwner;
 	}
 
+	/**
+	 * Get the document title
+	 * @return the document title
+	 */
 	public String getDocumentTitle() {
 		return documentTitle;
 	}
 
+	/**
+	 * Set the document title
+	 * @param documentTitle
+	 */
 	public void setDocumentTitle(String documentTitle) {
 		this.documentTitle = documentTitle;
 	}
 
+	/**
+	 * Get the timestamp
+	 * @return the timestamp
+	 */
 	public long getTimeStamp() {
 		return timeStamp;
 	}
 
+	/**
+	 * Set the timestamp
+	 * @param timeStamp
+	 */
 	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 
+	/**
+	 * Get the document
+	 * @return the document
+	 */
 	public RTCEDocument getDocument() {
 		return document;
 	}
 	
+	/**
+	 * Get the version
+	 * @return the version
+	 */
 	public byte[] getVersion() {
 		return version;
 	}
 
+	/**
+	 * Set the version
+	 * @param version
+	 */
 	public void setVersion(byte[] version) {
 		this.version = version;
 	}
 
+	/**
+	 * Get the commit section id
+	 * @return the commit section id
+	 */
 	public int getCommit_sID() {
 		return Commit_sID;
 	}
         
+	/**
+	 * Set the commit section id
+	 * @param commit_sID
+	 */
 	public void setCommit_sID(int commit_sID) {
 		Commit_sID = commit_sID;
 	}
 
+	/**
+	 * Get the commit previous id
+	 * @return the commit previous id
+	 */
 	public int getCommit_prevID() {
 		return Commit_prevID;
 	}
 
+	/**
+	 * Set the commit previous id
+	 * @param commit_prevID
+	 */
 	public void setCommit_prevID(int commit_prevID) {
 		Commit_prevID = commit_prevID;
 	}
 
+	/**
+	 * Get the commit text
+	 * @return the commit text
+	 */
 	public String getCommit_txt() {
 		return Commit_txt;
 	}
 
+	/**
+	 * Set the commit text
+	 * @param commit_txt
+	 */
 	public void setCommit_txt(String commit_txt) {
 		Commit_txt = commit_txt;
 	}
 
+	/**
+	 * Get the commit token
+	 * @return the commit token
+	 */
 	public double getCommit_token() {
 		return Commit_token;
 	}
         
+	/**
+	 * Get the token section id
+	 * @return the token section id
+	 */
         public int getSectionId(){
             return Request_sID;
         }
         
+        /**
+         * Set the token section id
+         * @param section
+         */
         public void setSectionId(int section){
            Request_sID = section;
            
         }
         
+        /**
+         * get the token value
+         * @return the token value
+         */
         public double getResponseToken(){
             return Response_token;
         }
           
-        
+        /**
+         * Set the token value
+         * @param token
+         */
         public void setToken(double token){
            Response_token = token;
         }
 
+        /**
+         * Set the commit token value
+         * @param commit_token
+         */
 	public void setCommit_token(double commit_token) {
 		Commit_token = commit_token;
 	}
@@ -317,11 +412,19 @@ public class RTCEClientMessage {
 		return RTCEConstants.getStringAsBytes(documentTitle, RTCEConstants.getDocTitleLength());
 	}
 	
+	/**
+	 * Set the request type from bytes
+	 * @param requestChars
+	 */
 	public void setRequest(byte[] requestChars){
 		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
 		request = RTCEMessageType.valueOf(requestName);
 	}
 	
+	/**
+	 * Get the request type as bytes
+	 * @return the request type as bytes
+	 */
 	public byte[] getRequestChars(){
 		byte[] requestName = new byte[RTCEConstants.getRequestLength()];
 		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
@@ -338,92 +441,175 @@ public class RTCEClientMessage {
 		return requestName;
 	}
 
+	/**
+	 * Get the session id
+	 * @return the session id
+	 */
 	public long getSessionId() {
 		return sessionId;
 	}
 
+	/**
+	 * Set the session id
+	 * @param sessionId
+	 */
 	public void setSessionId(long sessionId) {
 		this.sessionId = sessionId;              
 	}
 
+	/**
+	 * Get the checksum
+	 * @return the checksum
+	 */
 	public int getChecksum() {
 		return checksum;
 	}
 
+	/**
+	 * Set the checksum
+	 * @param checksum
+	 */
 	public void setChecksum(int checksum) {
 		this.checksum = checksum;
 	}
 
-        //We will tackle exact issue of timing when testing the control flow
+        /**
+         * Set the timestamp
+         */
         public void setTime()
         {
             this.timeStamp = System.nanoTime();
         }
         
+        /**
+         * Get the timestamp
+         * @return the timestamp
+         */
         public long getTime()
         {
             return timeStamp;
         }
         
+        /**
+         * Get the reserved header field 1
+         * @return reserved header field 1
+         */
 	public int getHeaderReserved1() {
 		return headerReserved1;
 	}
 
+	/**
+	 * Set the reserved header field 1
+	 * @param headerReserved1
+	 */
 	public void setHeaderReserved1(int headerReserved1) {
 		this.headerReserved1 = headerReserved1;
 	}
 
+	/**
+     * Get the reserved header field 2
+     * @return reserved header field 2
+     */
 	public int getHeaderReserved2() {
 		return headerReserved2;
 	}
 
+	/**
+	 * Set the reserved header field 2
+	 * @param headerReserved2
+	 */
 	public void setHeaderReserved2(int headerReserved2) {
 		this.headerReserved2 = headerReserved2;
 	}
 
+	/**
+     * Get the reserved header field 3
+     * @return reserved header field 3
+     */
 	public int getHeaderReserved3() {
 		return headerReserved3;
 	}
 
+	/**
+	 * Set the reserved header field 3
+	 * @param headerReserved3
+	 */
 	public void setHeaderReserved3(int headerReserved3) {
 		this.headerReserved3 = headerReserved3;
 	}
         
+	/**
+	 * Get encrypt options as bytes
+	 * @return encrypt options as bytes
+	 */
 	public byte[][] getEncryptsAsBytes(){
 		return RTCEConstants.getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
 	}
 	
+	/**
+	 * Get generic options as bytes
+	 * @return generic options as bytes
+	 */
 	public byte[][] getOptsAsBytes(){
 		return RTCEConstants.getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
 	}
 	
+	/**
+	 * Get flags
+	 * @return flags
+	 */
     public boolean[] getFlags() {
 		return flags;
 	}
 
+    /**
+     * Set flags
+     * @param flags
+     */
 	public void setFlags(boolean[] flags) {
 		this.flags = flags;
 	}
 
+	/**
+	 * get token request section id
+	 * @return section id
+	 */
 	public static int getRequest_sID() {
 		return Request_sID;
 	}
 
+	/**
+	 * set token request section id
+	 * @param request_sID
+	 */
 	public static void setRequest_sID(int request_sID) {
 		Request_sID = request_sID;
 	}
 
+	/**
+	 * get token value
+	 * @return token value
+	 */
 	public static double getResponse_token() {
 		return Response_token;
 	}
 
+	/**
+	 * set token value
+	 * @param response_token
+	 */
 	public static void setResponse_token(double response_token) {
 		Response_token = response_token;
 	}
 
+	/**
+	 * set the header
+	 * @param request
+	 * @return the byte buffer containing the message
+	 */
 	public ByteBuffer setHeader(RTCEMessageType request)
     {
-
+		setTime();
         setRequest(request);
         ByteBuffer bbuf = ByteBuffer.allocate(40);
         bbuf.put(getRequestChars());
@@ -453,6 +639,10 @@ public class RTCEClientMessage {
     	return bbuf;
     }
    
+    /**
+     * Read the header of a recieved message
+     * @param bf - the byte buffer of the header
+     */
      public void getHeader(ByteBuffer bf)
        {
     	String requestFull = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
@@ -487,7 +677,13 @@ public class RTCEClientMessage {
           */
        }  
     
-    //This function sets all the data needed to send a S_COMMIT message
+    /**
+     * This function sets all the data needed to send a S_COMMIT message
+     * @param token
+     * @param prevID
+     * @param sID
+     * @param newText
+     */
     public void setCommitData(double token, int prevID, int sID, String newText)
     {
       Commit_token  = token;
@@ -496,7 +692,13 @@ public class RTCEClientMessage {
       Commit_txt    = newText;
     }
     
-    // This function builds and transmits the Message on the supplied socket
+    /**
+     *  This function builds and transmits the Message on the supplied socket
+     * @param s
+     * @param option
+     * @param token
+     * @param section
+     */
     public void sendMessage(Socket s, RTCEMessageType option, double token, int section)
     {
         boolean validflag = true;
@@ -590,7 +792,11 @@ public class RTCEClientMessage {
     }   
 
     
-    
+    /**
+     * Get the maximum length of the received message
+     * @param s
+     * @return the maximum length by message type for our implementation
+     */
     public int lengthBuffer(String s)
      {
          
@@ -598,7 +804,7 @@ public class RTCEClientMessage {
           switch (s) 
           {
          case "CONNECT":
-          return 97;
+          return 104;
        
          case "S_LIST":
               return 1000;
@@ -634,6 +840,12 @@ public class RTCEClientMessage {
           
         }
      }
+    
+    /**
+     * 
+     * @param asciiVal
+     * @return
+     */
      public int lastByte(byte[] asciiVal)
      {
         for(int i=0;i<asciiVal.length;i++)
@@ -647,7 +859,12 @@ public class RTCEClientMessage {
         return 8;
      }   
      
-// This function builds and transmits the Message on the supplied socket
+/**
+ *  This function builds and transmits the Message on the supplied socket
+ * @param s
+ * @param request
+ * @param bf
+ */
     public void recvMessage(Socket s, RTCEMessageType request, ByteBuffer bf)
     {
         //Extract header contents first, needed to make a function out of this
@@ -745,8 +962,15 @@ class ControlMessage extends RTCEClientMessage
    ByteBuffer payload;
    int messagetype;
    
+   /**
+    * Create blank message
+    */
    ControlMessage(){}
    
+   /**
+    * Create message with set size
+    * @param byteSize
+    */
    ControlMessage(int byteSize)
    {
        payload = ByteBuffer.allocate(byteSize);
@@ -754,6 +978,10 @@ class ControlMessage extends RTCEClientMessage
    
    /*ALL SENDING CONTROL MESSAGES*/
    
+   /**
+    * Get the bytebuffer containing the CUAUTH message
+    * @return the bytebuffer containing the CUAUTH message
+    */
     public ByteBuffer setCUAUTH()
     {
        
@@ -797,6 +1025,10 @@ class ControlMessage extends RTCEClientMessage
         
     }
    
+    /**
+     * Get the bytebuffer containing the S_TREQST message
+     * @return the bytebuffer containing the S_TREQST message
+     */
      public ByteBuffer setSTREQST(int section) 
     {
          
@@ -819,6 +1051,10 @@ class ControlMessage extends RTCEClientMessage
       
        
        //ALL RECEIVED MESSAGES FROM SERVER SIDE
+     /**
+      * Translate the S_TRESPN message
+      * @param bf
+      */
        public void getS_TRESPN(ByteBuffer bf)
     {   
     	   System.out.println("Got Access to update the requested section!");
@@ -842,6 +1078,10 @@ class ControlMessage extends RTCEClientMessage
           
     }
        
+       /**
+        * Translate the S_DENIED message
+        * @param bf
+        */
       public void getS_DENIED(ByteBuffer bf)
     {   
     	   System.out.println("Sorry the section is not free right now..");
@@ -850,6 +1090,10 @@ class ControlMessage extends RTCEClientMessage
            //System.out.println("Error Code:" + bf.getInt());
     }
     
+      /**
+       * Translate the S_REVOKE message
+       * @param bf
+       */
       public void getS_REVOKE(ByteBuffer bf)
     {   
     	   System.out.println("Access to update is revoked due to timeout. You need to make a new request again");
@@ -858,6 +1102,10 @@ class ControlMessage extends RTCEClientMessage
           //System.out.println("Error Code:" + bf.getInt());
     }  
       
+      /**
+       * Translate the S_BLOCK message
+       * @param bf
+       */
     public void getBLOCK(ByteBuffer bf)
     {
            System.out.println("Sorry you are blocked temporarily..");
@@ -881,6 +1129,11 @@ class ControlMessage extends RTCEClientMessage
            System.out.println();
     }
     
+    /**
+     * Read bytes as flags
+     * @param bitFlags
+     * @return flags
+     */
     public boolean[] readBits(byte bitFlags[]){
     	boolean flags[] = new boolean[bitFlags.length * 8];
     	for(int i = 0; i < bitFlags.length; i++){
@@ -895,6 +1148,10 @@ class ControlMessage extends RTCEClientMessage
     	return flags;
     }
     
+    /**
+     * Translate the CONNECT message
+     * @param bf
+     */
     public void getCONNECT(ByteBuffer bf)
     {
            bf.position(40);
@@ -941,6 +1198,10 @@ class ControlMessage extends RTCEClientMessage
            //System.out.println("Secret List..");
     }
     
+    /**
+     * Get the bytebuffer containing the S_BLOCK message
+     * @return the bytebuffer containing the S_BLOCK message
+     */
 	public ByteBuffer setS_BLOCK()
 	{
 		/*byte[] username = new byte[20];
@@ -954,6 +1215,11 @@ class ControlMessage extends RTCEClientMessage
 		return b; 
 	}
 
+	/**
+	 * Turn flags into bytes
+	 * @param flags 
+	 * @return byte representation of flags
+	 */
 	public byte[] flagsToBytes(boolean flags[]){
 		byte bytes[] = new byte[flags.length / 8];
 		int value;
@@ -969,6 +1235,10 @@ class ControlMessage extends RTCEClientMessage
 		return bytes;
 	}
     
+	/**
+     * Translate the S_DONE message
+     * @param bf
+     */
     public void getS_DONE(ByteBuffer bf, Socket s)
 
 	{       

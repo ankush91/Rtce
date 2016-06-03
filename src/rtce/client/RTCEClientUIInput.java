@@ -20,10 +20,17 @@ import static rtce.RTCEConstants.getRtcecharset;
 
 public class RTCEClientUIInput implements Runnable
 	{
+	//UI objects
 	   private Scanner sc = new Scanner(System.in);	   
 	   private Socket socket;
 	   private RTCEClient parent;
 	   
+	   /**
+	    * Create a UI Input object
+	    * @param s - socket
+	    * @param c - client
+	    * @throws IOException
+	    */
 	   RTCEClientUIInput(Socket s, RTCEClient c) throws IOException {
 		   socket = s;
 		   parent = c;
@@ -31,6 +38,9 @@ public class RTCEClientUIInput implements Runnable
 	
 	   //STATEFUL
 	   //UI
+	   /**
+	    * Run the ui thread
+	    */
        public void run()
 	   {
     	  String s = null;
