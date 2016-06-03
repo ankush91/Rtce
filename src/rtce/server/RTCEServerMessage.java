@@ -620,14 +620,14 @@ class ControlMessage extends RTCEServerMessage
 		payload = ByteBuffer.allocate(numberOfIDs*4+4);
 
 		for(int i = 0; i < numberOfIDs; i++)
-		{ payload.putInt(getDocument().getNextSectionItr().ID);  }
+		{ payload.putInt(getDocument().getNextSectionItr().getID());  }
 		payload.putInt(0);
 	}
         
         //set the data in the document according to the section Id
 	public void setS_DATA(int sectionID)
 	{
-		String sectionText = this.getDocument().getDocumentSection(sectionID).txt;
+		String sectionText = this.getDocument().getDocumentSection(sectionID).getTxt();
 		payload = ByteBuffer.allocate(4+4+sectionText.length());
 
 		payload.putInt(sectionID);

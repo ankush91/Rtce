@@ -45,8 +45,8 @@ public class RTCEDocument {
       //Initialize all fields
       for(int i =0; i < 1000; i++)
       { sections[i] = new RTCEDocSection();
-    	sections[i].ID = 0; 
-    	sections[i].txt = "";
+    	sections[i].setID(0);
+    	sections[i].setTxt("");
         sectionOrder[i] = 0;
       }
       
@@ -72,8 +72,8 @@ public class RTCEDocument {
     public RTCEDocument(String basepath, String owner, String title, String ext) throws IOException{
     	for(int i =0; i < 1000; i++)
         { sections[i] = new RTCEDocSection();
-      	sections[i].ID = 0; 
-      	sections[i].txt = "";
+          sections[i].setID(0);
+          sections[i].setTxt("");
           sectionOrder[i] = 0;
         }
     	docPath = basepath + "/" + owner + "/" + title + ext;
@@ -119,15 +119,15 @@ public class RTCEDocument {
       if (order_itr == 1000) {return; }
       
       //Find an unused section object 
-      while (sections[section_itr].ID > 0 && section_itr < 1000)
+      while (sections[section_itr].getID() > 0 && section_itr < 1000)
       { section_itr++; }
       
       //If none are available, abort
       if (section_itr == 1000) {return; }
       
       //Populate the section object
-      sections[section_itr].ID = sectionID;
-      sections[section_itr].txt = txt;
+      sections[section_itr].setID(sectionID);
+      sections[section_itr].setTxt(txt);
       
       //Move all slots down to make room for this new section ID      
       int itr = 999;
@@ -152,17 +152,17 @@ public class RTCEDocument {
       //Try and find the section
       for(int i = 0; i < 1000; i++)
       {
-    	if (sections[i].ID == sectionID)
-    	{	sections[i].txt = txt;
+    	if (sections[i].getID() == sectionID)
+    	{	sections[i].setTxt(txt);
     		return;  	}    	  
       }
       
       //Section does not exist, need to find an open spot to add
       for(int i = 1; i < 1000; i++)
       {
-    	if (sections[i].ID == 0)
-    	{ sections[i].ID = sectionID;
-    	  sections[i].txt = txt;
+    	if (sections[i].getID() == 0)
+    	{ sections[i].setID(sectionID);
+    	  sections[i].setTxt(txt);
     	  return;
     	}      
       }
@@ -180,8 +180,8 @@ public class RTCEDocument {
     {
       for(int i = 0; i < 1000; i++)
       {
-    	  if (sections[i].ID == SectionID)
-    	  { sections[i].txt = txt;
+    	  if (sections[i].getID() == SectionID)
+    	  { sections[i].setTxt(txt);
     	    return;
     	  }
       }
@@ -197,7 +197,7 @@ public class RTCEDocument {
     {
       for(int i = 0; i < 1000; i++)
       {
-    	  if (sections[i].ID == ID)  { return sections[i];}
+    	  if (sections[i].getID() == ID)  { return sections[i];}
        }
       return sections[0];
     } //findSection()
@@ -214,7 +214,7 @@ public class RTCEDocument {
       
       while (sectionOrder[itr] > 0)
       {  System.out.print(sectionOrder[itr]+":");
-         System.out.println(findSection(sectionOrder[itr]).txt);
+         System.out.println(findSection(sectionOrder[itr]).getTxt());
          itr++;	  
       }
     }
@@ -254,7 +254,7 @@ public class RTCEDocument {
     {
       for(int i = 1; i < 1000; i++)
       {
-    	if (sections[i].ID == ID)
+    	if (sections[i].getID() == ID)
     	{ return sections[i];}
       }
       return sections[0];    		
@@ -298,7 +298,7 @@ public class RTCEDocument {
 	public void processCommit(int prevID, int sID, String txt)
 	{
        //First see if the section exists already
-	   if (findSection(sID).ID == sID)	
+	   if (findSection(sID).getID() == sID)	
 	   { modifySection(sID,txt); }
 	   else
 	   { addSection(prevID,sID,txt); }

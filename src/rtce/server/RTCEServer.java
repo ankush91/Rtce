@@ -343,14 +343,14 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	  
       doc.resetSectionItr();
       
-      int sID = doc.getNextSectionItr().ID;
+      int sID = doc.getNextSectionItr().getID();
       while (sID > 0)
       {
          sMsg.setRequest(RTCEMessageType.S_DATA);    	  
          sMsg.setSectionID(sID);
          sMsg.sendMessage(s,RTCEMessageType.S_DATA, -1, -1);
          try{Thread.sleep(200);} catch (Exception e){}
-         sID = doc.getNextSectionItr().ID;
+         sID = doc.getNextSectionItr().getID();
       }  
   }
   
