@@ -1,13 +1,16 @@
 
 /**
- * RTCEServer - This is the most important class of the server. It consists of the main driver to implement the statefulness for the client
+ 
+ * @cs544
+ * @author GROUP 4 Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
+ * @date Friday, June 3, 2016
+ * @version 1
+ * 
+ * * RTCEServer - This is the most important class of the server. It consists of the main driver to implement the statefulness for the client
  * The driver consists of a call to the session driver after a session is established.
  * It also contains calls to the sendresponse, getname and process messages which call to the RTCEServerMessage.
  * The main function has a call to the discovery thread for the extra credit portion of the protocol.
  * The concurrency features of the server are also implemented in the main function using a java thread model.
- * @author Edwin Dauber, Ankush Israney, Anthony Emma, Francis Obiagwu
- * @date Friday, June 3, 2016
- * @version 1
  */
 
 package rtce.server;
