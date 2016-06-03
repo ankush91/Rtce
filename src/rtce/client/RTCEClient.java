@@ -269,14 +269,19 @@ public class RTCEClient {
             }
             
             //No server was found
-            System.out.println("No servers found.   Defaulting to 127.0.0.1");
+            System.out.println("No servers found.  Enter in server IP");
+            
             socket.close();
-            return "127.0.0.1";
+            Scanner sc = new Scanner(System.in);
+            return sc.nextLine();
+            
+            
         	} //try block
             catch (IOException e) {
             	e.printStackTrace(); }
-        	
-        	return "127.0.0.1";
+
+            Scanner sc = new Scanner(System.in);
+            return sc.nextLine();
         } // end discoverServer()
 
         
