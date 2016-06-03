@@ -1,3 +1,12 @@
+/**
+ * @cs544
+ * @author GROUP 4
+ * @version 1
+ * @6/3/2016
+ * @This file is responsible for providing output of the document and other misc UI output
+ *    output.  
+ */
+
 package rtce.client;
 
 import java.io.IOException;
@@ -17,6 +26,7 @@ public class RTCEClientUIOutput implements Runnable
 	   public void setDocument(RTCEDocument doc)
 	   {  this.document = doc;   }
 	
+	   //UI
        public void run()
 	   {
    	  

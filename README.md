@@ -17,6 +17,14 @@ For all commands listed below, replace values in {} (such as {username}) with ap
 
 Do not abort the client except through logoff.  In the current state, the server is not prepared to recover from poor termination, and 
 
+###Server discovery
+
+The server discovery is implemented by having the server create a seperate thread to respond with a 
+"HI" to any client who sends a message.    When a client starts he will make a call to Java's routine
+to get the client's IP address, and then attempt to change the fourth octet of the IP address and see
+if any server responds back with a "HI".   So for example if the client's IP address is 192.168.1.9, it will
+try 192.168.1.* where * is 1 - 255 to see if any server says "HI".    This limits discovery to the network, and will not discover server's that exist beyond the network (through routing tables and gateways for example)  
+
 ####login
 
 To begin a client session, type the command login,{username},{password},{documentOwner},{documentTitle} and press enter.

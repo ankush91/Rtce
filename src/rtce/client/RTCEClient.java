@@ -1,9 +1,12 @@
 
 /**
- *
+ * @cs544
  * @author GROUP 4
  * @version 1
- * 
+ * @6/3/2016
+ * @This file is responsible for establishing the client class, performing discovery of the server
+ *  and creation of the socket.   Creating threads for the UI, and sending incoming messages to be
+ *  processed to other helper routines.
  */
 
 package rtce.client;
