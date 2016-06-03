@@ -108,7 +108,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                 {
                  connectMessage.sendMessage(sock, connectMessage.getRequest(), -1, -1);
              
-                System.out.println("CONNECT Done");
+                //System.out.println("CONNECT Done");
                 
              //while no connect acknowledgement or abort from client
                     while(!(curr.matches("CACK")) && !(curr.matches("ABORT")) && !cack){ currRead = getRequest(); curr = getName(currRead); process(curr, sock, currRead, log, control, null);}
@@ -118,7 +118,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                             {
                                 
                                 cack = true;
-                                System.out.println("CACK");
+                                //System.out.println("CACK");
                                 
                                 //if cuauth received and connect acknowledged then add client to active connections and perform session driver
                                 if(cuauth && cack)
@@ -196,7 +196,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                   
                                   //if client requests a token then process it (response or denial)
                                   else if(curr.matches("S_TREQST")){
-                                        System.out.println("S_TREQST");
+                                       // System.out.println("S_TREQST");
                                         process("S_TREQST", sock, currRead, log, control, client);
                                         startTokenTimer(client);
                                     }
@@ -279,7 +279,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                     asciiVal[i] = read[i];
               
                 s = new String(asciiVal, 0, clientMessage.lastByte(asciiVal));
-                System.out.println("INCOMING REQUEST: " + s + "\n");
+                //System.out.println("INCOMING REQUEST: " + s + "\n");
           return s;      
                
   }
@@ -302,7 +302,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
             }
       
             else{
-                System.out.println("NOT PROCESSED.. \n");
+                //System.out.println("NOT PROCESSED.. \n");
             }
       
   }
