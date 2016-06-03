@@ -1,3 +1,14 @@
+/**
+ * @cs544
+ * @author GROUP 4
+ * @version 1
+ * @6/3/2016
+ * The Discovery Server Thread is a seperate thread which is created only once by the RTCE Server
+ * to facilitate IP Address discovery of the server by clients.   This thread will listen for 
+ * messaging over the established DISCOVERY_PORT and respond back
+ * with the "secret handshake" of "HI" to clients  
+ */
+
 package rtce.server;
 
 import java.io.IOException;
@@ -7,7 +18,7 @@ import java.net.DatagramSocket;
 
 /* The Discovery Server Thread is a seperate thread which is created only once by the RTCE Server
  * to facilitate IP Address discovery of the server by clients.   This thread will listen for 
- * Multicast messaging over the established DISCOVERY_PORT in the multicast group and respond back
+ * Multicast messaging over the established discovery port 4446 and respond back
  * with the "secret handshake" of "HI" to clients 
  */
 public class RTCEDiscoveryServer implements Runnable
