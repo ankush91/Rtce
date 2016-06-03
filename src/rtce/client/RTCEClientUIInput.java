@@ -118,7 +118,7 @@ public class RTCEClientUIInput implements Runnable
      			   String[] parts = s.split(",");
                      
                    int a = Integer.parseInt(parts[1]); 
-                   System.out.println(a);
+                   System.out.println("Requested for: "+a);
                    clientMessage.setSectionId(a);
                    parent.tokenSection = a;
                    clientMessage.setSessionId(parent.getCliConn().getSessionId());
