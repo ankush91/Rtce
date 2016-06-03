@@ -804,8 +804,8 @@ class ControlMessage extends RTCEClientMessage
     {   
     	   System.out.println("token is Revoked due to timeout. You need make a new request again");
            bf.position(40);
-           System.out.println("Status Code:" + bf.getInt());
-           System.out.println("Error Code:" + bf.getInt());
+          // System.out.println("Status Code:" + bf.getInt());
+          //System.out.println("Error Code:" + bf.getInt());
     }  
       
     public void getBLOCK(ByteBuffer bf)
@@ -854,7 +854,7 @@ class ControlMessage extends RTCEClientMessage
    			ver[2] = bf.get();
    			ver[3] = bf.get();
    			setVersion(ver);
-   			System.out.println("Version: " + ver);
+   		//	System.out.println("Version: " + ver);
            
            bf.position(44);
            setUsername(RTCEConstants.clipString(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
