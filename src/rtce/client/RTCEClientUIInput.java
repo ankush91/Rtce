@@ -11,11 +11,9 @@
 package rtce.client;
 
 import java.net.*;
-import java.io.*;
 import java.io.IOException;
 import java.util.Scanner;
 import rtce.RTCEMessageType;
-import rtce.RTCEConstants;
 import static rtce.RTCEConstants.getRtcecharset;
 
 public class RTCEClientUIInput implements Runnable

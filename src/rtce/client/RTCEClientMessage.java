@@ -842,9 +842,9 @@ public class RTCEClientMessage {
 	}
 
 	/**
-	 * 
+	 * returns the asciival of the request
 	 * @param asciiVal
-	 * @return
+	 * @return asciivalue of the request
 	 */
 	public int lastByte(byte[] asciiVal)
 	{

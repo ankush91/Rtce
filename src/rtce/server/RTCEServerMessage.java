@@ -11,7 +11,7 @@
  *The sendmessage is used to package the pdu and send it across to the client. 
  */
 
- 
+
 package rtce.server;
 
 import rtce.RTCEMessageType;
@@ -19,18 +19,13 @@ import rtce.RTCEDocument;
 import rtce.RTCEConstants;
 
 import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.sun.corba.se.impl.util.Version;
+//import com.sun.corba.se.impl.util.Version;
 //import com.sun.xml.internal.txw2.Document;
 
-import static rtce.RTCEConstants.getRtcecharset;
 
 /****THIS CLASS INTERPRETS(PARSES) AND SETS ALL VALID MESSAGES TO BE SENT AND RECEIVED BY THE SERVER RESPECTIVELY****/
 
@@ -72,14 +67,14 @@ public class RTCEServerMessage {
 
 	//The version
 	private byte version[];
-	
+
 	//These are the flags for blocked message 
 	private boolean flags[];
-	
+
 	//The identifiers for the the document to access.
 	private static String documentOwner;
 	private static String documentTitle;
-	
+
 	public static RTCEDocument document;
 	private int sectionID;
 
@@ -497,7 +492,7 @@ public class RTCEServerMessage {
 	public int getSectionID() {
 		return sectionID;
 	}
-	
+
 	/**
 	 * Set response
 	 * @param response
@@ -505,7 +500,7 @@ public class RTCEServerMessage {
 	public void setResponse(RTCEMessageType response) {
 		this.response = response;
 	}
-	
+
 	/**
 	 * Set message type
 	 * @param messageType
@@ -513,7 +508,7 @@ public class RTCEServerMessage {
 	public void setMessageType(RTCEMessageType messageType) {
 		this.messageType = messageType;
 	}
-	
+
 	/**
 	 * Get shared secrets as bytes
 	 * @return shared secrets as bytes
@@ -521,32 +516,32 @@ public class RTCEServerMessage {
 	public byte[][] getSecretsAsBytes(){
 		return RTCEConstants.getBytesFromStrings(sharedSecrets, RTCEConstants.getSecretLength());
 	}
-        
-        /**
-         * set the message pdu header
-         * @param request
-         * @return the byte buffer with the header
-         */
+
+	/**
+	 * set the message pdu header
+	 * @param request
+	 * @return the byte buffer with the header
+	 */
 	public ByteBuffer setHeader(RTCEMessageType request)
 	{
 		setRequest(request);
 		ByteBuffer bbuf = ByteBuffer.allocate(40);
 		bbuf.put(getRequestChars());
 		bbuf.putLong(getSessionId());
-    	bbuf.putLong(getTime());
-    	bbuf.putInt(getChecksum());
-    	bbuf.putInt(getHeaderReserved1());
-    	bbuf.putInt(getHeaderReserved2());
-    	bbuf.putInt(getHeaderReserved3());
-		
+		bbuf.putLong(getTime());
+		bbuf.putInt(getChecksum());
+		bbuf.putInt(getHeaderReserved1());
+		bbuf.putInt(getHeaderReserved2());
+		bbuf.putInt(getHeaderReserved3());
+
 		return bbuf;
 
 	}  
 
-        /**
-         * process the header information
-         * @param bf - byte buffer with header
-         */
+	/**
+	 * process the header information
+	 * @param bf - byte buffer with header
+	 */
 	public void getHeader(ByteBuffer bf){
 		String requestFull = new String(bf.array(), 0, 8, RTCEConstants.getRtcecharset());
 		String request = "";
@@ -577,22 +572,22 @@ public class RTCEServerMessage {
 		//System.out.println("Reserved 3: "+ getHeaderReserved3());   
 	}   
 
-	 /**
-     * Generate the byte buffer for the message header
-     * @return the byte buffer for the header of the message
-     */
-    public ByteBuffer setHeader(){
-    	ByteBuffer bbuf = ByteBuffer.allocate(40);
-    	bbuf.put(getRequestChars());
-    	bbuf.putLong(getSessionId());
-    	bbuf.putLong(getTime());
-    	bbuf.putInt(getChecksum());
-    	bbuf.putInt(getHeaderReserved1());
-    	bbuf.putInt(getHeaderReserved2());
-    	bbuf.putInt(getHeaderReserved3());
-    	return bbuf;
-    }
-    
+	/**
+	 * Generate the byte buffer for the message header
+	 * @return the byte buffer for the header of the message
+	 */
+	public ByteBuffer setHeader(){
+		ByteBuffer bbuf = ByteBuffer.allocate(40);
+		bbuf.put(getRequestChars());
+		bbuf.putLong(getSessionId());
+		bbuf.putLong(getTime());
+		bbuf.putInt(getChecksum());
+		bbuf.putInt(getHeaderReserved1());
+		bbuf.putInt(getHeaderReserved2());
+		bbuf.putInt(getHeaderReserved3());
+		return bbuf;
+	}
+
 	/**
 	 * allocate length of buffer according to request
 	 * @param s
@@ -623,15 +618,20 @@ public class RTCEServerMessage {
 
 		case "CACK":
 			return 40; 
-			
+
 		case "BLOCK":
-	           return 64;	
+			return 64;	
 
 		default: return 0;	        
 
 		}
 	}
-        //returns the asciival of the request
+
+	/**
+	 * returns the asciival of the request
+	 * @param asciiVal
+	 * @return asciivalue of the request
+	 */
 	public int lastByte(byte[] asciiVal)
 	{
 		for(int i=0;i<asciiVal.length;i++)
@@ -645,7 +645,13 @@ public class RTCEServerMessage {
 		return 8;
 	}   
 
-	// This function builds and transmits the Message on the supplied socket
+	/**
+	 *  This function builds and transmits the Message on the supplied socket
+	 * @param s
+	 * @param option
+	 * @param token
+	 * @param section
+	 */
 	public void sendMessage(Socket s, RTCEMessageType option, double token, int section)
 	{
 		boolean validflag = true;
@@ -697,28 +703,28 @@ public class RTCEServerMessage {
 		case ABORT:
 		{}
 		break;    	   
-		
+
 		case ECHO:
 		{}
 		break; 
-                
-       case S_DONE:
-            controlPayload = new ControlMessage(8);
-			controlPayload.payload = controlPayload.setS_DONE();
-		break; 
 
-       case BLOCK:
-        	controlPayload = new ControlMessage(24);
-        	if(username == null){
-        		username = "";
-        	}
-        	if(flags == null){
-        		flags = new boolean[4*8];
-        	}
-        	controlPayload.setUsername(username);
-        	controlPayload.setFlags(flags);
-       		controlPayload.payload = controlPayload.setS_BLOCK();
-        	break;     	   
+		case S_DONE:
+			controlPayload = new ControlMessage(8);
+			controlPayload.payload = controlPayload.setS_DONE();
+			break; 
+
+		case BLOCK:
+			controlPayload = new ControlMessage(24);
+			if(username == null){
+				username = "";
+			}
+			if(flags == null){
+				flags = new boolean[4*8];
+			}
+			controlPayload.setUsername(username);
+			controlPayload.setFlags(flags);
+			controlPayload.payload = controlPayload.setS_BLOCK();
+			break;     	   
 
 		case LACK:
 		{} 
@@ -756,7 +762,15 @@ public class RTCEServerMessage {
 		}   
 	}  
 
-	// This function receives messages from the client on the socket, server can receive only specific messages
+	/**
+	 *  This function receives messages from the client on the socket, server can receive only specific messages
+	 * @param s
+	 * @param request
+	 * @param bf
+	 * @param log
+	 * @param record
+	 * @param client
+	 */
 	public void recvMessage(Socket s, RTCEMessageType request, ByteBuffer bf, RTCEServerLog log, RTCEServerRecordMgmt record, RTCEServerLog client)
 	{
 		//Extract header contents first, needed to make a function out of this
@@ -782,7 +796,7 @@ public class RTCEServerMessage {
 			control = new ControlMessage();
 			control.getS_TREQST(bf, s, log, record, client);
 			break;   
-                        
+
 		case BLOCK:
 			control = new ControlMessage();
 			control.getBLOCK(bf, log, record);
@@ -834,24 +848,36 @@ class ControlMessage extends RTCEServerMessage
 	ByteBuffer payload;
 	int messagetype;
 
+	/**
+	 * Create empty control message
+	 */
 	ControlMessage(){}
 
+	/**
+	 * Create control message with buffer size
+	 * @param byteSize
+	 */
 	ControlMessage(int byteSize)
 
 	{	   
 
 		payload = ByteBuffer.allocate(byteSize);
 	}
-        
-        //set the docuement to be transmitted
+
+	/**
+	 * set the docuement to be transmitted
+	 * @param doc
+	 */
 	ControlMessage(RTCEDocument doc)
 	{ 
 		setDocument(doc);
 	} 
-        
-        //DATA MESSAGES TO SEND
-        
-         //set the list of sections in the docuement
+
+	//DATA MESSAGES TO SEND
+
+	/**
+	 * set the list of sections in the docuement
+	 */
 	public void setS_LIST()
 	{	   
 		int numberOfIDs = this.getDocument().resetSectionItr();	  	  
@@ -861,8 +887,11 @@ class ControlMessage extends RTCEServerMessage
 		{ payload.putInt(getDocument().getNextSectionItr().getID());  }
 		payload.putInt(0);
 	}
-        
-        //set the data in the document according to the section Id
+
+	/**
+	 * set the data in the document according to the section Id
+	 * @param sectionID
+	 */
 	public void setS_DATA(int sectionID)
 	{
 		String sectionText = this.getDocument().getDocumentSection(sectionID).getTxt();
@@ -876,8 +905,11 @@ class ControlMessage extends RTCEServerMessage
 
 
 	//ALL RECEIVED MESSAGES FROM CLIENT SIDE
-        
-        //get initiation from client
+
+	/**
+	 * get initiation from client
+	 * @param bf
+	 */
 	public void getCUAUTH(ByteBuffer bf)
 	{
 		bf.position(40);
@@ -932,72 +964,91 @@ class ControlMessage extends RTCEServerMessage
 
 	}
 
-        //get request from client for token
-public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRecordMgmt record, RTCEServerLog client)
+	/**
+	 * get request from client for token
+	 * @param bf
+	 * @param s
+	 * @param log
+	 * @param record
+	 * @param client
+	 */
+	public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRecordMgmt record, RTCEServerLog client)
 	{   
-               
-                double token = -1;
+
+		double token = -1;
 		bf.position(40);
-                
-                    int section = bf.getInt();
-                    RTCEServer service = new RTCEServer();
-                    
-                    //if section if free
-                    if(record.checkFreeSection(section) && record.clientHasToken(client)!=true){
-                     token = record.tokenGrant(client, section); //grant client token
-                     service.sendResponse(RTCEMessageType.S_TRESPN, token, section, s); //send approval token
-                        }
-                    
-                    else{
-                        service.sendResponse(RTCEMessageType.S_DENIED, token, section, s); //else send a denial
-                    }
-                   
-                    //No options now = 0
+
+		int section = bf.getInt();
+		RTCEServer service = new RTCEServer();
+
+		//if section if free
+		if(record.checkFreeSection(section) && record.clientHasToken(client)!=true){
+			token = record.tokenGrant(client, section); //grant client token
+			service.sendResponse(RTCEMessageType.S_TRESPN, token, section, s); //send approval token
+		}
+
+		else{
+			service.sendResponse(RTCEMessageType.S_DENIED, token, section, s); //else send a denial
+		}
+
+		//No options now = 0
 		//System.out.println("Options: "+ bf.get());
-                      
+
 	}
 
-	
-        //get the commit of data from client
+
+	/**
+	 * get the commit of data from client
+	 * @param bf
+	 * @param s
+	 * @param control
+	 * @param client
+	 */
 	public void getS_COMMIT(ByteBuffer bf, Socket s, RTCEServerRecordMgmt control, RTCEServerLog client) 
 	{
 		bf.position(40);
-				
+
 		double token = bf.getDouble();
 		int prevID = bf.getInt();
 		int sID = bf.getInt();		
-                int len = bf.getInt();
-            RTCEServerMessage response = new RTCEServerMessage();
-            String sectionTxt = new String(bf.array(), 60, len);
-  	    //System.out.println(token);
-            //System.out.println(control.checkClientToken(client));
-            
-                if(token == control.checkClientToken(client))  //if client has the specific token then commit changes
-                {  
-                    document.processCommit(prevID, sID, sectionTxt);
-                    //System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
-                     
-                    response = new RTCEServerMessage();
-                    response.setRequest(RTCEMessageType.S_DONE); //send a done that is commit was successful
-                    response.setSessionId(client.getSessionId());
-                    response.sendMessage(s, RTCEMessageType.S_DONE, -1, -1);
-                    control.tokenRevoke(client); //revoke the token from the client and free the section 
-                    
-                //This would be the location to push out this to all connected clients
-                }
-                
-                else{
-                      // System.out.println("false"); //print false just for debugging, client doesn't get a denial if changes were not performed
-                       
-                    }
-        }
+		int len = bf.getInt();
+		RTCEServerMessage response = new RTCEServerMessage();
+		String sectionTxt = new String(bf.array(), 60, len);
+		//System.out.println(token);
+		//System.out.println(control.checkClientToken(client));
+
+		if(token == control.checkClientToken(client))  //if client has the specific token then commit changes
+		{  
+			document.processCommit(prevID, sID, sectionTxt);
+			//System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
+
+			response = new RTCEServerMessage();
+			response.setRequest(RTCEMessageType.S_DONE); //send a done that is commit was successful
+			response.setSessionId(client.getSessionId());
+			response.sendMessage(s, RTCEMessageType.S_DONE, -1, -1);
+			control.tokenRevoke(client); //revoke the token from the client and free the section 
+
+			//This would be the location to push out this to all connected clients
+		}
+
+		else{
+			// System.out.println("false"); //print false just for debugging, client doesn't get a denial if changes were not performed
+
+		}
+	}
 	//ALL SEND MESSAGES FROM SERVER SIDE
+	/**
+	 * Send the S_TRESPN message
+	 * @param tok
+	 * @param sec
+	 * @return bytebuffer with S_TRESPN message
+	 */
 	public ByteBuffer setS_TRESPN(double tok, int sec) //send the response for the token corresponding to the section
 	{
-                byte[] length = new byte[4];
-                byte[] priviledge = new byte[8];
-                
-                for(int i=0; i<4; i++)
+		byte[] length = new byte[4];
+		byte[] priviledge = new byte[8];
+
+		for(int i=0; i<4; i++)
 			length[i] = (byte)0;
 
 		for(int i=0; i<8; i++)
@@ -1005,15 +1056,18 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 
 		ByteBuffer b = ByteBuffer.allocate(24);
 		b.putDouble(tok);
-                b.putInt(sec);
-                b.put(length);
+		b.putInt(sec);
+		b.put(length);
 		b.put(priviledge);
 
 		return b;
 	}
-	
-        //SOME STATUS MESSAGES
-        
+
+	//SOME STATUS MESSAGES
+	/**
+	 * Send the S_REVOKE message
+	 * @return bytebuffer with S_REVOKE message
+	 */
 	public ByteBuffer setS_REVOKE()
 	{
 		//status code 1 revoke, error 1 -> Unique interpretation, token revoked due by application level
@@ -1024,8 +1078,12 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 		b.putInt(error);
 		return b;
 	}
-        
-        public ByteBuffer setS_DONE()
+
+	/**
+	 * Send the S_DONE message
+	 * @return bytebuffer with S_DONE message
+	 */
+	public ByteBuffer setS_DONE()
 	{
 		//status code 1 revoke, error 0 -> Unique interpretation, Commit performed by application
 		int statuscode = 1;
@@ -1035,7 +1093,11 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 		b.putInt(error);
 		return b;
 	}
-        
+
+	/**
+	 * Send the S_DENIED message
+	 * @return bytebuffer with S_DENIED message
+	 */
 	public ByteBuffer setS_DENIED() 
 	{
 		//status code 1 denied, error 1 -> Unique interpretation, token in use
@@ -1046,50 +1108,63 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 		b.putInt(error);
 		return b;
 	}
-        
-        //REQUEST TO BLOCK A  USER-> ONLY CAN BE DONE BY OWNER THREAD IN IMPLEMENTATION 
-	  public void getBLOCK(ByteBuffer bf, RTCEServerLog log, RTCEServerRecordMgmt control)
-	    {
-	           bf.position(40);
-	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
-	           //System.out.println("Username: " + getUsername());
-	           bf.position(40+RTCEConstants.getUsernameLength());
-	           boolean blockFlags[] = new boolean[4*8];
-	           byte readFlags[] = new byte[4];
-	           readFlags[0] = bf.get();
-	           readFlags[1] = bf.get();
-	           readFlags[2] = bf.get();
-	           readFlags[3] = bf.get();
-	           //bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
-	           blockFlags = readBits(readFlags);
-	           setFlags(blockFlags);
-	           //System.out.println("Flags processing..");
-	           for(int i = 0; i < blockFlags.length; i++){
-	        	   //System.out.print(blockFlags[i] + ";");
-	           }
-	           System.out.println();
-	           boolean exists = log.setBlock(getUsername()); //block the client
-	           
-	           if(log.getBlockedClientId(getUsername())!=null)
-                       control.tokenRevoke(log.getBlockedClientId(getUsername()));//revoke any token if client is blocked
-                   
-	    }
-	  
-	  public boolean[] readBits(byte bitFlags[]){
-	    	boolean flags[] = new boolean[bitFlags.length * 8];
-	    	for(int i = 0; i < bitFlags.length; i++){
-	    		for(int j = 0; j < 8; j++){
-	    			if(((bitFlags[i] >> j) & 1) == 1){
-	    				flags[(i*8)+j] = true;
-	    			}else{
-	    				flags[(i*8)+j] = false;
-	    			}
-	    		}
-	    	}
-	    	return flags;
-	    }
-	
-        //INFORM THE USER THAT HE IS BLOCKED
+
+	//REQUEST TO BLOCK A  USER-> ONLY CAN BE DONE BY OWNER THREAD IN IMPLEMENTATION 
+	/**
+	 * Translate the S_BLOCK message
+	 * @param bf
+	 */
+	public void getBLOCK(ByteBuffer bf, RTCEServerLog log, RTCEServerRecordMgmt control)
+	{
+		bf.position(40);
+		setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
+		//System.out.println("Username: " + getUsername());
+		bf.position(40+RTCEConstants.getUsernameLength());
+		boolean blockFlags[] = new boolean[4*8];
+		byte readFlags[] = new byte[4];
+		readFlags[0] = bf.get();
+		readFlags[1] = bf.get();
+		readFlags[2] = bf.get();
+		readFlags[3] = bf.get();
+		//bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
+		blockFlags = readBits(readFlags);
+		setFlags(blockFlags);
+		//System.out.println("Flags processing..");
+		for(int i = 0; i < blockFlags.length; i++){
+			//System.out.print(blockFlags[i] + ";");
+		}
+		System.out.println();
+		boolean exists = log.setBlock(getUsername()); //block the client
+
+		if(log.getBlockedClientId(getUsername())!=null)
+			control.tokenRevoke(log.getBlockedClientId(getUsername()));//revoke any token if client is blocked
+
+	}
+
+	/**
+	 * Read bytes as flags
+	 * @param bitFlags
+	 * @return flags
+	 */
+	public boolean[] readBits(byte bitFlags[]){
+		boolean flags[] = new boolean[bitFlags.length * 8];
+		for(int i = 0; i < bitFlags.length; i++){
+			for(int j = 0; j < 8; j++){
+				if(((bitFlags[i] >> j) & 1) == 1){
+					flags[(i*8)+j] = true;
+				}else{
+					flags[(i*8)+j] = false;
+				}
+			}
+		}
+		return flags;
+	}
+
+	//INFORM THE USER THAT HE IS BLOCKED
+	/**
+	 * Send the S_BLOCK message
+	 * @return bytebuffer with S_BLOCK message
+	 */
 	public ByteBuffer setS_BLOCK()
 	{
 		byte uname[] = getUsernameChars();
@@ -1100,6 +1175,12 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 		return b; 
 	}
 
+
+	/**
+	 * Turn flags into bytes
+	 * @param flags 
+	 * @return byte representation of flags
+	 */
 	public byte[] flagsToBytes(boolean flags[]){
 		byte bytes[] = new byte[flags.length / 8];
 		int value;
@@ -1114,11 +1195,15 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 		}
 		return bytes;
 	}
-        
-        //SET CONNECT MESSAGE FROM SERVER SIDE CONNECTION
+
+	//SET CONNECT MESSAGE FROM SERVER SIDE CONNECTION
+	/**
+	 * Send the S_CONNECT message
+	 * @return bytebuffer with S_CONNECT message
+	 */
 	public ByteBuffer setCONNECT()
 	{      
-		
+
 		byte version[] = getVersion();
 		byte authentication[] = getUsernameChars();
 		byte encrypt_option[] = getEncryptsAsBytes()[0];
@@ -1128,7 +1213,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 		int num_shared_secrets = secret_list.length;
 
 		ByteBuffer b = ByteBuffer.allocate(40 + (8*num_other_options) + (16*num_shared_secrets));
-		
+
 		b.put(version);
 		b.put(authentication);
 		b.put(encrypt_option);
