@@ -275,6 +275,7 @@ public class RTCEClient {
             Scanner sc = new Scanner(System.in);
             return sc.nextLine();
             
+            
         	} //try block
             catch (IOException e) {
             	e.printStackTrace(); }
