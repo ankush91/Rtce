@@ -88,7 +88,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
       
       boolean cuauth = false, cack  = false;       // flags for client-cuauth and client-ack
       String curr = "CLOSED";  //initialize current state as closed
-      System.out.println(port);  
+     // System.out.println(port);  
       byte[] currRead;
       
       // loop till you dont get a valid cuauth, if you do then process it
