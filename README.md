@@ -5,7 +5,7 @@ Real Time Collaborative Protocol
 
 ###Server
 
-Run the jar file RTCEServer.jar (the command is java -jar RTCEServer.jar).
+Run the jar file RTCEServer.jar (the command is java -jar RTCEServer.jar).  At this point, the only maintenance to be done on the server side is restarting, which should only be done in the event of something breaking.
 
 ###Client 
 
@@ -40,6 +40,12 @@ Following the issue of the commit request, you will be prompted to enter the new
 ####block
 
 If you are the owner of a document, you can block another user for a period of time.  To do so, type block,{username}.  In the current application, this is fairly limited.  The owner of the document is the first user to log in.  You can only block someone who has already logged in.  The block lasts for time indicated by the servConfig.conf file (default 5 minutes).  So, if you first log in as cs544 and then someone else logs in as group4, you can issue block,group4 and then that person will be unable to edit the document for 5 minutes.
+
+If you are blocked, do not close your session.  Doing so can make it impossible to reconnect.  Instead, wait until the block ends.
+
+####logoff
+
+Ends the session.
 
 
 ## Credits
