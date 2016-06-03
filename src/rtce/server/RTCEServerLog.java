@@ -51,7 +51,7 @@ public class RTCEServerLog
                 }
             }
         if(debug==false)
-            System.out.println("not found");
+         //   System.out.println("not found");
       return false;
       
     }     
@@ -69,7 +69,7 @@ public class RTCEServerLog
                 }
             }
         if(debug==false)
-            System.out.println("not found");
+         //   System.out.println("not found");
       return null;
       
     }     
@@ -88,7 +88,7 @@ public class RTCEServerLog
                 }
             }
         if(debug==false)
-            System.out.println("not found");
+         //   System.out.println("not found");
       return false;
       
     }   
