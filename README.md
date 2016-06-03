@@ -11,6 +11,8 @@ Run the jar file RTCEServer.jar (the command is java -jar RTCEServer.jar).
 
 Run the jar file RTCEClient.jar (the command is java -jar RTCEClient.jar).
 
+On starting the client, it will attempt to automatically discover a server.  If it fails, it will ask for the IP or hostname of the server.
+
 For all commands listed below, replace values in {} (such as {username}) with appropriate values.
 
 ####login
