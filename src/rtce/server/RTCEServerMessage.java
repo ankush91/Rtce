@@ -91,208 +91,175 @@ public class RTCEServerMessage {
 		return request;
 	}
 
-
-	public RTCEMessageType getMessageType() {
-		return messageType;
-	}
-
+	/**
+	 * Get the username
+	 * @return the username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Get the password
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Set the request type
+	 * @param request
+	 */
 	public void setRequest(RTCEMessageType request) {
 		this.request = request;
 	}
-	
-	public boolean[] getFlags() {
-		return flags;
-	}
 
-	public void setFlags(boolean[] flags) {
-		this.flags = flags;
-	}
-
+	/**
+	 * Set the username
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Set the password
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Get the encryption options
+	 * @return the encryption options
+	 */
 	public String[] getEncryptOpts() {
 		return encryptOpts;
 	}
 
+	/**
+	 * Set the encryption options
+	 * @param encryptOpts
+	 */
 	public void setEncryptOpts(String[] encryptOpts) {
 		this.encryptOpts = encryptOpts;
 	}
 
+	/**
+	 * Get the generic options
+	 * @return the generic options
+	 */
 	public String[] getGenericOpts() {
 		return genericOpts;
 	}
 
+	/**
+	 * Set the generic options
+	 * @param genericOpts
+	 */
 	public void setGenericOpts(String[] genericOpts) {
 		this.genericOpts = genericOpts;
 	}
 
-	public void setDocument(RTCEDocument doc) {
-		this.document = doc;
-	}
-
-	public void setSectionID(int sID) {
-		this.sectionID = sID;		
-	}
-
-	public void setRequest(byte[] requestChars){
-		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
-		request = RTCEMessageType.valueOf(requestName);
-	}
-
-	public byte[] getRequestChars(){
-		byte[] requestName = new byte[RTCEConstants.getRequestLength()];
-		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
-		if(requestBytes.length == RTCEConstants.getRequestLength()){
-			requestName = requestBytes;
-		}else{               
-			for(int i = 0; i < requestBytes.length; i++)
-			{
-				requestName[i] = requestBytes[i];
-			}
-			for(int i = requestBytes.length; i < requestName.length; i++)
-			{
-				requestName[i] = 0;
-			}
-		}
-		return requestName;
-	}
-
-	public long getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(long sessionId) {
-		this.sessionId = sessionId;
-	}
-
-	public int getChecksum() {
-		return checksum;
-	}
-
-	public void setChecksum(int checksum) {
-		this.checksum = checksum;
-	}
-
-	//We will tackle exact issue of timing when testing the control flow
-	public void setTime(){
-		this.timeStamp = System.nanoTime();
-	}
-
-	public long getTime(){
-		return timeStamp;
-	}
-
-	public int getHeaderReserved1() {
-		return headerReserved1;
-	}
-
-	public void setHeaderReserved1(int headerReserved1) {
-		this.headerReserved1 = headerReserved1;
-	}
-
-	public int getHeaderReserved2() {
-		return headerReserved2;
-	}
-
-	public void setHeaderReserved2(int headerReserved2) {
-		this.headerReserved2 = headerReserved2;
-	}
-
-	public int getHeaderReserved3() {
-		return headerReserved3;
-	}
-
-	public void setHeaderReserved3(int headerReserved3) {
-		this.headerReserved3 = headerReserved3;
-	}
-
-	public RTCEMessageType getResponse() {
-		return response;
-	}
-
+	/**
+	 * Get the shared secrets
+	 * @return the shared secrets
+	 */
 	public String[] getSharedSecrets() {
 		return sharedSecrets;
 	}
 
-	public long getTimeStamp() {
-		return timeStamp;
-	}
-
-	public RTCEDocument getDocument() {
-		return document;
-	}
-
-	public int getSectionID() {
-		return sectionID;
-	}
-	
-	public void setResponse(RTCEMessageType response) {
-		this.response = response;
-	}
-	
-	public void setMessageType(RTCEMessageType messageType) {
-		this.messageType = messageType;
-	}
-
+	/**
+	 * Set the shared secrets
+	 * @param sharedSecrets
+	 */
 	public void setSharedSecrets(String[] sharedSecrets) {
 		this.sharedSecrets = sharedSecrets;
 	}
 
-	public void setTimeStamp(long timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-	
-	public byte[] getVersion() {
-		return version;
-	}
+	/**
+	 * Set the document
+	 * @param doc
+	 */
+	public static void setDocument(RTCEDocument doc) {
+		document = doc;
+	}	
 
-	public void setVersion(byte[] version) {
-		this.version = version;
-	}
-	
+
+	/**
+	 * Get the document owner
+	 * @return the document owner
+	 */
 	public String getDocumentOwner() {
 		return documentOwner;
 	}
 
-	public void setDocumentOwner(String documentOwner) {
-		this.documentOwner = documentOwner;
+	/**
+	 * Set the document owner
+	 * @param documentOwner
+	 */
+	public static void setDocumentOwner(String docOwner) {
+		documentOwner = docOwner;
 	}
 
+	/**
+	 * Get the document title
+	 * @return the document title
+	 */
 	public String getDocumentTitle() {
 		return documentTitle;
 	}
 
-	public void setDocumentTitle(String documentTitle) {
-		this.documentTitle = documentTitle;
+	/**
+	 * Set the document title
+	 * @param documentTitle
+	 */
+	public void setDocumentTitle(String docTitle) {
+		documentTitle = docTitle;
 	}
 
+	/**
+	 * Get the timestamp
+	 * @return the timestamp
+	 */
+	public long getTimeStamp() {
+		return timeStamp;
+	}
 
-	public byte[][] getEncryptsAsBytes(){
-		return RTCEConstants.getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
+	/**
+	 * Set the timestamp
+	 * @param timeStamp
+	 */
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
 	}
-	
-	public byte[][] getOptsAsBytes(){
-		return RTCEConstants.getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
+
+	/**
+	 * Get the document
+	 * @return the document
+	 */
+	public RTCEDocument getDocument() {
+		return document;
 	}
-	
-	public byte[][] getSecretsAsBytes(){
-		return RTCEConstants.getBytesFromStrings(sharedSecrets, RTCEConstants.getSecretLength());
+
+	/**
+	 * Get the version
+	 * @return the version
+	 */
+	public byte[] getVersion() {
+		return version;
 	}
-	
+
+	/**
+	 * Set the version
+	 * @param version
+	 */
+	public void setVersion(byte[] version) {
+		this.version = version;
+	}
+
 	/**
 	 * Get the username as a byte array
 	 * @return username as a byte array
@@ -300,13 +267,259 @@ public class RTCEServerMessage {
 	public byte[] getUsernameChars(){
 		return RTCEConstants.getStringAsBytes(username, RTCEConstants.getUsernameLength());
 	}
-	
+
 	/**
 	 * Get the password as a byte array
 	 * @return password as a byte array
 	 */
 	public byte[] getPasswordChars(){
 		return RTCEConstants.getStringAsBytes(password, RTCEConstants.getAuthStringLength());
+	}
+
+	/**
+	 * Set the documentOwner as a byte array
+	 * @param usernameChars as a byte array
+	 */
+	public void setDocumentOwner(byte[] usernameChars){
+		documentOwner = new String(usernameChars, RTCEConstants.getRtcecharset());
+	}
+
+	/**
+	 * Get the documentOwner as a byte array
+	 * @return byte array representing the documentOwner
+	 */
+	public byte[] getDocumentOwnerChars(){
+		return RTCEConstants.getStringAsBytes(documentOwner, RTCEConstants.getUsernameLength());
+	}
+
+	/**
+	 * Set the document title as a byte array
+	 * @param doucumentTitleChars as a byte array
+	 */
+	public void setDocumentTitle(byte[] documentTitleChars){
+		documentTitle = new String(documentTitleChars, RTCEConstants.getRtcecharset());
+	}
+
+	/**
+	 * Get the document title as a byte array
+	 * @return byte array representing the document title
+	 */
+	public byte[] getDocumentTitleChars(){
+		return RTCEConstants.getStringAsBytes(documentTitle, RTCEConstants.getDocTitleLength());
+	}
+
+	/**
+	 * Set the request type from bytes
+	 * @param requestChars
+	 */
+	public void setRequest(byte[] requestChars){
+		String requestName = new String(requestChars, RTCEConstants.getRtcecharset());
+		request = RTCEMessageType.valueOf(requestName);
+	}
+
+	/**
+	 * Get the request type as bytes
+	 * @return the request type as bytes
+	 */
+	public byte[] getRequestChars(){
+		byte[] requestName = new byte[RTCEConstants.getRequestLength()];
+		byte[] requestBytes = request.toString().getBytes(RTCEConstants.getRtcecharset());
+		if(requestBytes.length == RTCEConstants.getRequestLength()){
+			requestName = requestBytes;
+		}else{        
+			for(int i = 0; i < requestBytes.length; i++){
+				requestName[i] = requestBytes[i];
+			}
+			for(int i = requestBytes.length; i < requestName.length; i++){
+				requestName[i] = 0;
+			}
+		}
+		return requestName;
+	}
+
+	/**
+	 * Get the session id
+	 * @return the session id
+	 */
+	public long getSessionId() {
+		return sessionId;
+	}
+
+	/**
+	 * Set the session id
+	 * @param sessionId
+	 */
+	public void setSessionId(long sessionId) {
+		this.sessionId = sessionId;              
+	}
+
+	/**
+	 * Get the checksum
+	 * @return the checksum
+	 */
+	public int getChecksum() {
+		return checksum;
+	}
+
+	/**
+	 * Set the checksum
+	 * @param checksum
+	 */
+	public void setChecksum(int checksum) {
+		this.checksum = checksum;
+	}
+
+	/**
+	 * Set the timestamp
+	 */
+	public void setTime()
+	{
+		this.timeStamp = System.nanoTime();
+	}
+
+	/**
+	 * Get the timestamp
+	 * @return the timestamp
+	 */
+	public long getTime()
+	{
+		return timeStamp;
+	}
+
+	/**
+	 * Get the reserved header field 1
+	 * @return reserved header field 1
+	 */
+	public int getHeaderReserved1() {
+		return headerReserved1;
+	}
+
+	/**
+	 * Set the reserved header field 1
+	 * @param headerReserved1
+	 */
+	public void setHeaderReserved1(int headerReserved1) {
+		this.headerReserved1 = headerReserved1;
+	}
+
+	/**
+	 * Get the reserved header field 2
+	 * @return reserved header field 2
+	 */
+	public int getHeaderReserved2() {
+		return headerReserved2;
+	}
+
+	/**
+	 * Set the reserved header field 2
+	 * @param headerReserved2
+	 */
+	public void setHeaderReserved2(int headerReserved2) {
+		this.headerReserved2 = headerReserved2;
+	}
+
+	/**
+	 * Get the reserved header field 3
+	 * @return reserved header field 3
+	 */
+	public int getHeaderReserved3() {
+		return headerReserved3;
+	}
+
+	/**
+	 * Set the reserved header field 3
+	 * @param headerReserved3
+	 */
+	public void setHeaderReserved3(int headerReserved3) {
+		this.headerReserved3 = headerReserved3;
+	}
+
+	/**
+	 * Get encrypt options as bytes
+	 * @return encrypt options as bytes
+	 */
+	public byte[][] getEncryptsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(encryptOpts, RTCEConstants.getOptLength());
+	}
+
+	/**
+	 * Get generic options as bytes
+	 * @return generic options as bytes
+	 */
+	public byte[][] getOptsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(genericOpts, RTCEConstants.getOptLength());
+	}
+
+	/**
+	 * Get flags
+	 * @return flags
+	 */
+	public boolean[] getFlags() {
+		return flags;
+	}
+
+	/**
+	 * Set flags
+	 * @param flags
+	 */
+	public void setFlags(boolean[] flags) {
+		this.flags = flags;
+	}
+
+	/**
+	 * Get message type
+	 * @return message type
+	 */
+	public RTCEMessageType getMessageType() {
+		return messageType;
+	}
+
+	/**
+	 * Set the section id
+	 * @param sID
+	 */
+	public void setSectionID(int sID) {
+		this.sectionID = sID;		
+	}
+
+	/**
+	 * get response
+	 * @return response
+	 */
+	public RTCEMessageType getResponse() {
+		return response;
+	}
+
+	/**
+	 * Get section id
+	 * @return section id
+	 */
+	public int getSectionID() {
+		return sectionID;
+	}
+	
+	/**
+	 * Set response
+	 * @param response
+	 */
+	public void setResponse(RTCEMessageType response) {
+		this.response = response;
+	}
+	
+	/**
+	 * Set message type
+	 * @param messageType
+	 */
+	public void setMessageType(RTCEMessageType messageType) {
+		this.messageType = messageType;
+	}
+	
+	/**
+	 * Get shared secrets as bytes
+	 * @return shared secrets as bytes
+	 */
+	public byte[][] getSecretsAsBytes(){
+		return RTCEConstants.getBytesFromStrings(sharedSecrets, RTCEConstants.getSecretLength());
 	}
         
         //set the message pdu header
