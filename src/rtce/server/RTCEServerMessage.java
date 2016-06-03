@@ -324,9 +324,9 @@ public class RTCEServerMessage {
 				request += requestFull.charAt(i);
 			}
 		}
-		System.out.println("Request in string format: " + request);
+		//System.out.println("Request in string format: " + request);
 		setRequest(RTCEMessageType.valueOf(request));
-		System.out.println(bf.position());
+		//System.out.println(bf.position());
 
 		bf.position(8);
 		setSessionId(bf.getLong());
@@ -335,13 +335,13 @@ public class RTCEServerMessage {
 		setHeaderReserved1(bf.getInt());
 		setHeaderReserved2(bf.getInt());
 		setHeaderReserved3(bf.getInt());
-		System.out.println("Session ID:   "+ getSessionId());
-		System.out.println("Time Stamp:   "+ getTimeStamp());
+		//System.out.println("Session ID:   "+ getSessionId());
+		//System.out.println("Time Stamp:   "+ getTimeStamp());
 
-		System.out.println("Checksum: "+ getChecksum());
-		System.out.println("Reserved1:  "+ getHeaderReserved1());
-		System.out.println("Reserved 2: "+ getHeaderReserved2());
-		System.out.println("Reserved 3: "+ getHeaderReserved3());   
+		//System.out.println("Checksum: "+ getChecksum());
+		//System.out.println("Reserved1:  "+ getHeaderReserved1());
+		//System.out.println("Reserved 2: "+ getHeaderReserved2());
+		//System.out.println("Reserved 3: "+ getHeaderReserved3());   
 	}   
 
 	 /**
@@ -492,7 +492,7 @@ public class RTCEServerMessage {
 			break;     	   
 
 		default: validflag = false;
-		System.out.println("2");  	
+		//System.out.println("2");  	
 		} //switch (request)
 
 		//Message is transmitted over here
@@ -510,7 +510,7 @@ public class RTCEServerMessage {
 
 				byte[] test = out.toByteArray();
 				String s1 = new String(test, 0, 8);
-				System.out.println("OUTGOING RESPONSE: "+s1+"\n");
+				//System.out.println("OUTGOING RESPONSE: "+s1+"\n");
 
 			}
 			catch(IOException ex)
@@ -558,25 +558,25 @@ public class RTCEServerMessage {
 
 		case ABORT:
 			control = new ControlMessage();
-			System.out.println("ABORT \n");
+			//System.out.println("ABORT \n");
 			{}
 			break; 
 
 		case ECHO:
 			control = new ControlMessage();
-			System.out.println("ECHO \n");
+			//System.out.println("ECHO \n");
 			{}
 			break;    	
 
 		case LOGOFF:
 			control = new ControlMessage();
-			System.out.println("LOGOFF \n");
+			//System.out.println("LOGOFF \n");
 			{}
 			break; 
 
 		case CACK:
 			control = new ControlMessage();
-			System.out.println("CACK \n");
+			//System.out.println("CACK \n");
 			{}
 			break;  
 
@@ -653,27 +653,27 @@ class ControlMessage extends RTCEServerMessage
 
 		bf.position(44);
 		setUsername(RTCEConstants.clipString(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
-		System.out.println("Username: " + getUsername());
+		//System.out.println("Username: " + getUsername());
 
 		bf.position(44+RTCEConstants.getUsernameLength());
 		setPassword(RTCEConstants.clipString(new String(bf.array(), 44+RTCEConstants.getUsernameLength(), RTCEConstants.getAuthStringLength(), RTCEConstants.getRtcecharset())));
-		System.out.println("Authentication: " + getPassword());
+		//System.out.println("Authentication: " + getPassword());
 
 		bf.position(44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength());
 		setDocumentOwner(RTCEConstants.clipString(new String(bf.array(), 44+RTCEConstants.getUsernameLength()+RTCEConstants.getAuthStringLength(), RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
-		System.out.println("Document Owner: " + getDocumentOwner());
+		//System.out.println("Document Owner: " + getDocumentOwner());
 
 		bf.position(44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength());
 		setDocumentTitle(RTCEConstants.clipString(new String(bf.array(), 44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength(), RTCEConstants.getDocTitleLength(), RTCEConstants.getRtcecharset())));
-		System.out.println("Document Title: " + getDocumentTitle());
+		//System.out.println("Document Title: " + getDocumentTitle());
 
 		bf.position(44+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength());
 		int numEncryptOptions = bf.getInt();
-		System.out.println("Num Encrypt Options:" + numEncryptOptions);
+		//System.out.println("Num Encrypt Options:" + numEncryptOptions);
 		String encs[] = new String[numEncryptOptions];
 		for(int i = 0; i < numEncryptOptions; i++){
 			encs[i] = RTCEConstants.clipString(new String(bf.array(), 48+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
-			System.out.println(encs[i]);
+			//System.out.println(encs[i]);
 		}
 		setEncryptOpts(encs);
 		//bf.position(124);
@@ -681,11 +681,11 @@ class ControlMessage extends RTCEServerMessage
 
 		bf.position(48+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(numEncryptOptions*RTCEConstants.getOptLength()));
 		int numGenOptions = bf.getInt();
-		System.out.println("Num Other Options: " + numGenOptions);
+		//System.out.println("Num Other Options: " + numGenOptions);
 		String gens[] = new String[numGenOptions];
 		for(int i = 0; i < numGenOptions; i++){
 			gens[i] = RTCEConstants.clipString(new String(bf.array(), 52+(2*RTCEConstants.getUsernameLength())+RTCEConstants.getAuthStringLength()+RTCEConstants.getDocTitleLength()+(numEncryptOptions*RTCEConstants.getOptLength())+(i*RTCEConstants.getOptLength()), RTCEConstants.getOptLength(), RTCEConstants.getRtcecharset()));
-			System.out.println(gens[i]);
+			//System.out.println(gens[i]);
 		}
 		setGenericOpts(gens);
 		//bf.position(129);
@@ -731,13 +731,13 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
                 int len = bf.getInt();
             RTCEServerMessage response = new RTCEServerMessage();
             String sectionTxt = new String(bf.array(), 60, len);
-  	    System.out.println(token);
-            System.out.println(control.checkClientToken(client));
+  	    //System.out.println(token);
+            //System.out.println(control.checkClientToken(client));
             
                 if(token == control.checkClientToken(client))  //if client has the specific token then commit changes
                 {  
                     document.processCommit(prevID, sID, sectionTxt);
-                    System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
+                    //System.out.println("S_COMMIT="+sID+" txt=" + sectionTxt);
                      
                     response = new RTCEServerMessage();
                     response.setRequest(RTCEMessageType.S_DONE); //send a done that is commit was successful
@@ -749,7 +749,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
                 }
                 
                 else{
-                       System.out.println("false"); //print false just for debugging, client doesn't get a denial if changes were not performed
+                      // System.out.println("false"); //print false just for debugging, client doesn't get a denial if changes were not performed
                        
                     }
         }
@@ -814,7 +814,7 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 	    {
 	           bf.position(40);
 	           setUsername(RTCEConstants.clipString(new String(bf.array(), 40, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
-	           System.out.println("Username: " + getUsername());
+	           //System.out.println("Username: " + getUsername());
 	           bf.position(40+RTCEConstants.getUsernameLength());
 	           boolean blockFlags[] = new boolean[4*8];
 	           byte readFlags[] = new byte[4];
@@ -825,9 +825,9 @@ public void getS_TREQST(ByteBuffer bf, Socket s, RTCEServerLog log, RTCEServerRe
 	           //bf.get(readFlags, 40+RTCEConstants.getUsernameLength(), 4);
 	           blockFlags = readBits(readFlags);
 	           setFlags(blockFlags);
-	           System.out.println("Flags processing..");
+	           //System.out.println("Flags processing..");
 	           for(int i = 0; i < blockFlags.length; i++){
-	        	   System.out.print(blockFlags[i] + ";");
+	        	   //System.out.print(blockFlags[i] + ";");
 	           }
 	           System.out.println();
 	           boolean exists = log.setBlock(getUsername()); //block the client
