@@ -649,7 +649,7 @@ class ControlMessage extends RTCEServerMessage
 		ver[2] = bf.get();
 		ver[3] = bf.get();
 		setVersion(ver);
-		System.out.println("Version: " + ver);
+		//System.out.println("Version: " + ver);
 
 		bf.position(44);
 		setUsername(RTCEConstants.clipString(new String(bf.array(), 44, RTCEConstants.getUsernameLength(), RTCEConstants.getRtcecharset())));
