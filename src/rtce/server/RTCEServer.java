@@ -185,6 +185,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
                                     		  client.block = false;
                                     		  cancelBlockTimer();
                                     	  }*/
+                                    	  
                                     	  try{Thread.sleep(1000);} catch (Exception e){}
                                       }
                                       sendResponse(RTCEMessageType.ECHO, -1, -1, sock);
