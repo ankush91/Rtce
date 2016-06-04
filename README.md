@@ -72,7 +72,24 @@ Ends the session, gracefully. Just type LOGOFF
 
 ## 2. Robustness Analysis
 
+We did attempt to ensure the server and client could handle different invalid actions.   Our client
+does filter out several invalid actions, however we loosened these restrictions temporarily to simulate
+hostile or simply incorrect clients who may attempt to either traverse the DFA improperly to supply fields
+improperly.   For example we attempted:
+- Requesting a second token while already holding a token
+- Attempting a commit with an invalid token
+- Attempting several commands prior to login
+- Attempt to login after already having logged in
+- Attempt to request a token when another client already has a token
+- several others
 
+As such we are confident in our server/client handling messages and ensuring they follow the DFA and when
+not following the DFA they respond accordingly.   
+
+What we did not attempt is sending random values for fields or sending out of range data, such that the
+message itself may be a valid DFA transition, but the data inside the message may cause an out of bounds
+check or other exception.   
+   
 
 ## 3. Non-implemented Features
 
