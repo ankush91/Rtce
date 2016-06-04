@@ -3,6 +3,8 @@ Real Time Collaborative Protocol
 
 This is a class project, and the primary goal is to design and implement a networking protocol.  We also must implement an application to make use of the protocol, however this is secondary.  Our protocol is to allow collaborative document editing.
 
+This program is in Java 8, so to run you need java 1.8 or higher.
+
 ## 1. Use
 
 The jar files are located in the main rtce folder.  For the current implementation, they must remain in that folder.
