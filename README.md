@@ -89,7 +89,10 @@ not following the DFA they respond accordingly.
 What we did not attempt is sending random values for fields or sending out of range data, such that the
 message itself may be a valid DFA transition, but the data inside the message may cause an out of bounds
 check or other exception.   
-   
+
+Additionally we did not perform any testing where a client may perform a hostile attempt to discover and
+use another client's session id to pose as another user.   We believe if/when encryption is applied on
+top of the protocol this would deter attempts to have another entity gain access to a user's session ID 
 
 ## 3. Non-implemented Features
 
