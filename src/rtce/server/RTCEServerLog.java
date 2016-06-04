@@ -5,11 +5,10 @@
  * @date Friday, June 3, 2016
  * @version 1
  * 
- * RTCEServerLog - This class contains a log of all active client connection objects on the server with their port numbers. The session Id, username,
+ * RTCEServerLog - CONCURRENT This class contains a log of all active client connection objects on the server with their port numbers. The session Id, username,
  * ip address, socket for the thread and block field are stored for a connection in the log. The function to block a client is also
  * a part of this class.
  */
-
 package rtce.server;
 
 import java.net.InetAddress;

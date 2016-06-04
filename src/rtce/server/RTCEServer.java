@@ -58,6 +58,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	 */
 	RTCEServer(int init){
 		//initialize the log and client record information for tokens
+		//CONCURRENT
 		log = new RTCEServerLog();        
 		control = new RTCEServerRecordMgmt(); 
 	}
@@ -81,6 +82,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 
 	/**
 	 * Run the server thread
+	 * CONCURRENT
 	 */
 	public void run() // thread run function
 	{ 
@@ -102,7 +104,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 	}       
 
 	//STATEFUL - PART 1
-	//A DRIVER RUNS FOR EACH CLIENT
+	//A DRIVER RUNS FOR EACH CLIENT.  CONCURRENT
 	/**
 	 * Run the driver for the client
 	 * @param port
@@ -617,7 +619,7 @@ public class RTCEServer implements Runnable //THIS CLASS IMPLEMENTS THE MAIN DRI
 		while(true)  // Server runs indefinitely
 		{
 			//start a new thread by passing in a new socket
-
+			// CONCURRENT: Creating a new thread for each client
 			RTCEServer server1 = new RTCEServer(listenSock.accept());          
 			Thread thread = new Thread(server1);          
 			thread.start();
