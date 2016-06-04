@@ -10,7 +10,9 @@ This program is in Java 8, so to run you need java 1.8 or higher.
 The jar files are located in the main rtce folder.  For the current implementation, they must remain in that folder.
 They can be run from that folder on any command prompt.
 
-Because we used java, the executables should be platform independent.  However, for convenience we list the platforms on which they have been tested below:
+If for some reason it is necessary to re-compile, use the standard Java compilation procedure, either from the command line or your favorite IDE.
+
+Because we used Java, the executables should be platform independent.  However, for convenience we list the platforms on which they have been tested below:
 
 64-bit Windows 10
 
