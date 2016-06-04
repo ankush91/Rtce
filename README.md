@@ -10,7 +10,7 @@ This program is in Java 8, so to run you need java 1.8 or higher.
 The jar files are located in the main rtce folder.  For the current implementation, they must remain in that folder.
 They can be run from that folder on any command prompt.
 
-Because we used java, the executables should be platform independant.  However, for convienience we list the platforms on which they have been tested below:
+Because we used java, the executables should be platform independent.  However, for convenience we list the platforms on which they have been tested below:
 
 64-bit Windows 10
 
@@ -26,11 +26,11 @@ On starting the client, it will attempt to automatically discover a server.  If 
 
 For all commands listed below, replace values in {} (such as {username}) with appropriate values.
 
-Do not abort the client except through logoff.  In the current state, the server is not prepared to recover from poor termination, and so that user will not be able to reconnect until the server is restarted.  This is a weakness of the application, not the protocol.
+Do not abort the client except through LOGOFF.  In the current state, the server is not prepared to recover from poor termination, and so that user will not be able to reconnect until the server is restarted.  This is a weakness of the application, not the protocol.
 
 ####Server Discovery
 
-The server discovery is implemented by having the server create a seperate thread to respond with a 
+The server discovery is implemented by having the server create a separate thread to respond with a 
 "HI" to any client who sends a message.    When a client starts he will make a call to Java's routine
 to get the client's IP address, and then attempt to change the fourth octet of the IP address and see
 if any server responds back with a "HI".   So for example if the client's IP address is 192.168.1.9, it will
