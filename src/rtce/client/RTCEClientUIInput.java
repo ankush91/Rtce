@@ -6,6 +6,7 @@
  * 	  This file is responsible for establishing the input portion of the UI and handle commands from
  *    user using the PDU.   This file contains some of the statefulness restrictions on the client side
  *    to ensure the DFA is adhered to.
+ *    UI this whole class is for UI
  */
 
 package rtce.client;

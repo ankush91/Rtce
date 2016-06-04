@@ -5,6 +5,7 @@
  * @date 6/3/2016
  * This file is responsible for providing output of the document and other misc UI output
  *    output.  
+ *    UI this whole file is for UI
  */
 
 package rtce.client;
@@ -57,6 +58,7 @@ public class RTCEClientUIOutput implements Runnable
 
 	/**
 	 * Redraw the ui
+	 * UI
 	 */
 	private void redrawUI()
 	{
