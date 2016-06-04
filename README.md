@@ -40,14 +40,18 @@ try 192.168.1.* where * is 1 - 255 to see if any server says "HI".    This limit
 
 To begin a client session, type the command login,{username},{password},{documentOwner},{documentTitle} and press enter.
 For the current implementation, {documentOwner} should always match {username}, and {documentTitle} does not matter, since the current application only has a single example document hard-coded.  However, there are existing files example1 and example2 (another title will create a new file).
+
 The valid combinations of username and password are:
-cs544,cs544
-group4,password
+
+- cs544,cs544
+- group4,password
+
 Thus, valid logins which will not create a new file include:
-login,cs544,cs544,cs544,example1
-login,group4,password,group4,example1
-login,cs544,cs544,cs544,example2
-login,group4,password,group4,example2
+
+- login,cs544,cs544,cs544,example1
+- login,group4,password,group4,example1
+- login,cs544,cs544,cs544,example2
+- login,group4,password,group4,example2
 
 ####request
 
