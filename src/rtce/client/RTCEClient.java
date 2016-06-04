@@ -455,6 +455,7 @@ public class RTCEClient {
 	public static void main(String[] args) throws IOException
 	{
 		RTCEClientConfig.init("config/client/clientConfig.conf");
+		//SERVICE - Hardcoded Port, 50000
 		final int servPort = 50000; //Server Port       
 
 		RTCEClient client = new RTCEClient(servPort);
