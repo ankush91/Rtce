@@ -72,23 +72,27 @@ Ends the session, gracefully. Just type LOGOFF
 
 ## 2. Robustness Analysis
 
-### 2.a. Encryption
+
+
+## 3. Non-implemented Features
+
+### 3.a. Encryption
 
 While the system to support encryption exists, currently we do not support any encryption.  However, it would not be too difficult to hook encryption in to the protocol.
 
-### 2.b. Other options
+### 3.b. Other options
 
 While the system to support "generic options" exists, currently we do not support any of them.  However, it would not be too difficult to hook basic options in to the protocol.
 
-### 2.c. Actual document loading
+### 3.c. Actual document loading
 
 While the beginnings of the system to load and work with real documents on the disk exists, it would take more time on the application side of implementation to complete that.  However, all protocol level aspects are implemented.  Due to the focus on the protocol, we only allow users to work on a single, hard-coded document.
 
-## 3. Extra Credit
+## 4. Extra Credit
 
 See section Server Discovery under Client in Use.
 
-## 4. Credits
+## 5. Credits
 
 This is the final project for Group 4 in CS544.
 
