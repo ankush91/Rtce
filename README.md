@@ -129,10 +129,10 @@ This is the final project for Group 4 in CS544.
 
 Our team members are:
 
-Edwin Dauber
-
 Ankush Israney
 
 Anthony Emma
+
+Edwin Dauber
 
 Francis Obiagwu
