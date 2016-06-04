@@ -86,6 +86,8 @@ improperly.   For example we attempted:
 As such we are confident in our server/client handling messages and ensuring they follow the DFA and when
 not following the DFA they respond accordingly.   
 
+For this implementation we have a fixed maximum number of sections and length of section.  Exceeding these will cause an error due to implementation.
+
 What we did not attempt is sending random values for fields or sending out of range data, such that the
 message itself may be a valid DFA transition, but the data inside the message may cause an out of bounds
 check or other exception.   
@@ -93,6 +95,8 @@ check or other exception.
 Additionally we did not perform any testing where a client may perform a hostile attempt to discover and
 use another client's session id to pose as another user.   We believe if/when encryption is applied on
 top of the protocol this would deter attempts to have another entity gain access to a user's session ID 
+
+Do not abort the client except through LOGOFF.  In the current state, the server is not prepared to recover from poor termination, and so that user will not be able to reconnect until the server is restarted.  This is a weakness of the application, not the protocol.
 
 ## 3. Non-implemented Features
 
