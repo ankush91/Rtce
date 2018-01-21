@@ -123,9 +123,8 @@ See section Server Discovery under Client in Use.
 
 ## 5. Credits
 
-This is the final project for Group 4 in CS544.
-
-### Our team members are:
+This is the final project for Group 4 in CS544. <br>
+### Project Team members:
 * Ankush Israney
 * Anthony Emma
 * Edwin Dauber
